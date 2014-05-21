@@ -3,7 +3,7 @@
 
 package edu.benedictine.jump;
 
-import edu.benedictine.game.gui.GamePanel;
+import edu.benedictine.game.gui.GamePanelFixedFPS;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
@@ -12,7 +12,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import javax.swing.JPanel;
 
-public class SimulatorPanel extends GamePanel
+public class SimulatorPanel extends GamePanelFixedFPS
 {
 	private Point ballLoc,ballVel;
 	
@@ -64,7 +64,7 @@ public class SimulatorPanel extends GamePanel
 	}
 
 	@Override
-	public void updateGame(long timeSinceLastUpdate)
+	public void updateGame()
 	{
 		if (ballLoc != null)
 		{
