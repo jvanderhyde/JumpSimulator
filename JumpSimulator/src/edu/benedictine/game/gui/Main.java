@@ -4,7 +4,7 @@
 package edu.benedictine.game.gui;
 
 import edu.benedictine.game.media.GraphicsResource;
-import javax.swing.JFrame;
+import java.awt.Frame;
 
 public class Main 
 {	
@@ -20,7 +20,7 @@ public class Main
 		gameCanvas = new PixelCanvas(CAN_WIDTH, CAN_HEIGHT);
 		aniStore = new GraphicsResource(gameCanvas);
 		
-		JFrame f = new JFrame("Jump Simulator");
+		Frame f = new Frame("Jump Simulator");
         
         //Create director
         sceneMaster = new Director(f, gameCanvas, aniStore);

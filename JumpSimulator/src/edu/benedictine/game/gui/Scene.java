@@ -351,6 +351,11 @@ public class Scene
 		}
 	}
 	
+	public void stop()
+	{
+		running = false;
+	}
+	
 	public void runScene() throws InterruptedException
 	{
 		while (running == true)

@@ -5,12 +5,14 @@ package edu.benedictine.game.gui;
 import edu.benedictine.game.media.GraphicsResource;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -26,7 +28,7 @@ public class Director
 	PixelCanvas gameCanvas;
 	GraphicsResource aniStore;
 	//SaveManager state;
-	JFrame f;
+	Frame f;
 	JPanel p;
 	//OggClip ogg;
 	public JSlider s, s2, s3, s4, s5;
@@ -108,7 +110,7 @@ public class Director
 		}
 	}
 
-	public Director(JFrame f, PixelCanvas canvas, GraphicsResource animations)
+	public Director(final Frame f, PixelCanvas canvas, GraphicsResource animations)
 	{
 		aniStore = animations;
 		gameCanvas = canvas;
@@ -264,6 +266,17 @@ public class Director
 		p.add(p3, BorderLayout.EAST);
 		f.add(p);
 		f.pack();
+		f.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent evt)
+			{
+				if (currentScene != null)
+					currentScene.stop();
+				f.setVisible(false);
+				f.dispose();
+			}
+		});
         f.setVisible(true);
 		
 		/*
