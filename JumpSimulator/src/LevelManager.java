@@ -1,6 +1,6 @@
-import java.awt.Color;
-
 //Created by Joseph Rioux, 14 July 2013
+
+import java.awt.Color;
 
 public class LevelManager extends SceneObject
 {	

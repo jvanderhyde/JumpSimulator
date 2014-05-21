@@ -1,7 +1,7 @@
-import java.awt.image.BufferedImage;
-
 //Created by Joseph Rioux, 22 March 2013
 //A simple image displayer
+
+import java.awt.image.BufferedImage;
 
 public class Sprite
 {

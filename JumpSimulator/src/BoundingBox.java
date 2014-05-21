@@ -1,6 +1,6 @@
-import java.util.ArrayList;
-
 //Created by Joseph Rioux, 30 March 2013
+
+import java.util.ArrayList;
 
 public class BoundingBox
 {

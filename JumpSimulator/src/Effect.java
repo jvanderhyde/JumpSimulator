@@ -1,4 +1,3 @@
-
 //Created by Joseph Rioux, 31 March 2013
 //WorldObject with timer and gravity, easier constructor
 

@@ -1,10 +1,7 @@
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-
 //created by Joseph Rioux, 9 March 2013
 //	has terrain-collision capabilities
+
+import java.util.ArrayList;
 
 public class GameObject extends WorldObject
 {

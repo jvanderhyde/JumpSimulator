@@ -1,23 +1,16 @@
 //Modified by Joseph Rioux, 12 January 2013
 //	Note: x or y speed of 0.0015625 = 1 pixel per frame (at standard resolution, 1024 x 640)
 
-import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 

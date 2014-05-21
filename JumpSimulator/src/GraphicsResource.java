@@ -1,13 +1,6 @@
 //updated: 5/16/2014
 
-import java.io.File;
-import javax.imageio.ImageIO;
-import java.io.IOException;
 import java.awt.image.BufferedImage;
-import java.awt.RenderingHints;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Color;
 
 public class GraphicsResource
 {

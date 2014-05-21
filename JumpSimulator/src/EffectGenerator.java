@@ -1,8 +1,6 @@
 //Created by Joseph Rioux, 1 April 2013
 //A "static" class for generating special effects in a Scene
 
-import java.awt.image.BufferedImage;
-
 public class EffectGenerator 
 {
 	Scene scn;

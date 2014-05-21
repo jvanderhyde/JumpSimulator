@@ -13,7 +13,6 @@
 
 //priorities: 0 - 14: hitboxes ; 15: player? ; 16 - 24: other boundingBoxes
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class HitBox extends GameObject
