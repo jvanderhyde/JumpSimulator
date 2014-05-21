@@ -1,6 +1,6 @@
-package edu.benedictine.game.gui;
-
 //created by Joseph Rioux, 4 March 2013
+
+package edu.benedictine.game.gui;
 
 import edu.benedictine.game.media.GraphicsResource;
 import java.awt.BorderLayout;
@@ -22,21 +22,21 @@ import javax.swing.event.ChangeListener;
 
 public class Director 
 {	
-	Scene currentScene;
+	public Scene currentScene;
 	PixelCanvas gameCanvas;
 	GraphicsResource aniStore;
 	//SaveManager state;
 	JFrame f;
 	JPanel p;
 	//OggClip ogg;
-	JSlider s, s2, s3, s4, s5;
-	JRadioButton custom, mario, samus, zeetee;
-	JRadioButton noCancel, doubleGravity, fullCancel;
+	public JSlider s, s2, s3, s4, s5;
+	public JRadioButton custom, mario, samus, zeetee;
+	public JRadioButton noCancel, doubleGravity, fullCancel;
 	JLabel sl, sl2, sl3, sl4, sl5;
 	
 	//simulator values
-	double gravity = 30.0, jumpPower = 600.0, xSpeed = 120.0, airDecel = 1.0, jumpCancel = 1.0;
-	String jumpType = "custom", cancelType = "double";
+	public double gravity = 30.0, jumpPower = 600.0, xSpeed = 120.0, airDecel = 1.0, jumpCancel = 1.0;
+	public String jumpType = "custom", cancelType = "double";
 	
 	class GravityListener implements ChangeListener
 	{

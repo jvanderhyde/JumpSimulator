@@ -1,6 +1,5 @@
 package edu.benedictine.game.engine;
 
-
 import edu.benedictine.game.gui.Scene;
 import edu.benedictine.game.gui.Main;
 
@@ -140,4 +139,15 @@ public class Camera extends SceneObject
 		//if (y < scn.player.y-64.0)
 		//	y = scn.player.y-64.0;
 	}
+
+	public double getX() 
+	{
+		return x;
+	}
+
+	public double getY() 
+	{
+		return y;
+	}
+	
 }

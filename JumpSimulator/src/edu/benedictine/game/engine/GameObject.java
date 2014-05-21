@@ -1,13 +1,13 @@
-package edu.benedictine.game.engine;
-
 //created by Joseph Rioux, 9 March 2013
 //	has terrain-collision capabilities
 
-import edu.benedictine.game.util.Vector;
+package edu.benedictine.game.engine;
+
+import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.engine.collision.BoundingBox;
 import edu.benedictine.game.engine.collision.Hit;
+import edu.benedictine.game.util.Vector;
 import edu.benedictine.game.gui.Scene;
-import edu.benedictine.game.media.ImageSource;
 import java.util.ArrayList;
 
 public class GameObject extends WorldObject
@@ -18,7 +18,7 @@ public class GameObject extends WorldObject
 	double head;
 	double left;
 	double right;
-	boolean hitTerrain = true; //default is to hit terrain
+	public boolean hitTerrain = true; //default is to hit terrain
 	boolean hitsBoxes = false;
 	Terrain onTerrain = null;
 	Terrain atRightWall = null;
@@ -282,4 +282,25 @@ public class GameObject extends WorldObject
 			box.die();
 		super.die();
 	}
+
+	public double getLeft() 
+	{
+		return left;
+	}
+
+	public double getRight() 
+	{
+		return right;
+	}
+
+	public double getFeet() 
+	{
+		return feet;
+	}
+
+	public double getHead() 
+	{
+		return head;
+	}
+	
 }

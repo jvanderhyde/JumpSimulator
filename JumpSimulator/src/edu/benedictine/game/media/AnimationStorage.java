@@ -1,6 +1,5 @@
 package edu.benedictine.game.media;
 
-
 import edu.benedictine.game.gui.PixelCanvas;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

@@ -1,7 +1,7 @@
-package edu.benedictine.game.media;
-
 //Created by Joseph Rioux, 24 June 2013
 //a wrapper class for either a BufferedImage, an Image(mine), or an Animation
+
+package edu.benedictine.game.media;
 
 import java.awt.image.BufferedImage;
 

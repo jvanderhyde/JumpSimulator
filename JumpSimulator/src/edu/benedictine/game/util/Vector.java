@@ -1,11 +1,11 @@
-package edu.benedictine.game.util;
-
 //created by Joseph Rioux, 26 May 2013
 //2D vector with basic functions
 
+package edu.benedictine.game.util;
+
 public class Vector 
 {
-	double x, y;
+	public double x, y;
 	
 	public Vector(double x, double y)
 	{

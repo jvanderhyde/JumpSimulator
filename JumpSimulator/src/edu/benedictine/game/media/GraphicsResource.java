@@ -1,6 +1,6 @@
-package edu.benedictine.game.media;
-
 //updated: 5/16/2014
+
+package edu.benedictine.game.media;
 
 import edu.benedictine.game.gui.PixelCanvas;
 import java.awt.image.BufferedImage;

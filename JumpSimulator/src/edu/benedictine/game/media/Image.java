@@ -1,7 +1,7 @@
-package edu.benedictine.game.media;
-
 //created by Joseph Rioux, 6 March 2013
 //	contains an array with the reversed images
+
+package edu.benedictine.game.media;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

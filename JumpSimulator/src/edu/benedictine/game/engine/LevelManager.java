@@ -1,8 +1,10 @@
-package edu.benedictine.game.engine;
-
 //Created by Joseph Rioux, 14 July 2013
 
+package edu.benedictine.game.engine;
+
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.game.engine.SceneObject;
+import edu.benedictine.game.engine.WorldObject;
 import java.awt.Color;
 
 public class LevelManager extends SceneObject

@@ -1,12 +1,12 @@
+//Created by Joseph Rioux, 18 July 2013
+
 package edu.benedictine.game.engine;
 
-
-import edu.benedictine.game.engine.collision.Hit;
-import edu.benedictine.game.engine.collision.BoundingBox;
-import edu.benedictine.game.gui.Scene;
 import edu.benedictine.game.media.ImageSource;
+import edu.benedictine.game.engine.collision.BoundingBox;
+import edu.benedictine.game.engine.collision.Hit;
+import edu.benedictine.game.gui.Scene;
 
-//Created by Joseph Rioux, 18 July 2013
 
 public class Enemy extends GameObject
 {

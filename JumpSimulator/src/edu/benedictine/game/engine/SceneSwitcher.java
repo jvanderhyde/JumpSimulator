@@ -30,4 +30,10 @@ public class SceneSwitcher
 			mn.changeScene(nextScene, mn.currentScene.currentLevel, nextX, nextY);
 		timeToGo--;
 	}
+
+	public int getTimeToGo() 
+	{
+		return timeToGo;
+	}
+	
 }

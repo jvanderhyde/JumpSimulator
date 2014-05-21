@@ -1,8 +1,9 @@
+//Created by Joseph Rioux, 14 July 2013
+
 package edu.benedictine.game.engine;
 
 import edu.benedictine.game.gui.Scene;
 
-//Created by Joseph Rioux, 14 July 2013
 
 public class Weather extends SceneObject
 {	

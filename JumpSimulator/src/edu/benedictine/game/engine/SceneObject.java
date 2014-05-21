@@ -1,9 +1,10 @@
 //created by Joseph Rioux, 4 March 2013
-//	any object updated by the scene
 
 package edu.benedictine.game.engine;
 
 import edu.benedictine.game.gui.Scene;
+
+//	any object updated by the scene
 
 public class SceneObject 
 {
@@ -49,4 +50,15 @@ public class SceneObject
 	{
 		
 	}
+
+	public double getXSpeed() 
+	{
+		return xSpeed;
+	}
+
+	public double getYSpeed() 
+	{
+		return ySpeed;
+	}
+	
 }

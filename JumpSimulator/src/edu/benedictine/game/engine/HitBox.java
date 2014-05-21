@@ -1,5 +1,3 @@
-package edu.benedictine.game.engine;
-
 //Created by Joseph Rioux, 27 March 2013
 
 //think carefully about this one very important class
@@ -15,10 +13,12 @@ package edu.benedictine.game.engine;
 
 //priorities: 0 - 14: hitboxes ; 15: player? ; 16 - 24: other boundingBoxes
 
-import edu.benedictine.game.engine.collision.Hit;
-import edu.benedictine.game.engine.collision.BoundingBox;
-import edu.benedictine.game.gui.Scene;
+package edu.benedictine.game.engine;
+
 import edu.benedictine.game.media.ImageSource;
+import edu.benedictine.game.engine.collision.BoundingBox;
+import edu.benedictine.game.engine.collision.Hit;
+import edu.benedictine.game.gui.Scene;
 import java.util.ArrayList;
 
 public class HitBox extends GameObject

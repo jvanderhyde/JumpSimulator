@@ -1,10 +1,10 @@
 package edu.benedictine.game.engine;
 
 
-import edu.benedictine.game.util.AdvancedForce;
-import edu.benedictine.game.engine.collision.BoundingBox;
-import edu.benedictine.game.gui.Scene;
 import edu.benedictine.game.media.ImageSource;
+import edu.benedictine.game.engine.collision.BoundingBox;
+import edu.benedictine.game.util.AdvancedForce;
+import edu.benedictine.game.gui.Scene;
 
 //created by Joseph Rioux, 22 October 2013
 //This class will serve the main functions of the player. Specific powers and abilities will build off of this.
@@ -903,4 +903,11 @@ public class Player extends GameObject
 		
 		super.die();
 	}
+
+	public int getNumGems() 
+	{
+		return gems;
+	}
+	
+	
 }

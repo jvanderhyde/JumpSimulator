@@ -4,9 +4,10 @@ package edu.benedictine.game.engine;
 
 import edu.benedictine.game.gui.Scene;
 
+
 public class Terrain extends SceneObject
 {
-	double x0, y0, x1, y1, priorX0, priorX1, priorY0, priorY1, xSpeed, ySpeed;
+	public double x0, y0, x1, y1, priorX0, priorX1, priorY0, priorY1, xSpeed, ySpeed;
 	Scene scn;
 	GameObject owner;
 	int orientation;

@@ -6,6 +6,7 @@ import edu.benedictine.game.engine.collision.BoundingBox;
 import edu.benedictine.game.engine.collision.Hit;
 import edu.benedictine.game.gui.Scene;
 
+
 public class Trigger extends GameObject
 {
 	boolean fired = false;

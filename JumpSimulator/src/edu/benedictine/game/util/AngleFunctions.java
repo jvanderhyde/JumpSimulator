@@ -1,6 +1,6 @@
-package edu.benedictine.game.util;
-
 //Created by Joseph Rioux, 22 August 2013
+
+package edu.benedictine.game.util;
 
 public class AngleFunctions 
 {

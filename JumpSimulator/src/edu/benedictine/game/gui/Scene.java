@@ -1,25 +1,12 @@
-package edu.benedictine.game.gui;
-
 //Modified by Joseph Rioux, 12 January 2013
 //	Note: x or y speed of 0.0015625 = 1 pixel per frame (at standard resolution, 1024 x 640)
 
-import edu.benedictine.game.util.NameManager;
-import edu.benedictine.game.util.SortedList;
-import edu.benedictine.game.engine.collision.Hit;
-import edu.benedictine.game.engine.collision.BoundingBox;
-import edu.benedictine.game.engine.collision.CollisionManager;
-import edu.benedictine.game.engine.SceneObject;
-import edu.benedictine.game.engine.SceneSwitcher;
-import edu.benedictine.game.engine.Camera;
-import edu.benedictine.game.engine.Gem;
-import edu.benedictine.game.engine.GameObject;
-import edu.benedictine.game.engine.EffectGenerator;
-import edu.benedictine.game.engine.Player;
-import edu.benedictine.game.engine.Terrain;
-import edu.benedictine.game.engine.LevelManager;
-import edu.benedictine.game.engine.WorldObject;
-import edu.benedictine.game.media.GraphicsResource;
-import edu.benedictine.game.media.Sprite;
+package edu.benedictine.game.gui;
+
+import edu.benedictine.game.engine.*;
+import edu.benedictine.game.media.*;
+import edu.benedictine.game.engine.collision.*;
+import edu.benedictine.game.util.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
@@ -51,21 +38,21 @@ public class Scene
 	public ArrayList<WorldObject> guiCurrents;
 	public ArrayList<BoundingBox> boxCurrents;
 	public SortedList<Sprite> sprites;
-	PixelCanvas canvas;
+	public PixelCanvas canvas;
 	public Graphics g, g2;
 	private BufferedImage screenDraw;
 	Color backgroundColor;
     boolean running;
     int rate = 16;
-    double fps;
+    public double fps;
 	private int t = 0;
 	int sum = 0, sum2 = 0;
 	//AnimationStorage store;
-	GraphicsResource store;
-	Player player;
+	public GraphicsResource store;
+	public Player player;
 	Camera camera;
-	EffectGenerator spEffects;
-	SceneSwitcher swapper;
+	public EffectGenerator spEffects;
+	public SceneSwitcher swapper;
 	
 	double angle;
 	GameObject junk;
@@ -77,7 +64,7 @@ public class Scene
 	boolean frameInfo = false;
 	
 	//collision
-	CollisionManager collisionManager;
+	public CollisionManager collisionManager;
 	//WeaponManager weaponManager;
 	LevelManager levelManager;
 	NameManager names;
@@ -87,9 +74,9 @@ public class Scene
 	double cameraX = -512.0;
 	double cameraY = -320.0;
 	double screenBoundL = -512;
-	double screenBoundR = 512;
+	public double screenBoundR = 512;
 	double screenBoundT = -320;
-	double screenBoundB = 320;
+	public double screenBoundB = 320;
 	
 	//keys
 	KeyChecker keys;
@@ -454,8 +441,8 @@ public class Scene
 			if (camera != null)
 			{
 				camera.move();
-				cameraX = camera.x-Main.CAN_WIDTH/2.0;
-				cameraY = camera.y-Main.CAN_HEIGHT/2.0;
+				cameraX = camera.getX()-Main.CAN_WIDTH/2.0;
+				cameraY = camera.getY()-Main.CAN_HEIGHT/2.0;
 			}
 			//if (t % 2 == 0)
 			drawFrame(g, screenDraw);
@@ -491,7 +478,7 @@ public class Scene
 		objCurrents = (ArrayList)objs.clone();
 		for (int i=0; i<objCurrents.size(); i++)
 		{
-			objCurrents.get(i).move(objCurrents.get(i).xSpeed, objCurrents.get(i).ySpeed);
+			objCurrents.get(i).move(objCurrents.get(i).getXSpeed(), objCurrents.get(i).getYSpeed());
 		}
 	}
 	
@@ -668,9 +655,9 @@ public class Scene
 				//if (obj instanceof Player)
 					//System.out.println(canvas.w2VY(obj.y-obj.halfHeight-cameraY));
 				if (obj.screenObj)
-					off.drawImage(obj.getFrame(), canvas.w2VX(obj.x-obj.halfWidth), canvas.w2VY(obj.y-obj.halfHeight), null);
+					off.drawImage(obj.getFrame(), canvas.w2VX(obj.getX()-obj.getHalfWidth()), canvas.w2VY(obj.getY()-obj.getHalfHeight()), null);
 				else
-					off.drawImage(obj.getFrame(), canvas.w2VX(obj.x-obj.halfWidth-cameraX), canvas.w2VY(obj.y-obj.halfHeight-cameraY), null);
+					off.drawImage(obj.getFrame(), canvas.w2VX(obj.getX()-obj.getHalfWidth()-cameraX), canvas.w2VY(obj.getY()-obj.getHalfHeight()-cameraY), null);
 			}
 		}
 		
@@ -700,19 +687,19 @@ public class Scene
 			{
 				GameObject b = gameCurrents.get(i);
 				if (b.hitTerrain)
-					off.drawRect(canvas.w2VX(b.x+b.left-cameraX), canvas.w2VY(b.y+b.head-cameraY), (int)(b.right-b.left), (int)(b.feet-b.head));
+					off.drawRect(canvas.w2VX(b.getX()+b.getLeft()-cameraX), canvas.w2VY(b.getY()+b.getHead()-cameraY), (int)(b.getRight()-b.getLeft()), (int)(b.getFeet()-b.getHead()));
 			}
 			off.setColor(Color.BLACK);
 		}
 		
 		//text
 		off.setColor(Color.BLACK);
-		off.drawString("X Speed: "+player.xForce.value, 16, 20);
-		off.drawString("Y Speed: "+player.yForce.value, 16, 40);
-		off.drawString("X: "+((double)Math.round(player.x*100)/100), 16, 60);
-		off.drawString("Y: "+((double)Math.round(player.y*100)/100), 16, 80);
+		off.drawString("X Speed: "+player.getXForce().value, 16, 20);
+		off.drawString("Y Speed: "+player.getYForce().value, 16, 40);
+		off.drawString("X: "+((double)Math.round(player.getX()*100)/100), 16, 60);
+		off.drawString("Y: "+((double)Math.round(player.getY()*100)/100), 16, 80);
 		off.setColor(Color.GREEN);
-		off.drawString("Gems: "+player.gems, 16, 100);
+		off.drawString("Gems: "+player.getNumGems(), 16, 100);
 		
 		
 		//draw gui objects - over everything else
@@ -720,11 +707,11 @@ public class Scene
 		{
 			WorldObject obj = (WorldObject)guis.get(i);
 			if (obj.getFrame() != null)
-				off.drawImage(obj.getFrame(), canvas.w2VX(obj.x), canvas.w2VY(obj.y), null);
+				off.drawImage(obj.getFrame(), canvas.w2VX(obj.getX()), canvas.w2VY(obj.getY()), null);
 		}
 		
 		off.setColor(Color.BLACK);
-		if (swapper.timeToGo <= 20 && swapper.timeToGo > -1)
+		if (swapper.getTimeToGo() <= 20 && swapper.getTimeToGo() > -1)
 			off.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		off.setColor(backgroundColor);
 		
@@ -748,8 +735,8 @@ public class Scene
 				{
 					if (im.getRGB(i,j) == -65536)
 					{
-						player.x = (i+1)*32.0+16;
-						player.y = (j+1)*32.0+16;
+						player.setX((i+1)*32.0+16);
+						player.setY((j+1)*32.0+16);
 					}
 					if (im.getRGB(i,j) == -16777216)
 					{

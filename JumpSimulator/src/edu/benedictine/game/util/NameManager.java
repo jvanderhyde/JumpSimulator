@@ -1,7 +1,7 @@
-package edu.benedictine.game.util;
-
 //Created by Joseph Rioux, 24 June 2013
 //to manage object names
+
+package edu.benedictine.game.util;
 
 import java.util.ArrayList;
 

@@ -1,22 +1,22 @@
-package edu.benedictine.game.engine.collision;
-
 //Created by Joseph Rioux, 30 March 2013
 
-import edu.benedictine.game.engine.GameObject;
+package edu.benedictine.game.engine.collision;
+
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.game.engine.GameObject;
 import java.util.ArrayList;
 
 public class BoundingBox
 {
 	Scene scn;
-	double xOffset, yOffset, halfWidth, halfHeight;
-	double x, y, priorX, priorY, xSpeed, ySpeed, xCng, yCng;
+	public double xOffset, yOffset, halfWidth, halfHeight;
+	public double x, y, priorX, priorY, xSpeed, ySpeed, xCng, yCng;
 	int priority;
-	int sample, group;
+	public int sample, group;
 	int[] categories;
-	GameObject owner;
+	public GameObject owner;
 	ArrayList<BoundingBox> checks;
-	boolean on = true; //default is on
+	public boolean on = true; //default is on
 
 	public BoundingBox(Scene scn, GameObject owner, int group, int[] cats, int priority, double xOffset, double yOffset, double halfWidth, double halfHeight) 
 	{
@@ -29,8 +29,8 @@ public class BoundingBox
 		this.group = group;
 		categories = cats;
 		this.priority = priority;
-		x = owner.x+xOffset;
-		y = owner.y+yOffset;
+		x = owner.getX()+xOffset;
+		y = owner.getY()+yOffset;
 		scn.collisionManager.boxes[group].add(this);
 		scn.boxes.add(this);
 		checks = new ArrayList<BoundingBox>();
@@ -45,8 +45,8 @@ public class BoundingBox
 	{	
 		priorX = x;
 		priorY = y;
-		x = owner.x+xOffset;
-		y = owner.y+yOffset;
+		x = owner.getX()+xOffset;
+		y = owner.getY()+yOffset;
 		setSample();
 	}
 

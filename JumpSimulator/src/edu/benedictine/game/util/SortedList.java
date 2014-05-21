@@ -1,7 +1,5 @@
 package edu.benedictine.game.util;
 
-
-
 import java.util.ArrayList;
 
 public class SortedList<E> extends ArrayList<E>

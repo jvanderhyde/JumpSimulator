@@ -1,18 +1,18 @@
-package edu.benedictine.game.engine.collision;
-
 //created by Joseph Rioux, 9 March 2013
 
+package edu.benedictine.game.engine.collision;
+
 import edu.benedictine.game.util.Vector;
-import edu.benedictine.game.engine.Terrain;
-import edu.benedictine.game.engine.GameObject;
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.game.engine.GameObject;
+import edu.benedictine.game.engine.Terrain;
 import java.util.ArrayList;
 
 public class CollisionManager 
 {
 	ArrayList<GameObject>[] groups;
 	ArrayList<BoundingBox>[] boxes;
-	ArrayList<Terrain>[] walls, wallsOriginal;
+	public ArrayList<Terrain>[] walls, wallsOriginal;
 	Scene scn;
 	
 	public CollisionManager(Scene scn)
@@ -80,14 +80,14 @@ public class CollisionManager
 		{
 			wall = walls[0].get(i);
 			
-			double head = obj.y+h;
-			double feet = obj.y+f;
-			double left = obj.x+l;
-			double right = obj.x+r;
-			double oldHead = obj.priorY+h;
-			double oldFeet = obj.priorY+f;
-			double oldLeft = obj.priorX+l;		
-			double oldRight = obj.priorX+r;
+			double head = obj.getY()+h;
+			double feet = obj.getY()+f;
+			double left = obj.getX()+l;
+			double right = obj.getX()+r;
+			double oldHead = obj.getPriorY()+h;
+			double oldFeet = obj.getPriorY()+f;
+			double oldLeft = obj.getPriorX()+l;		
+			double oldRight = obj.getPriorX()+r;
 			
 			//supersampling
 			//for this to work, it must be guaranteed that no terrain is shorter than 32 px
@@ -139,14 +139,14 @@ public class CollisionManager
 		{
 			wall = walls[1].get(i);
 			
-			double head = obj.y+h;
-			double feet = obj.y+f;
-			double left = obj.x+l;
-			double right = obj.x+r;
-			double oldHead = obj.priorY+h;
-			double oldFeet = obj.priorY+f;
-			double oldLeft = obj.priorX+l;		
-			double oldRight = obj.priorX+r;
+			double head = obj.getY()+h;
+			double feet = obj.getY()+f;
+			double left = obj.getX()+l;
+			double right = obj.getX()+r;
+			double oldHead = obj.getPriorY()+h;
+			double oldFeet = obj.getPriorY()+f;
+			double oldLeft = obj.getPriorX()+l;		
+			double oldRight = obj.getPriorX()+r;
 			
 			//supersampling
 			//for this to work, it must be guaranteed that no terrain is shorter than 32 px
@@ -197,14 +197,14 @@ public class CollisionManager
 		{
 			wall = walls[2].get(i);
 			
-			double head = obj.y+h;
-			double feet = obj.y+f;
-			double left = obj.x+l;
-			double right = obj.x+r;
-			double oldHead = obj.priorY+h;
-			double oldFeet = obj.priorY+f;
-			double oldLeft = obj.priorX+l;		
-			double oldRight = obj.priorX+r;
+			double head = obj.getY()+h;
+			double feet = obj.getY()+f;
+			double left = obj.getX()+l;
+			double right = obj.getX()+r;
+			double oldHead = obj.getPriorY()+h;
+			double oldFeet = obj.getPriorY()+f;
+			double oldLeft = obj.getPriorX()+l;		
+			double oldRight = obj.getPriorX()+r;
 			
 			//supersampling
 			//for this to work, it must be guaranteed that no terrain is shorter than 32 px
@@ -255,14 +255,14 @@ public class CollisionManager
 		{
 			wall = walls[3].get(i);
 			
-			double head = obj.y+h;
-			double feet = obj.y+f;
-			double left = obj.x+l;
-			double right = obj.x+r;
-			double oldHead = obj.priorY+h;
-			double oldFeet = obj.priorY+f;
-			double oldLeft = obj.priorX+l;		
-			double oldRight = obj.priorX+r;
+			double head = obj.getY()+h;
+			double feet = obj.getY()+f;
+			double left = obj.getX()+l;
+			double right = obj.getX()+r;
+			double oldHead = obj.getPriorY()+h;
+			double oldFeet = obj.getPriorY()+f;
+			double oldLeft = obj.getPriorX()+l;		
+			double oldRight = obj.getPriorX()+r;
 
 			//supersampling
 			//for this to work, it must be guaranteed that no terrain is shorter than 32 px
@@ -310,9 +310,9 @@ public class CollisionManager
 		for (int i=0; i<walls[1].size(); i++)
 		{
 			//if (walls[1].get(i).x0 == -128.0)
-				//System.out.println("wwwwwwwww: "+walls[1].get(i).x0+" "+walls[1].get(i).y0+" "+walls[1].get(i).y1+" "+obj.x+" "+l+" "+obj.y+" "+h+" "+f);
-			if (((obj.x+l < walls[1].get(i).x0) && (obj.x >= walls[1].get(i).x0))
-			&& ((obj.y+h < walls[1].get(i).y1) && (obj.y+f > walls[1].get(i).y0)))
+				//System.out.println("wwwwwwwww: "+walls[1].get(i).x0+" "+walls[1].get(i).y0+" "+walls[1].get(i).y1+" "+obj.getX()+" "+l+" "+obj.getY()+" "+h+" "+f);
+			if (((obj.getX()+l < walls[1].get(i).x0) && (obj.getX() >= walls[1].get(i).x0))
+			&& ((obj.getY()+h < walls[1].get(i).y1) && (obj.getY()+f > walls[1].get(i).y0)))
 				return walls[1].get(i);
 		}
 		return null;
@@ -322,8 +322,8 @@ public class CollisionManager
 	{
 		for (int i=0; i<walls[3].size(); i++)
 		{
-			if (((obj.x+r > walls[3].get(i).x0) && (obj.x <= walls[3].get(i).x0))
-			&& ((obj.y+h < walls[3].get(i).y0) && (obj.y+f > walls[3].get(i).y1)))
+			if (((obj.getX()+r > walls[3].get(i).x0) && (obj.getX() <= walls[3].get(i).x0))
+			&& ((obj.getY()+h < walls[3].get(i).y0) && (obj.getY()+f > walls[3].get(i).y1)))
 				return walls[3].get(i);
 		}
 		return null;

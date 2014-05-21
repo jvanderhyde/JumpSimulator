@@ -1,6 +1,5 @@
 package edu.benedictine.game.engine.collision;
 
-
 import edu.benedictine.game.engine.Terrain;
 
 //created by Joseph Rioux, 2 August 2013

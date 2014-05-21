@@ -1,7 +1,7 @@
-package edu.benedictine.game.gui;
-
 //Modified by Joseph Rioux, 13 January 2013
 //   Added loadImage(), makeSpriteSheet()
+
+package edu.benedictine.game.gui;
 
 import edu.benedictine.game.media.GraphicsResource;
 import javax.swing.JFrame;

@@ -1,8 +1,8 @@
-package edu.benedictine.game.media;
-
 //Created by Joseph Rioux, 9 January 2013
 //Contains a picture or series of pictures, and cycles through them based on the
 //frame rate
+
+package edu.benedictine.game.media;
 
 import java.awt.image.BufferedImage;
 

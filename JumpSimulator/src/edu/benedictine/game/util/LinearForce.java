@@ -1,11 +1,11 @@
-package edu.benedictine.game.util;
-
 //created by Joseph Rioux, 6 June 2013
 //an x OR y force that automatically increases or decreases over time
 
+package edu.benedictine.game.util;
+
 public class LinearForce
 {
-	double value, accel, decel, lower, upper;
+	public double value, accel, decel, lower, upper;
 
 	public LinearForce(double value, double accel, double decel, double lower, double upper)
 	{

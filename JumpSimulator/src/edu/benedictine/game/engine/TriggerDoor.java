@@ -4,6 +4,7 @@ package edu.benedictine.game.engine;
 
 import edu.benedictine.game.gui.Scene;
 
+
 public class TriggerDoor extends Trigger
 {
 	String goTo;

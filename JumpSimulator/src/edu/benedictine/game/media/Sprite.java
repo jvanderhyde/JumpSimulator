@@ -1,7 +1,7 @@
-package edu.benedictine.game.media;
-
 //Created by Joseph Rioux, 22 March 2013
 //A simple image displayer
+
+package edu.benedictine.game.media;
 
 import edu.benedictine.game.gui.Scene;
 import java.awt.image.BufferedImage;

@@ -2,12 +2,12 @@
 
 package edu.benedictine.game.engine;
 
+import edu.benedictine.game.media.Image;
+import edu.benedictine.game.media.Animation;
+import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.util.AngleFunctions;
 import edu.benedictine.game.util.LinearForce;
 import edu.benedictine.game.gui.Scene;
-import edu.benedictine.game.media.Animation;
-import edu.benedictine.game.media.Image;
-import edu.benedictine.game.media.ImageSource;
 import java.awt.image.BufferedImage;
 
 public class WorldObject extends SceneObject
@@ -15,6 +15,7 @@ public class WorldObject extends SceneObject
 	int drawOrder;
 	double x, y;
 	double priorX, priorY;
+
 	//double xSpeed;
 	//double ySpeed;
 	LinearForce xForce, yForce;
@@ -23,7 +24,7 @@ public class WorldObject extends SceneObject
 	double halfWidth;
 	double halfHeight;
 	boolean guiObj;
-	boolean screenObj;
+	public boolean screenObj;
 	Animation ani;
 	Image spr;
 	BufferedImage pic;
@@ -269,6 +270,26 @@ public class WorldObject extends SceneObject
 		y = v;
 	}
 	
+	public double getX()
+	{
+		return x;
+	}
+	
+	public double getY()
+	{
+		return y;
+	}
+	
+	public double getPriorX()
+	{
+		return priorX;
+	}
+
+	public double getPriorY()
+	{
+		return priorY;
+	}
+
 	public void air()
 	{
 		if (gravity > 0.0)
@@ -378,4 +399,26 @@ public class WorldObject extends SceneObject
 			scn.draws.remove(this, drawOrder);
 		super.die();
 	}
+
+	public double getHalfWidth() 
+	{
+		return halfWidth;
+	}
+
+	public double getHalfHeight() 
+	{
+		return halfHeight;
+	}
+
+	public LinearForce getXForce() 
+	{
+		return xForce;
+	}
+
+	public LinearForce getYForce() 
+	{
+		return yForce;
+	}
+	
+	
 }

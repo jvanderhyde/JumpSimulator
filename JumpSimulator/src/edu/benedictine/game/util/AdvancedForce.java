@@ -1,6 +1,6 @@
-package edu.benedictine.game.util;
-
 //created by Joseph Rioux, 10 December 2013
+
+package edu.benedictine.game.util;
 
 public class AdvancedForce extends LinearForce
 {

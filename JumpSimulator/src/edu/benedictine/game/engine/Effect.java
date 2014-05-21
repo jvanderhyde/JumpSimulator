@@ -1,8 +1,8 @@
 package edu.benedictine.game.engine;
 
-
-import edu.benedictine.game.gui.Scene;
 import edu.benedictine.game.media.ImageSource;
+import edu.benedictine.game.gui.Scene;
+import edu.benedictine.game.engine.WorldObject;
 
 //Created by Joseph Rioux, 31 March 2013
 //WorldObject with timer and gravity, easier constructor

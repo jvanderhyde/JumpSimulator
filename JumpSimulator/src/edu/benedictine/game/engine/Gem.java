@@ -1,8 +1,8 @@
 package edu.benedictine.game.engine;
 
-
 import edu.benedictine.game.engine.collision.BoundingBox;
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.game.engine.PickUp;
 
 
 public class Gem extends PickUp

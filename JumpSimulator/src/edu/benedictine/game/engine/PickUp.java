@@ -1,11 +1,11 @@
+//Created by Joseph Rioux, 30 March 2013
+
 package edu.benedictine.game.engine;
 
-
+import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.engine.collision.Hit;
 import edu.benedictine.game.gui.Scene;
-import edu.benedictine.game.media.ImageSource;
 
-//Created by Joseph Rioux, 30 March 2013
 
 public class PickUp extends GameObject
 {

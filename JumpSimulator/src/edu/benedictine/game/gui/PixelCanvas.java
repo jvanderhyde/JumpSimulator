@@ -1,7 +1,5 @@
 package edu.benedictine.game.gui;
 
-
-
 public class PixelCanvas extends java.awt.Canvas
 {
 	public PixelCanvas(int width, int height)
