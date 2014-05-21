@@ -14,10 +14,10 @@ public abstract class GamePanel extends javax.swing.JPanel
 		implements Runnable
 {
 
-	protected static int vTop = 0;
-	protected static int vLeft = 0;
-	protected static int vBottom = 400;
-	protected static int vRight = 400;
+	protected int vTop = 0;
+	protected int vLeft = 0;
+	protected int vBottom = 400;
+	protected int vRight = 400;
 	protected boolean threadDone;
 	protected final long SLEEPTIME = 20;
 	protected boolean active;
