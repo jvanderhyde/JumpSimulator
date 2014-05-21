@@ -2,7 +2,6 @@ package edu.benedictine.game.engine;
 
 import edu.benedictine.game.engine.collision.BoundingBox;
 import edu.benedictine.game.gui.Scene;
-import edu.benedictine.game.engine.PickUp;
 
 
 public class Gem extends PickUp
@@ -20,11 +19,6 @@ public class Gem extends PickUp
 	public void reactFloor()
 	{
 		y = onTerrain.y0-feet;
-		//ySpeed = -180.0;
-		/*if (xSpeed > 0.0)
-			xSpeed--;
-		if (xSpeed < 0.0)
-			xSpeed++;*/
 	}
 	
 	public void reactRightWall()

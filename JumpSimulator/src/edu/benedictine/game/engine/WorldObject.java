@@ -2,8 +2,6 @@
 
 package edu.benedictine.game.engine;
 
-import edu.benedictine.game.media.Image;
-import edu.benedictine.game.media.Animation;
 import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.util.AngleFunctions;
 import edu.benedictine.game.util.LinearForce;
@@ -25,9 +23,6 @@ public class WorldObject extends SceneObject
 	double halfHeight;
 	boolean guiObj;
 	public boolean screenObj;
-	Animation ani;
-	Image spr;
-	BufferedImage pic;
 	
 	ImageSource img;
 	

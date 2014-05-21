@@ -279,23 +279,6 @@ public class Director
 		});
         f.setVisible(true);
 		
-		/*
-		try 
-		{
-			ogg = new OggClip(new FileInputStream("audio/music/Untitled.ogg"));
-		} 
-		catch (FileNotFoundException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		
 		//currentScene = new Scene(this, "first", "", gameCanvas, aniStore, 0.0, 0.0);
 		//currentScene = new Scene(this, "Metroid", "", gameCanvas, aniStore, 432.0, 192.0);
 		//currentScene = new Scene(this, "Playground", "", gameCanvas, aniStore, 0.0, 0.0);

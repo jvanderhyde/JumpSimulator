@@ -2,7 +2,6 @@ package edu.benedictine.game.engine;
 
 import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.gui.Scene;
-import edu.benedictine.game.engine.WorldObject;
 
 //Created by Joseph Rioux, 1 April 2013
 //A "static" class for generating special effects in a Scene

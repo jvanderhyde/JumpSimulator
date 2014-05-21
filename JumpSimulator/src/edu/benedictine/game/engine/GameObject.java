@@ -56,12 +56,6 @@ public class GameObject extends WorldObject
 		type = "";
 	}
 	
-	//public void setCollision(BoundingBox box)
-	//{
-	//	hits = new ArrayList<Hit>();
-	//	checks = new ArrayList<GameObject>();
-	//}
-	
 	public void setCategories(int[] groups)
 	{
 		categories = groups;
@@ -81,34 +75,6 @@ public class GameObject extends WorldObject
 	public void update()
 	{	
 		super.update();
-		
-		
-		//air();
-		//if (img != null)
-		//	imageTime = img.advance(imageTime);
-		//timer();
-		
-		//move();
-		/*double xChange;
-		double yChange;
-		if (onTerrain != null)
-		{
-			xChange = xSpeed+onTerrain.xSpeed;
-			yChange = ySpeed+onTerrain.ySpeed;
-		}
-		else
-		{
-			xChange = xSpeed;
-			yChange = ySpeed;
-		}
-		xChange+=addSpeedX;
-		yChange+=addSpeedY;
-		addSpeedX = 0.0;
-		addSpeedY = 0.0;
-		priorX = x;
-		priorY = y;
-		x+=xChange;
-		y+=yChange;*/
 	}
 	
 	public void move(double xCng, double yCng)
@@ -137,9 +103,6 @@ public class GameObject extends WorldObject
 		yChange+=add.y;
 		priorX = x;
 		priorY = y;
-		//update object position
-		//x+=xChange;
-		//y+=yChange;
 		
 		super.move(xChange, yChange);
 	}

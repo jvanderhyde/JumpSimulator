@@ -37,7 +37,6 @@ public class Scene
 	public ArrayList<WorldObject> drawCurrents;
 	public ArrayList<WorldObject> guiCurrents;
 	public ArrayList<BoundingBox> boxCurrents;
-	public SortedList<Sprite> sprites;
 	public PixelCanvas canvas;
 	public Graphics g, g2;
 	private BufferedImage screenDraw;
@@ -47,7 +46,6 @@ public class Scene
     public double fps;
 	private int t = 0;
 	int sum = 0, sum2 = 0;
-	//AnimationStorage store;
 	public GraphicsResource store;
 	public Player player;
 	Camera camera;
@@ -65,10 +63,7 @@ public class Scene
 	
 	//collision
 	public CollisionManager collisionManager;
-	//WeaponManager weaponManager;
 	LevelManager levelManager;
-	NameManager names;
-	//Reel film;
 	
 	//camera
 	double cameraX = -512.0;
@@ -250,11 +245,8 @@ public class Scene
 		fps = 1000.0/rate;
 		
 		collisionManager = new CollisionManager(this);
-		//weaponManager = new WeaponManager(this);
 		levelManager = new LevelManager(this, currentLevel, prevLevel);
 		spEffects = new EffectGenerator(this);
-		names = new NameManager();
-		//film = new Reel(this);
 		
 		
 		
@@ -277,59 +269,24 @@ public class Scene
 		mn.megaman.addKeyListener(new KeyChecker());
 		mn.zeetee.addKeyListener(new KeyChecker());*/
 		
-		
-		
-		
-		/*
-		System.out.println("loading level \""+currentLevel+"\""+" from level \""+prevLevel+"\"");
-		load(currentLevel);
-		System.out.println("level \""+currentLevel+"\" loaded");
-		
-		//special needs
-		if (currentLevel == "first")  //This is the start scene.
-		{
-			WorldObject w = new WorldObject(this, 1, 16, 0.0, 0.0, 0.0, 0.0, store.present);
-			swapper.mark("menu", 128, 0, 0);
-		}
-		else if (currentLevel == "menu")  //This is the start scene.
-		{
-			//mn.ogg.loop();
-			backgroundColor = new Color(0, 102, 255);
-			MenuButton newGame = new MenuButton(this, -384.0, -96.0, store.newButtonSheet[0], 0, store.newButtonOn, store.newButtonOff);
-			MenuButton loadGame = new MenuButton(this, -384.0, 0.0, store.loadButtonSheet[0], 1, store.loadButtonOn, store.loadButtonOff);
-			newGame.setLinks(null, loadGame, null, null);
-			loadGame.setLinks(newGame, null, null, null);
-			newGame.select();
-		}
-		else if (currentLevel == "newgm")  //This is the first scene of the new game
-		{
-			backgroundColor = Color.BLACK;
-			film.setName("testReel");
-			film.start();
-			swapper.mark("Well", 320, -16.0, 16.0);
-		}
-		else
-		*/
-		//{
-			//rain back color
-			//backgroundColor = new Color(153, 102, 102);
-			
-			backgroundColor = new Color(0, 153, 255);
-			//backgroundColor = new Color(255, 153, 0);
-			//TriggerReel ree = new TriggerReel(this, 0.0, 512.0, 4096.0, 64.0, "test2");
-			player = new Player(this, pX, pY, 0.0, 0.0);
-			camera = new Camera(this, 0.0, 0.0, true);
-			screenBoundL = -3200;
-			screenBoundR = 3200;
-			screenBoundT = -3200;
-			screenBoundB = 3200;
-			camera.setBounds(screenBoundL, screenBoundR, screenBoundT, screenBoundB);
-			//camera.setBounds(-3200, 3200, -3200, 3200);
-			
-			Gem gem;
-			for (int i=0; i<1; i++)
-				gem = new Gem(this, (int)(Math.random()*screenBoundR), 64.0);
-		//}
+		//rain back color
+		//backgroundColor = new Color(153, 102, 102);
+
+		backgroundColor = new Color(0, 153, 255);
+		//backgroundColor = new Color(255, 153, 0);
+		//TriggerReel ree = new TriggerReel(this, 0.0, 512.0, 4096.0, 64.0, "test2");
+		player = new Player(this, pX, pY, 0.0, 0.0);
+		camera = new Camera(this, 0.0, 0.0, true);
+		screenBoundL = -3200;
+		screenBoundR = 3200;
+		screenBoundT = -3200;
+		screenBoundB = 3200;
+		camera.setBounds(screenBoundL, screenBoundR, screenBoundT, screenBoundB);
+		//camera.setBounds(-3200, 3200, -3200, 3200);
+
+		Gem gem;
+		for (int i=0; i<1; i++)
+			gem = new Gem(this, (int)(Math.random()*screenBoundR), 64.0);
 		
 		levelManager.initiate();
 		
@@ -426,30 +383,12 @@ public class Scene
 			
 			updateInput();
 
-			
-			/////
-			//for (int i=0; i<32; i++)
-			//{
-				//mounts[i].y = player.y+(i%2)*64;
-			//}
-			
-			//mount.x = player.x-256;
-	        //mount.y = player.y;
-	        //p1.x = player.x+320;
-	        //p1.y = player.y+64.0;
-	        //p2.x = player.x;
-	        //p2.y = player.y+32;
-	       // p3.x = player.x;
-	        //p3.y = player.y;
-			
-			//if (t % 2 == 0)
 			if (camera != null)
 			{
 				camera.move();
 				cameraX = camera.getX()-Main.CAN_WIDTH/2.0;
 				cameraY = camera.getY()-Main.CAN_HEIGHT/2.0;
 			}
-			//if (t % 2 == 0)
 			drawFrame(g, screenDraw);
 			
 			swapper.update();
