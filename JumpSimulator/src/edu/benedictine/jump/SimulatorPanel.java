@@ -4,8 +4,8 @@
 package edu.benedictine.jump;
 
 import edu.benedictine.game.gui.GamePanelFixedFPS;
+import edu.benedictine.game.input.KeyHandler;
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 public class SimulatorPanel extends GamePanelFixedFPS
 {
 	private Director director;
+	private KeyHandler keyHandler;
 	
 	private Point ballLoc,ballVel;
 	
@@ -37,6 +38,10 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		this.setPreferredSize(null);
 		
 		director = new Director();
+		
+		keyHandler = new KeyHandler();
+		keyHandler.captureAllKeyEvents();
+		//gameCanvas.addKeyListener(keyHandler);
 		
 		this.setLayout(new BorderLayout());
 		this.add(gameCanvas,BorderLayout.CENTER);
@@ -78,6 +83,17 @@ public class SimulatorPanel extends GamePanelFixedFPS
 				ballVel.x=-ballVel.x;
 			if (ballLoc.y+10>vBottom || ballLoc.y-10<0)
 				ballVel.y=-ballVel.y;
+			
+			if (keyHandler.isDownPressed() && (Math.abs(ballVel.y)>2))
+			{
+				ballVel.x = (2*ballVel.x)/3;
+				ballVel.y = (2*ballVel.y)/3;
+			}
+			if (keyHandler.isUpPressed() && (Math.abs(ballVel.x)<50))
+			{
+				ballVel.x = (3*ballVel.x)/2;
+				ballVel.y = (3*ballVel.y)/2;
+			}
 		}
 	}
 
