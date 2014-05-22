@@ -1,15 +1,17 @@
-package edu.benedictine.game.engine;
+//created by Joseph Rioux, 22 October 2013
+//This class will serve the main functions of the player. 
+//  Specific powers and abilities will build off of this.
+//Modified by James Vanderhyde, 21 May 2014
+//  Refactored specialty movement code into subclasses
 
+package edu.benedictine.game.engine;
 
 import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.engine.collision.BoundingBox;
 import edu.benedictine.game.util.AdvancedForce;
 import edu.benedictine.game.gui.Scene;
 
-//created by Joseph Rioux, 22 October 2013
-//This class will serve the main functions of the player. Specific powers and abilities will build off of this.
-
-public class Player extends GameObject
+public abstract class Player extends GameObject
 {
 	int life;
 	int maxLife;
@@ -40,49 +42,28 @@ public class Player extends GameObject
 	boolean xAirLock, yAirLock, xAirConLock, yAirConLock; //locks until you hit the ground
 	boolean leftAirLock, rightAirLock;
 	
-	int jetPack = 0, jetFull = 0; //12 V.1 20 V.2
-	boolean jetting;
 	int falling = 128;
 	double shotgunDown;
 	
 	int dasher, dashDirection;
-	
-	int getOffLadder, ladderTime;
-	boolean ladderFlipping;
-	
+		
+	protected double gravity = 26.0;//?31.2?
+	protected double initialJump = 600.0;
+	protected double terminalVelocity = 600.0;
+
 	//jump project vars
 	boolean big = true;
-	double cancelingAcc = -1.0;
+	protected double cancelingAcc = -1.0;
 	int gems = 0;
-	
-	//eversion
-	double gravity = 26.0;//?31.2?
-	double initialJump = 600.0;
-	double terminalVelocity = 600.0;
-	
-	//mario
-	int gravLow = 32;
-	
-	//metroid
-	int wrapper;
-	long start;
-	boolean samusFlipping = false;
-	
+		
 	//hard code a lot of the player's attributes (e.g img, head, left, etc.)
 	public Player(Scene scn, double xLoc, double yLoc, double xCng, double yCng)
 	{
-		//eversion
-		//super(scn, 5, 8, xLoc, yLoc, xCng, yCng, scn.store.heroStatic, -16.0, 16.0, -14.0, 14.0);
-		
-		//metroid
 		super(scn, 5, 8, xLoc, yLoc, xCng, yCng, scn.store.heroStatic, -40.0, 16.0, -8.0, 8.0);
 		if (!big)
 			this.setTerrainLimits(-8, 8, -12, 16);
 		box = new BoundingBox(scn, this, 1, new int[]{0, 2, 3}, 15, 0.0, 6.0, 8.0, 10.0);
 		yForce = new AdvancedForce(0.0, 0.0, 0.0, -600.0, 600.0, 1);
-		//xForce = new AdvancedForce(0.0, 0.0, 45.0, -240.0, 240.0, 1);
-		
-		//metroid
 		xForce = new AdvancedForce(0.0, 0.0, 60.0, -120.0, 120.0, 1);
 		forceOn = true;
 		
@@ -157,400 +138,11 @@ public class Player extends GameObject
 		}
 	}
 	
-	public void setJumpType()
-	{
-		if (scn.mn.jumpType.equals("custom"))
-		{
-			
-		}
-		if (scn.mn.jumpType.equals("mario"))
-		{
-			if (onGround)
-			{
-				scn.mn.s.setValue(15);
-			}
-			else
-			{
-				if ((!scn.a) || (yForce.value >= 0))
-					scn.mn.s.setValue(53);
-				else if (scn.a)
-					scn.mn.s.setValue(15);
-			}
-			scn.mn.s2.setValue(4);
-			scn.mn.s3.setValue(6);
-			scn.mn.s4.setValue(10);
-			scn.mn.fullCancel.setSelected(true);
-			scn.mn.cancelType = "full";
-		}
-		if (scn.mn.jumpType.equals("samus"))
-		{
-			//scn.mn.s.setValue((int)((120.0*(24.0/256.0))/5.0)); 11.25
-			scn.mn.s.setValue(11);
-			scn.mn.s2.setValue(4);
-			scn.mn.s3.setValue(6);
-			if (samusFlipping)
-				scn.mn.s4.setValue(10);
-			else
-				scn.mn.s4.setValue(0);
-			scn.mn.fullCancel.setSelected(true);
-			scn.mn.cancelType = "full";
-		}
-		if (scn.mn.jumpType.equals("zeetee"))
-		{
-			if (!scn.a && yForce.value < 0.0)
-				scn.mn.s.setValue(52);
-			else
-				scn.mn.s.setValue(26);
-			scn.mn.s2.setValue(5);
-			scn.mn.s3.setValue(9);
-			scn.mn.s4.setValue(0);
-			scn.mn.doubleGravity.setSelected(true);
-			scn.mn.cancelType = "double";
-		}
-	}
+	public abstract void setJumpType();
 
-	public void walk() 
-	{			
-		//airAccel = 0.0 to 1.0
-		//airDecel = 0.0 to 1.0 (no deceleration to immediate deceleration)
-		
-		//if !l and !r
-		//xSpeed -= (maxXSpeed*airDecel)
-		
-		
-		double up = 0.0;
-		double down = -0.0;
-		double acc = 0.0;
-		
-		//mario
-		//running
-		//double up = 300.0;
-		//double down = -300.0;
-		//normal
-		//double up = 180.0;
-		//double down = -180.0;
-		//double acc = 120.0;
-		if (scn.mn.jumpType.equals("mario"))
-		{
-			up = 180.0;
-			down = -180.0;
-			acc = 5.0;
-		}
-				
-		//metroid
-		if (scn.mn.jumpType.equals("samus"))
-		{
-			//up = 240.0;
-			//down = -240.0;
-			up = 180.0;
-			down = -180.0;
-			acc = 120.0;
-		}
-
-		//eversion
-		if (scn.mn.jumpType.equals("zeetee"))
-		{
-			up = 270.0;
-			down = -270.0;
-		 	acc = 30.0;
-		}
-			
-		
-		if (scn.mn.jumpType.equals("custom"))
-		{
-			up = scn.mn.xSpeed;
-			down = -scn.mn.xSpeed;
-			acc = 30.0;
-		}
-		
-		if (scn.l)
-		{
-			if (scn.mn.jumpType.equals("custom"))
-			{
-				if (xForce.value > scn.mn.xSpeed*scn.mn.airDecel)
-					xForce.value = scn.mn.xSpeed*scn.mn.airDecel;
-			}
-			xForce.upper = up;
-			xForce.lower = down;
-			xForce.accel = -acc;
-			setFlipX(false);
-		}
-		if (scn.r)
-		{
-			if (scn.mn.jumpType.equals("custom"))
-			{
-				if (xForce.value < -scn.mn.xSpeed*scn.mn.airDecel)
-					xForce.value = -scn.mn.xSpeed*scn.mn.airDecel;
-			}
-			xForce.upper = up;
-			xForce.lower = down;
-			xForce.accel = acc;
-			setFlipX(true);
-		}
-		
-		if ((!scn.l) && (!scn.r))
-		{
-			if (scn.mn.jumpType.equals("custom"))
-			{
-				xForce.upper = scn.mn.xSpeed*scn.mn.airDecel;
-				xForce.lower = -scn.mn.xSpeed*scn.mn.airDecel;
-				xForce.accel = 0.0;
-				xForce.decel = 30.0;
-			}
-			
-			//mario
-			if (scn.mn.jumpType.equals("mario"))
-			{
-				if (onGround)
-				{
-					xForce.upper = 0.0;
-					xForce.lower = 0.0;
-					xForce.decel = 5.0;
-				}
-			}
-			
-			//metroid
-			if (scn.mn.jumpType.equals("samus"))
-			{
-				xForce.upper = scn.mn.xSpeed*scn.mn.airDecel;
-				xForce.lower = -scn.mn.xSpeed*scn.mn.airDecel;
-				xForce.accel = 0.0;
-				xForce.decel = 30.0;
-				/*if (!samusFlipping)
-				{
-					xForce.upper = 0.0;
-					xForce.lower = 0.0;
-					xForce.decel = 30.0;
-				}
-				else
-				{
-					xForce.upper = up;
-					xForce.lower = down;
-					xForce.decel = 0.0;
-				}*/
-			}
-			
-			//eversion
-			//xForce.upper = 0.0;
-			//xForce.lower = 0.0;
-			//xForce.decel = 30.0;
-			
-			if (scn.mn.jumpType.equals("zeetee"))
-			{
-				xForce.upper = 0.0;
-				xForce.lower = 0.0;
-				xForce.accel = 0.0;
-				xForce.decel = 30.0;
-			}
-			
-			//basic
-			if ((onGround) && (!scn.mn.jumpType.equals("mario")))
-			{
-				xForce.upper = 0.0;
-				xForce.lower = 0.0;
-				xForce.decel = 30.0;
-			}
-		}
-	}
+	public abstract void walk();
 	
-	public void jump()
-	{
-		//basic jump
-		if (scn.mn.jumpType.equals("custom"))
-		{
-			if (onGround)
-			{
-				cancelingAcc = -1.0;
-			}
-			
-			if ((scn.a) && (scn.aPressed <= 0) && (onGround))
-			{
-				yForce.value = -scn.mn.jumpPower;
-			}
-			
-			if (!scn.a && yForce.value < 0.0)
-			{
-				if (scn.mn.cancelType.equals("full"))
-					yForce.value = 0.0;
-				if (scn.mn.cancelType.equals("double"))
-					yForce.value += scn.mn.gravity;
-				
-				/*
-				if (cancelingAcc < 0.0)
-				{
-					cancelingAcc = -yForce.value*scn.mn.jumpCancel;
-					System.out.println("cancela: "+cancelingAcc);
-				}
-				if (cancelingAcc >= 0.0)
-				{
-					System.out.println("before: "+yForce.value);
-					yForce.value += cancelingAcc;
-					if (yForce.value > 0.0)
-						yForce.value = 0.0;
-					System.out.println("after: "+yForce.value);
-				}
-				*/
-			}
-			
-			if (!onGround)
-			{
-				yForce.value += scn.mn.gravity;
-			}
-		}
-		
-		
-		//Mario jump:
-		if (scn.mn.jumpType.equals("mario"))
-		{
-			gravity = 120.0;//?31.2?
-			gravLow = 32;
-			//if run
-			initialJump = 485.0;
-			//else
-			//initialJump = 480.0;
-			terminalVelocity = 480.0;
-			
-			if ((scn.a) && (scn.aPressed <= 0) && (onGround))
-			{
-				yForce.value = -initialJump;
-			}
-			
-			if (!scn.a || yForce.value >= 0)
-			{
-				gravLow = 112;
-			}
-			
-			if (!onGround)
-			{
-				if (yForce.value < terminalVelocity)
-					yForce.value += gravity*(gravLow/256.0);
-			}
-		}
-		
-				
-		//Metroid jump:
-		if (scn.mn.jumpType.equals("samus"))
-		{
-			gravity = 120.0;//?31.2?
-			initialJump = 480.0;
-			terminalVelocity = 600.0;
-
-			if (onGround)
-				samusFlipping = false;
-			
-			if ((scn.a) && (scn.aPressed <= 0) && (onGround))
-			{
-				yForce.value = -initialJump;
-				wrapper = 0;
-				if (Math.abs(xForce.value) == 180.0)
-					samusFlipping = true;
-			}
-			
-			if (!onGround)
-				wrapper += 24;
-			
-			if (!scn.a && yForce.value < 0.0)
-			{
-				if (wrapper >= 256)
-					yForce.value = 0.0;
-			}
-			
-			if (wrapper >= 256)
-				wrapper -= 255;
-			System.out.println(wrapper);
-			
-			if (!onGround)
-			{
-				if (yForce.value < terminalVelocity)
-					yForce.value += gravity*(24.0/256.0);
-			}
-		}
-		
-		
-		if (scn.mn.jumpType.equals("zeetee"))
-		{
-			//Eversion jump:
-			gravity = 26.0;//?31.2?
-			initialJump = 600.0;
-			terminalVelocity = 600.0;
-			
-			if (yForce.value < terminalVelocity)
-				yForce.value += gravity;
-			
-			//initial jump
-			if ((scn.a) && (scn.aPressed <= 0) && (onGround))
-			{
-				yForce.value = -initialJump;
-			}
-	
-			//apply gravity again if a is not down
-			if ((!scn.a) && (yForce.value < 0.0))
-			{
-				yForce.value += gravity;
-			}
-		}	
-
-		/*
-		if (!onGround)
-		{
-			int prevWrapper = wrapper;
-			if (yForce.value < 0)
-			{
-				wrapper += 32;
-				if (wrapper >= 256)
-				{
-					yForce.value += gravity;
-					wrapper = 32-(256-prevWrapper);
-				}
-			}
-			else if (yForce.value < terminalVelocity)
-			{
-				wrapper += 48;
-				if (wrapper >= 256)
-				{
-					yForce.value += gravity;
-					wrapper = 48-(256-prevWrapper);
-				}
-			}
-		}
-		*/
-		
-		//initial jump
-		/*if ((scn.a) && (onGround))
-		{
-			yForce.value = -initialJump;
-			wrapper = 0;
-			//start = System.currentTimeMillis();
-			start = (long)y;
-		}*/
-		
-		
-		
-		//System.out.println(scn.mn.gravity+" "+scn.mn.jumpPower+" "+scn.mn.xSpeed);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		//log info
-		//reached apex
-		//if (!onGround)
-		//{
-			//if ((yForce.value > -1.0) && (yForce.value < 1.0))
-				//System.out.println("jump apex: "+(System.currentTimeMillis()-start));
-		//}
-		
-		//System.out.println(((y-priorY)/2.0));
-		
-		
-		
-		
-
-	}
+	public abstract void jump();
 	
 	private void setAnimations()
 	{	
@@ -689,7 +281,6 @@ public class Player extends GameObject
 			falling = 128;
 			shotgunDown = -240;
 			
-			jetPack = jetFull;
 			jump = 0;
 			yForce.value = 0.0;
 			leftAirLock = false;

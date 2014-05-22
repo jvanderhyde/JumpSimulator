@@ -4,9 +4,10 @@
 package edu.benedictine.game.gui;
 
 import edu.benedictine.game.engine.*;
-import edu.benedictine.game.media.*;
 import edu.benedictine.game.engine.collision.*;
+import edu.benedictine.game.media.*;
 import edu.benedictine.game.util.*;
+import edu.benedictine.jump.players.Custom;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
@@ -17,7 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 
 
@@ -275,7 +275,7 @@ public class Scene
 		backgroundColor = new Color(0, 153, 255);
 		//backgroundColor = new Color(255, 153, 0);
 		//TriggerReel ree = new TriggerReel(this, 0.0, 512.0, 4096.0, 64.0, "test2");
-		player = new Player(this, pX, pY, 0.0, 0.0);
+		player = new Custom(this, pX, pY, 0.0, 0.0);
 		camera = new Camera(this, 0.0, 0.0, true);
 		screenBoundL = -3200;
 		screenBoundR = 3200;

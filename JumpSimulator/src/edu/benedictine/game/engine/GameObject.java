@@ -24,7 +24,7 @@ public class GameObject extends WorldObject
 	Terrain atRightWall = null;
 	Terrain atCeiling = null;
 	Terrain atLeftWall = null;
-	boolean onGround;
+	protected boolean onGround;
 	boolean atRight;
 	boolean atCeil;
 	boolean atLeft;

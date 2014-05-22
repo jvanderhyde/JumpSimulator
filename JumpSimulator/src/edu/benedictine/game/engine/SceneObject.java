@@ -10,7 +10,7 @@ public class SceneObject
 {
 	int execOrder, lifeTime = -1;
 	double xSpeed, ySpeed;
-	Scene scn;
+	protected Scene scn;
 	
 	public SceneObject(Scene scn, int exec)
 	{

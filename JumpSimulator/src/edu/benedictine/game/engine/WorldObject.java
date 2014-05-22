@@ -16,7 +16,7 @@ public class WorldObject extends SceneObject
 
 	//double xSpeed;
 	//double ySpeed;
-	LinearForce xForce, yForce;
+	protected LinearForce xForce, yForce;
 	boolean forceOn = false;
 	double gravity = 0.0, maxFall = 0.0;
 	double halfWidth;
