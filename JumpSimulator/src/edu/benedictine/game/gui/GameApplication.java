@@ -3,6 +3,8 @@
 //Modified by James Vanderhyde, 10 July 2012
 // Restructured for use as a library class.
 // Changed from JFrame to Frame.
+//Modified by James Vanderhyde, 22 May 2014
+// Removed focus workarounds (use KeyboardFocusManager instead)
 
 package edu.benedictine.game.gui;
 
@@ -81,16 +83,7 @@ public class GameApplication
 			@Override
 			public void windowActivated(WindowEvent evt)
 			{
-				game.requestFocus();
 				game.activateGame();
-			}
-		});
-
-		game.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			@Override
-			public void mouseReleased(java.awt.event.MouseEvent evt)
-			{
 				startGame();
 			}
 		});
