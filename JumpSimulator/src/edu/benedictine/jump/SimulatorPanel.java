@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 
 public class SimulatorPanel extends GamePanelFixedFPS
 {
+	private Director director;
+	
 	private Point ballLoc,ballVel;
 	
 	public SimulatorPanel()
@@ -34,10 +36,12 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		gameCanvas.setPreferredSize(new Dimension(vRight-vLeft,vBottom-vTop));
 		this.setPreferredSize(null);
 		
+		director = new Director();
+		
 		this.setLayout(new BorderLayout());
 		this.add(gameCanvas,BorderLayout.CENTER);
-		this.add(new Button("Click me"),BorderLayout.SOUTH);
-		this.add(new Button("Click me"),BorderLayout.EAST);
+		this.add(director.getSouthPanel(),BorderLayout.SOUTH);
+		this.add(director.getEastPanel(),BorderLayout.EAST);
 	}
 	
 	private void paintGameCanvas(Graphics g)

@@ -1,16 +1,14 @@
+//The manager of the UI elements.
 //created by Joseph Rioux, 4 March 2013
+//Modified by James Vanderhyde, 21 May 2014
+//  Refactored
 
-package edu.benedictine.game.gui;
+package edu.benedictine.jump;
 
-import edu.benedictine.game.media.GraphicsResource;
-import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -22,115 +20,32 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class Director 
-{	
-	public Scene currentScene;
-	PixelCanvas gameCanvas;
-	GraphicsResource aniStore;
-	Frame f;
-	JPanel p;
-	public JSlider s, s2, s3, s4, s5;
-	public JRadioButton custom, mario, samus, zeetee;
-	public JRadioButton noCancel, doubleGravity, fullCancel;
-	JLabel sl, sl2, sl3, sl4, sl5;
+public class Director
+{
+	private JPanel eastPanel;
+	private JPanel southPanel;
 	
+	private JSlider s, s2, s3, s4, s5;
+	private JRadioButton custom, mario, samus, zeetee;
+	private JRadioButton noCancel, doubleGravity, fullCancel;
+	private JLabel sl, sl2, sl3, sl4, sl5;
+
 	//simulator values
 	public double gravity = 30.0, jumpPower = 600.0, xSpeed = 120.0, airDecel = 1.0, jumpCancel = 1.0;
 	public String jumpType = "custom", cancelType = "double";
 	
-	class GravityListener implements ChangeListener
+	public Director()
 	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			gravity = ((JSlider)evt.getSource()).getValue()*1.0;
-			sl.setText("Gravity: "+gravity);
-		}
-	}
-	
-	class JumpListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			jumpPower = ((JSlider)evt.getSource()).getValue()*120.0;
-			sl2.setText("Jump Power: "+jumpPower);
-		}
-	}
-	
-	class XSpeedListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			xSpeed = ((JSlider)evt.getSource()).getValue()*30.0;
-			sl3.setText("Max Horizontal Speed: "+xSpeed);
-		}
-	}
-	
-	class XAccelListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			JSlider sTemp = ((JSlider)evt.getSource());
-			airDecel = (double)sTemp.getValue()/(double)sTemp.getMaximum();
-			sl4.setText("Horizontal Inertia: "+(int)(airDecel*100)+"%");
-		}
-	}
-	
-	class JumpCancelListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			JSlider sTemp = ((JSlider)evt.getSource());
-			jumpCancel = (double)sTemp.getValue()/(double)sTemp.getMaximum();
-			//sl5.setText("Jump Cancel: "+(int)(jumpCancel*100)+"%");
-		}
-	}
-	
-	class RadioListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			jumpType = e.getActionCommand();
-		}
-	}
-	
-	class CancelRadioListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			cancelType = e.getActionCommand();
-		}
-	}
-
-	public Director(final Frame f, PixelCanvas canvas, GraphicsResource animations)
-	{
-		aniStore = animations;
-		gameCanvas = canvas;
-		//state = new SaveManager("saves/saveA.txt");
-		//state.load();
-		this.f = f;
-		
-		f.setResizable(false);
-		p = new JPanel();
-		JPanel p1 = new JPanel();
+		southPanel = new JPanel();
 		JPanel p11 = new JPanel();
 		JPanel p12 = new JPanel();
 		JPanel p13 = new JPanel();
-		JPanel p2 = new JPanel();
-		JPanel p3 = new JPanel();
-		p.setLayout(new BorderLayout());
-		p1.setLayout(new GridLayout(1,2));
+		eastPanel = new JPanel();
+		southPanel.setLayout(new GridLayout(1,2));
 		p11.setLayout(new GridLayout(5,1));
 		p12.setLayout(new GridLayout(5,1));
 		p13.setLayout(new GridLayout(1,4));
-		p2.setLayout(new BorderLayout());
-		p3.setLayout(new GridLayout(5,1));
+		eastPanel.setLayout(new GridLayout(5,1));
 		
 		//slider labels
 		sl = new JLabel(""+gravity);
@@ -238,7 +153,6 @@ public class Director
 	    doubleGravity.addActionListener(cListen);
 	    fullCancel.addActionListener(cListen);
 		
-		p.setLayout(new BorderLayout());
 		p13.add(sl5);
 		p13.add(noCancel);
 		p13.add(doubleGravity);
@@ -252,40 +166,15 @@ public class Director
 		p12.add(sl2);
 		p12.add(sl4);
 		p12.add(sl3);
-		p1.add(p11);
-		p1.add(p12);
-		p2.add(gameCanvas, BorderLayout.CENTER);
-		p3.add(custom);
-		p3.add(mario);
-		p3.add(samus);
-		p3.add(zeetee);
-		p.add(p1, BorderLayout.SOUTH);
-		p.add(p2, BorderLayout.CENTER);
-		p.add(p3, BorderLayout.EAST);
-		f.add(p);
-		f.pack();
-		f.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent evt)
-			{
-				if (currentScene != null)
-					currentScene.stop();
-				f.setVisible(false);
-				f.dispose();
-			}
-		});
-        f.setVisible(true);
-		
-		//currentScene = new Scene(this, "first", "", gameCanvas, aniStore, 0.0, 0.0);
-		//currentScene = new Scene(this, "Metroid", "", gameCanvas, aniStore, 432.0, 192.0);
-		//currentScene = new Scene(this, "Playground", "", gameCanvas, aniStore, 0.0, 0.0);
-		//currentScene = new Scene(this, "Mario", "", gameCanvas, aniStore, -512.0, 0.0);
-        currentScene = new Scene(this, "pictest", "", gameCanvas, aniStore, 0.0, 0.0);
-		currentScene.start();
+		southPanel.add(p11);
+		southPanel.add(p12);
+		eastPanel.add(custom);
+		eastPanel.add(mario);
+		eastPanel.add(samus);
+		eastPanel.add(zeetee);
 	}
 	
-	public void removeKeys(JComponent j)
+	private void removeKeys(JComponent j)
 	{
 		j.getInputMap().put(KeyStroke.getKeyStroke("UP"), "none");
 		j.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "none");
@@ -294,9 +183,84 @@ public class Director
 		j.getInputMap().put(KeyStroke.getKeyStroke("Z"), "none");
 	}
 	
-	public void changeScene(String scn, String prev, double nX, double nY)
+	public JPanel getEastPanel()
 	{
-		currentScene = new Scene(this, scn, prev, gameCanvas, aniStore, nX, nY);
-		currentScene.start();
+		return this.eastPanel;
 	}
+	
+	public JPanel getSouthPanel()
+	{
+		return this.southPanel;
+	}
+	
+	class GravityListener implements ChangeListener
+	{
+		@Override
+		public void stateChanged(ChangeEvent evt) 
+		{
+			gravity = ((JSlider)evt.getSource()).getValue()*1.0;
+			sl.setText("Gravity: "+gravity);
+		}
+	}
+	
+	class JumpListener implements ChangeListener
+	{
+		@Override
+		public void stateChanged(ChangeEvent evt) 
+		{
+			jumpPower = ((JSlider)evt.getSource()).getValue()*120.0;
+			sl2.setText("Jump Power: "+jumpPower);
+		}
+	}
+	
+	class XSpeedListener implements ChangeListener
+	{
+		@Override
+		public void stateChanged(ChangeEvent evt) 
+		{
+			xSpeed = ((JSlider)evt.getSource()).getValue()*30.0;
+			sl3.setText("Max Horizontal Speed: "+xSpeed);
+		}
+	}
+	
+	class XAccelListener implements ChangeListener
+	{
+		@Override
+		public void stateChanged(ChangeEvent evt) 
+		{
+			JSlider sTemp = ((JSlider)evt.getSource());
+			airDecel = (double)sTemp.getValue()/(double)sTemp.getMaximum();
+			sl4.setText("Horizontal Inertia: "+(int)(airDecel*100)+"%");
+		}
+	}
+	
+	class JumpCancelListener implements ChangeListener
+	{
+		@Override
+		public void stateChanged(ChangeEvent evt) 
+		{
+			JSlider sTemp = ((JSlider)evt.getSource());
+			jumpCancel = (double)sTemp.getValue()/(double)sTemp.getMaximum();
+			//sl5.setText("Jump Cancel: "+(int)(jumpCancel*100)+"%");
+		}
+	}
+	
+	class RadioListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			jumpType = e.getActionCommand();
+		}
+	}
+	
+	class CancelRadioListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			cancelType = e.getActionCommand();
+		}
+	}
+
 }
