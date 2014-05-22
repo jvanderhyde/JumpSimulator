@@ -17,6 +17,10 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	private Director director;
 	private KeyHandler keyHandler;
 	
+	//simulator values
+	private double gravity = 30.0, jumpPower = 600.0, xSpeed = 120.0, airDecel = 50.0;
+	
+	//game state variables
 	private Point ballLoc,ballVel;
 	
 	public SimulatorPanel()
@@ -38,6 +42,14 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		this.setPreferredSize(null);
 		
 		director = new Director();
+		director.addSlider("Gravity: ", 1, 100, gravity, 100, new Director.SimValueObserver()
+			{public void valueChanged(double newValue){ gravity=newValue; }});
+		director.addSlider("Jump Power: ", 120, 1200, jumpPower, 10, new Director.SimValueObserver()
+			{public void valueChanged(double newValue){ jumpPower=newValue; }});
+		director.addSlider("Horizontal Inertia: ", 0, 100, airDecel, 11, new Director.SimValueObserver()
+			{public void valueChanged(double newValue){ airDecel=newValue; }});
+		director.addSlider("Max Horizontal Speed: ", 30, 600, xSpeed, 20, new Director.SimValueObserver()
+			{public void valueChanged(double newValue){ xSpeed=newValue; }});
 		
 		keyHandler = new KeyHandler();
 		keyHandler.captureAllKeyEvents();
@@ -72,6 +84,10 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	{
 		if (ballLoc != null)
 		{
+			//apply gravity
+			ballVel.y += (int)(gravity/99);
+			
+			//move ball
 			ballLoc.x += ballVel.x;
 			ballLoc.y += ballVel.y;
 			if (ballLoc.x+10>vRight || ballLoc.x-10<0)
@@ -79,6 +95,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 			if (ballLoc.y+10>vBottom || ballLoc.y-10<0)
 				ballVel.y=-ballVel.y;
 			
+			//let the keys control the speed
 			if (keyHandler.isDownPressed() && (Math.abs(ballVel.y)>2))
 			{
 				ballVel.x = (2*ballVel.x)/3;

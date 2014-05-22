@@ -33,7 +33,7 @@ public class Director
 	private JLabel sl, sl2, sl3, sl4, sl5;
 
 	//simulator values
-	public double gravity = 30.0, jumpPower = 600.0, xSpeed = 120.0, airDecel = 1.0, jumpCancel = 1.0;
+	public double jumpCancel = 1.0;
 	public String jumpType = "custom", cancelType = "double";
 	
 	public Director()
@@ -89,11 +89,6 @@ public class Director
 		southPanel = new JPanel();
 		sliderPanel = new JPanel();
 		sliderPanel.setLayout(new BoxLayout(sliderPanel,BoxLayout.Y_AXIS));
-		
-		this.addSlider("Gravity: ", 1, 100, 25, 100, null);
-		this.addSlider("Jump Power: ", 1, 10, 6, 10, null);
-		this.addSlider("Max Horizontal Speed: ", 1, 20, 10, 20, null);
-		this.addSlider("Horizontal Inertia: ", 0, 10, 5, 11, null);
 		
 		JPanel p13 = new JPanel();
 		southPanel.setLayout(new BoxLayout(southPanel,BoxLayout.Y_AXIS));
@@ -193,47 +188,6 @@ public class Director
 	public static interface SimValueObserver
 	{
 		public void valueChanged(double newValue);
-	}
-	
-	class GravityListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			gravity = ((JSlider)evt.getSource()).getValue()*1.0;
-			sl.setText("Gravity: "+gravity);
-		}
-	}
-	
-	class JumpListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			jumpPower = ((JSlider)evt.getSource()).getValue()*120.0;
-			sl2.setText("Jump Power: "+jumpPower);
-		}
-	}
-	
-	class XSpeedListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			xSpeed = ((JSlider)evt.getSource()).getValue()*30.0;
-			sl3.setText("Max Horizontal Speed: "+xSpeed);
-		}
-	}
-	
-	class XAccelListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			JSlider sTemp = ((JSlider)evt.getSource());
-			airDecel = (double)sTemp.getValue()/(double)sTemp.getMaximum();
-			sl4.setText("Horizontal Inertia: "+(int)(airDecel*100)+"%");
-		}
 	}
 	
 	class JumpCancelListener implements ChangeListener
