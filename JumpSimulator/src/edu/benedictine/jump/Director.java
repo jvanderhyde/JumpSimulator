@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -24,6 +25,7 @@ public class Director
 {
 	private JPanel eastPanel;
 	private JPanel southPanel;
+	private JPanel sliderPanel;
 	
 	private JSlider s, s2, s3, s4, s5;
 	private JRadioButton custom, mario, samus, zeetee;
@@ -36,72 +38,104 @@ public class Director
 	
 	public Director()
 	{
-		southPanel = new JPanel();
-		JPanel p11 = new JPanel();
-		JPanel p12 = new JPanel();
-		JPanel p13 = new JPanel();
-		eastPanel = new JPanel();
-		southPanel.setLayout(new GridLayout(1,2));
-		p11.setLayout(new GridLayout(5,1));
-		p12.setLayout(new GridLayout(5,1));
-		p13.setLayout(new GridLayout(1,4));
-		eastPanel.setLayout(new GridLayout(5,1));
+		setUpSouthPanel();
+		setUpEastPanel();
+	}
+	
+	public void addSlider(final String label, final double minValue, final double maxValue,
+			double startValue, final int numPositions, final SimValueObserver obs)
+	{
+		final Font menlo = new Font("Menlo", Font.PLAIN, 14);
+		final JLabel lab = new JLabel(label+startValue);
+		lab.setFont(menlo);
+		final int n = numPositions-1;
 		
-		//slider labels
-		sl = new JLabel(""+gravity);
-		sl.setFont(new Font("Menlo", Font.PLAIN, 14));
-		sl2 = new JLabel(""+jumpPower);
-		sl2.setFont(new Font("Menlo", Font.PLAIN, 14));
-		sl3 = new JLabel(""+xSpeed);
-		sl3.setFont(new Font("Menlo", Font.PLAIN, 14));
-		sl4 = new JLabel(""+airDecel);
-		sl4.setFont(new Font("Menlo", Font.PLAIN, 14));
-		sl5 = new JLabel(" Jump Cancel:");
-		sl5.setFont(new Font("Menlo", Font.PLAIN, 14));
-		
-		//sliders
-		s = new JSlider();
-		s.setMinimum(1);
-		s.setMaximum(100);
-		s.addChangeListener(new GravityListener());
-		s.setValue(25);
+		final JSlider s = new JSlider(0, n);
+		int startPosition = (int)Math.floor((startValue-minValue)/(maxValue-minValue)*n+0.5);
+		if (startPosition<0)
+			startPosition=0;
+		if (startPosition>n)
+			startPosition=n;
+		s.setValue(startPosition);
+		s.addChangeListener(new ChangeListener()
+		{
+			public void stateChanged(ChangeEvent evt)
+			{
+				int position = s.getValue();
+				double value;
+				if (position==0)
+					value=minValue;
+				else if (position==n)
+					value=maxValue;
+				else
+					value=s.getValue()/(double)(n)*(maxValue-minValue)+minValue;
+				lab.setText(label+value);
+				if (obs != null)
+					obs.valueChanged(value);
+			}
+		});
 		s.setOrientation(SwingConstants.HORIZONTAL);
 		removeKeys(s);
 		
-		s2 = new JSlider();
-		s2.setMinimum(1);
-		s2.setMaximum(10);
-		s2.addChangeListener(new JumpListener());
-		s2.setValue(6);
-		s2.setOrientation(SwingConstants.HORIZONTAL);
-		removeKeys(s2);
+		JPanel pan=new JPanel();
+		pan.setLayout(new GridLayout(1,2));
+		pan.add(s);
+		pan.add(lab);
+		sliderPanel.add(pan);
+	}
+
+	private void setUpSouthPanel()
+	{
+		southPanel = new JPanel();
+		sliderPanel = new JPanel();
+		sliderPanel.setLayout(new BoxLayout(sliderPanel,BoxLayout.Y_AXIS));
 		
-		s3 = new JSlider();
-		s3.setMinimum(1);
-		s3.setMaximum(20);
-		s3.addChangeListener(new XSpeedListener());
-		s3.setValue(10);
-		s3.setOrientation(SwingConstants.HORIZONTAL);
-		removeKeys(s3);
+		this.addSlider("Gravity: ", 1, 100, 25, 100, null);
+		this.addSlider("Jump Power: ", 1, 10, 6, 10, null);
+		this.addSlider("Max Horizontal Speed: ", 1, 20, 10, 20, null);
+		this.addSlider("Horizontal Inertia: ", 0, 10, 5, 11, null);
 		
-		s4 = new JSlider();
-		s4.setMinimum(0);
-		s4.setMaximum(10);
-		s4.addChangeListener(new XAccelListener());
-		s4.setValue(5);
-		s4.setOrientation(SwingConstants.HORIZONTAL);
-		removeKeys(s4);
+		JPanel p13 = new JPanel();
+		southPanel.setLayout(new BoxLayout(southPanel,BoxLayout.Y_AXIS));
+		p13.setLayout(new GridLayout(1,4));
 		
-		/*
-		s5 = new JSlider();
-		s5.setMinimum(0);
-		s5.setMaximum(10);
-		s5.addChangeListener(new JumpCancelListener());
-		s5.setValue(5);
-		s5.setOrientation(SwingConstants.HORIZONTAL);
-		removeKeys(s5);
-		*/
+		//jump cancel
+		sl5 = new JLabel(" Jump Cancel:");
+		sl5.setFont(new Font("Menlo", Font.PLAIN, 14));
+		noCancel = new JRadioButton("No Canceling");
+		noCancel.setActionCommand("no");
+		doubleGravity = new JRadioButton("Double Gravity");
+		doubleGravity.setActionCommand("double");
+		doubleGravity.setSelected(true);
+		fullCancel = new JRadioButton("Full Canceling");
+		fullCancel.setActionCommand("full");
+		removeKeys(noCancel);
+		removeKeys(doubleGravity);
+		removeKeys(fullCancel);
 		
+		ButtonGroup group = new ButtonGroup();
+		group.add(noCancel);
+		group.add(doubleGravity);
+		group.add(fullCancel);
+		
+		CancelRadioListener cListen = new CancelRadioListener();
+		noCancel.addActionListener(cListen);
+		doubleGravity.addActionListener(cListen);
+		fullCancel.addActionListener(cListen);
+		
+		p13.add(sl5);
+		p13.add(noCancel);
+		p13.add(doubleGravity);
+		p13.add(fullCancel);
+		southPanel.add(sliderPanel);
+		southPanel.add(p13);
+	}
+	
+	private void setUpEastPanel()
+	{
+		eastPanel = new JPanel();
+		eastPanel.setLayout(new GridLayout(5,1));
+
 		//radio buttons
 	    custom = new JRadioButton("Custom");
 	    custom.setActionCommand("custom");
@@ -131,43 +165,6 @@ public class Director
 	    samus.addActionListener(listen);
 	    zeetee.addActionListener(listen);
 	    
-	    //jump cancel
-	    noCancel = new JRadioButton("No Canceling");
-	    noCancel.setActionCommand("no");
-	    doubleGravity = new JRadioButton("Double Gravity");
-	    doubleGravity.setActionCommand("double");
-	    doubleGravity.setSelected(true); 
-	    fullCancel = new JRadioButton("Full Canceling");
-	    fullCancel.setActionCommand("full");
-	    removeKeys(noCancel);
-	    removeKeys(doubleGravity);
-	    removeKeys(fullCancel);
-	    
-	    group = new ButtonGroup();
-	    group.add(noCancel);
-	    group.add(doubleGravity);
-	    group.add(fullCancel);
-	    
-	    CancelRadioListener cListen = new CancelRadioListener();
-	    noCancel.addActionListener(cListen);
-	    doubleGravity.addActionListener(cListen);
-	    fullCancel.addActionListener(cListen);
-		
-		p13.add(sl5);
-		p13.add(noCancel);
-		p13.add(doubleGravity);
-		p13.add(fullCancel);
-		p11.add(s);
-		p11.add(s2);
-		p11.add(s4);
-		p11.add(s3);
-		p11.add(p13);
-		p12.add(sl);
-		p12.add(sl2);
-		p12.add(sl4);
-		p12.add(sl3);
-		southPanel.add(p11);
-		southPanel.add(p12);
 		eastPanel.add(custom);
 		eastPanel.add(mario);
 		eastPanel.add(samus);
@@ -191,6 +188,11 @@ public class Director
 	public JPanel getSouthPanel()
 	{
 		return this.southPanel;
+	}
+
+	public static interface SimValueObserver
+	{
+		public void valueChanged(double newValue);
 	}
 	
 	class GravityListener implements ChangeListener

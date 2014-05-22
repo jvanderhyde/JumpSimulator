@@ -58,11 +58,6 @@ public class SimulatorPanel extends GamePanelFixedFPS
 			g.setColor(Color.green);
 			g.fillOval(ballLoc.x-10,ballLoc.y-10,20,20);
 		}
-		else
-		{
-			g.setColor(Color.green);
-			g.drawString("Click to start", 100, 100);
-		}
 	}
 
 	@Override
