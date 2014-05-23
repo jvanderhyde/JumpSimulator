@@ -4,7 +4,7 @@
 package edu.benedictine.jump;
 
 import edu.benedictine.game.gui.GamePanelFixedFPS;
-import edu.benedictine.game.input.KeyHandler;
+import edu.benedictine.game.input.*;
 import edu.benedictine.jump.players.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 public class SimulatorPanel extends GamePanelFixedFPS
 {
 	private Director director;
-	private KeyHandler keyHandler;
+	private InputManager inputManager;
 	
 	//simulator values
 	private SimVariableFloat gravity = new SimVariableFloat();
@@ -83,9 +83,13 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		director.addPlayerClass("Zee Tee",Eversion.class,obs);
 		
 		//Set up game input
-		keyHandler = new KeyHandler();
+		inputManager = new InputManager();
+		KeyHandler keyHandler = new KeyHandler();
 		keyHandler.captureAllKeyEvents();
-		//gameCanvas.addKeyListener(keyHandler);
+		inputManager.addHandler(keyHandler);
+		GamepadHandler gamepadHandler = new CHProductsUSBGamepad();
+		gamepadHandler.startGamepadThread();
+		inputManager.addHandler(gamepadHandler);
 		
 		//Add everything to the main panel
 		this.setLayout(new BorderLayout());
@@ -136,12 +140,12 @@ public class SimulatorPanel extends GamePanelFixedFPS
 				ballVel.y=-ballVel.y;
 			
 			//let the keys control the speed
-			if (keyHandler.isDownPressed() && (Math.abs(ballVel.y)>2))
+			if (inputManager.isDownPressed() && (Math.abs(ballVel.y)>2))
 			{
 				ballVel.x = (2*ballVel.x)/3;
 				ballVel.y = (2*ballVel.y)/3;
 			}
-			if (keyHandler.isUpPressed() && (Math.abs(ballVel.x)<50))
+			if (inputManager.isUpPressed() && (Math.abs(ballVel.x)<50))
 			{
 				ballVel.x = (3*ballVel.x)/2;
 				ballVel.y = (3*ballVel.y)/2;

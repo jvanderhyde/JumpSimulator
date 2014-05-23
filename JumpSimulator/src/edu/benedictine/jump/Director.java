@@ -32,11 +32,6 @@ public class Director
 	private ButtonGroup playerRadioGroup;
 	private int numPlayerRadioButtons = 0;
 	
-	private JRadioButton custom, mario, samus, zeetee;
-
-	//simulator values
-	public String jumpType = "custom";
-	
 	public Director()
 	{
 		menlo = new Font("Menlo", Font.PLAIN, 14);

@@ -4,6 +4,8 @@
 //Modified by James Vanderhyde, 22 May 2014
 //  Added keys for jump and fire.
 //  Added KeyEventDispatcher functionality.
+//Modified by James Vanderhyde, 23 May 2014
+//  Refactored (created superclass)
 
 package edu.benedictine.game.input;
 
@@ -12,67 +14,42 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyHandler
+public class KeyHandler extends InputHandler
     implements KeyListener
 {
-    private static final int
-        ACTION  =       0,
-        UP      =       1,
-        DOWN    =       2,
-        LEFT    =       3,
-        RIGHT   =       4,
-        JUMP    =       5,
-        FIRE    =       6;
-    private static final int
-        NUM_KEYS=       7;
-
-    private boolean[] keyFlags;
-
-    public KeyHandler()
-    {
-        keyFlags=new boolean[NUM_KEYS];
-        releaseAll();
-    }
-
-    public final void releaseAll()
-    {
-        for (int i=0; i<NUM_KEYS; i++)
-            keyFlags[i]=false;
-    }
-
     public void keyPressed(KeyEvent evt)
     {
         //System.out.println("Key pressed: "+evt.getKeyCode());
         switch (evt.getKeyCode())
         {
         case KeyEvent.VK_SPACE:
-            keyFlags[ACTION]=true;
+            inputFlags[ACTION]=true;
             break;
         case KeyEvent.VK_UP:
         case KeyEvent.VK_I:
         case KeyEvent.VK_W:
-            keyFlags[UP]=true;
+            inputFlags[UP]=true;
             break;
         case KeyEvent.VK_DOWN:
         case KeyEvent.VK_K:
         case KeyEvent.VK_S:
-            keyFlags[DOWN]=true;
+            inputFlags[DOWN]=true;
             break;
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_J:
         case KeyEvent.VK_A:
-            keyFlags[LEFT]=true;
+            inputFlags[LEFT]=true;
             break;
         case KeyEvent.VK_RIGHT:
         case KeyEvent.VK_L:
         case KeyEvent.VK_D:
-            keyFlags[RIGHT]=true;
+            inputFlags[RIGHT]=true;
             break;
         case KeyEvent.VK_Z:
-            keyFlags[JUMP]=true;
+            inputFlags[JUMP]=true;
             break;
         case KeyEvent.VK_X:
-            keyFlags[FIRE]=true;
+            inputFlags[FIRE]=true;
             break;
         default:
         }
@@ -84,74 +61,39 @@ public class KeyHandler
         switch (evt.getKeyCode())
         {
         case KeyEvent.VK_SPACE:
-            keyFlags[ACTION]=false;
+            inputFlags[ACTION]=false;
             break;
         case KeyEvent.VK_UP:
         case KeyEvent.VK_I:
         case KeyEvent.VK_W:
-            keyFlags[UP]=false;
+            inputFlags[UP]=false;
             break;
         case KeyEvent.VK_DOWN:
         case KeyEvent.VK_K:
         case KeyEvent.VK_S:
-            keyFlags[DOWN]=false;
+            inputFlags[DOWN]=false;
             break;
         case KeyEvent.VK_LEFT:
         case KeyEvent.VK_J:
         case KeyEvent.VK_A:
-            keyFlags[LEFT]=false;
+            inputFlags[LEFT]=false;
             break;
         case KeyEvent.VK_RIGHT:
         case KeyEvent.VK_L:
         case KeyEvent.VK_D:
-            keyFlags[RIGHT]=false;
+            inputFlags[RIGHT]=false;
             break;
         case KeyEvent.VK_Z:
-            keyFlags[JUMP]=false;
+            inputFlags[JUMP]=false;
             break;
         case KeyEvent.VK_X:
-            keyFlags[FIRE]=false;
+            inputFlags[FIRE]=false;
             break;
         default:
         }
     }
 
     public void keyTyped(KeyEvent evt) {}
-
-    public boolean isActionPressed()
-    {
-        return keyFlags[ACTION];
-    }
-
-    public boolean isUpPressed()
-    {
-        return keyFlags[UP];
-    }
-
-    public boolean isDownPressed()
-    {
-        return keyFlags[DOWN];
-    }
-
-    public boolean isLeftPressed()
-    {
-        return keyFlags[LEFT];
-    }
-
-    public boolean isRightPressed()
-    {
-        return keyFlags[RIGHT];
-    }
-
-    public boolean isJumpPressed()
-    {
-        return keyFlags[JUMP];
-    }
-
-    public boolean isFirePressed()
-    {
-        return keyFlags[FIRE];
-    }
 
 	//Custom dispatcher allows for an application to capture global key events
 	//Source: http://portfolio.planetjon.ca/2011/09/16/java-global-jframe-key-listener/
