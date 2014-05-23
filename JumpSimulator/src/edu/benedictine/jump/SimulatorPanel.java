@@ -5,6 +5,7 @@ package edu.benedictine.jump;
 
 import edu.benedictine.game.gui.GamePanelFixedFPS;
 import edu.benedictine.game.input.KeyHandler;
+import edu.benedictine.jump.players.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -68,6 +69,18 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		jumpCancelLabelMap.put("double", "Double Gravity");
 		jumpCancelLabelMap.put("full", "Full Canceling");
 		director.addRadioGroup(" Jump Cancel:", jumpCancelType, jumpCancelLabelMap);
+		
+		Director.PlayerClassObserver obs = new Director.PlayerClassObserver()
+		{
+			public void playerClassChanged(Class playerClass)
+			{
+				System.out.println(playerClass.getName());
+			}
+		};
+		director.addPlayerClass("Custom",Custom.class,obs);
+		director.addPlayerClass("Mario",Mario.class,obs);
+		director.addPlayerClass("Samus",Samus.class,obs);
+		director.addPlayerClass("Zee Tee",Eversion.class,obs);
 		
 		//Set up game input
 		keyHandler = new KeyHandler();

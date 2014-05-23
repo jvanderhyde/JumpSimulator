@@ -29,6 +29,9 @@ public class Director
 	private JPanel southPanel;
 	private final Font menlo;
 	
+	private ButtonGroup playerRadioGroup;
+	private int numPlayerRadioButtons = 0;
+	
 	private JRadioButton custom, mario, samus, zeetee;
 
 	//simulator values
@@ -108,6 +111,7 @@ public class Director
 		for (Map.Entry<String,String> ch:choices.entrySet())
 		{
 			JRadioButton b = new JRadioButton(ch.getValue());
+			b.setFont(menlo);
 			b.setActionCommand(ch.getKey());
 			removeKeys(b);
 			group.add(b);
@@ -126,44 +130,34 @@ public class Director
 		southPanel.setLayout(new BoxLayout(southPanel,BoxLayout.Y_AXIS));
 	}
 	
+	public void addPlayerClass(String label, final Class playerClass, final PlayerClassObserver obs)
+	{
+		JRadioButton button = new JRadioButton(label);
+		button.setFont(menlo);
+		button.setActionCommand(playerClass.getName());
+		removeKeys(button);
+		playerRadioGroup.add(button);
+		button.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent evt)
+			{
+				obs.playerClassChanged(playerClass);
+			}
+		});
+		eastPanel.add(button);
+		if (numPlayerRadioButtons==0)
+			button.setSelected(true);
+		numPlayerRadioButtons++;
+	}
+	
 	private void setUpEastPanel()
 	{
+		playerRadioGroup = new ButtonGroup();
 		eastPanel = new JPanel();
-		eastPanel.setLayout(new GridLayout(5,1));
-
-		//radio buttons
-	    custom = new JRadioButton("Custom");
-	    custom.setActionCommand("custom");
-	    custom.setSelected(true); 
-	    mario = new JRadioButton("Mario");
-	    mario.setActionCommand("mario");
-	    samus = new JRadioButton("Samus");
-	    samus.setActionCommand("samus");
-	    zeetee = new JRadioButton("Zee Tee");
-	    zeetee.setActionCommand("zeetee");
-	    removeKeys(custom);
-	    removeKeys(mario);
-	    removeKeys(samus);
-	    removeKeys(zeetee);
-
-	    //Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
-	    group.add(custom);
-	    group.add(mario);
-	    group.add(samus);
-	    group.add(zeetee);
-
-	    //add listeners to the radio buttons.
-	    RadioListener listen = new RadioListener();
-	    custom.addActionListener(listen);
-	    mario.addActionListener(listen);
-	    samus.addActionListener(listen);
-	    zeetee.addActionListener(listen);
-	    
-		eastPanel.add(custom);
-		eastPanel.add(mario);
-		eastPanel.add(samus);
-		eastPanel.add(zeetee);
+		eastPanel.setLayout(new BoxLayout(eastPanel,BoxLayout.Y_AXIS));
+		JLabel lab=new JLabel("Player type:");
+		lab.setFont(menlo);
+		eastPanel.add(lab);
 	}
 	
 	private void removeKeys(JComponent j)
@@ -184,14 +178,10 @@ public class Director
 	{
 		return this.southPanel;
 	}
-
-	class RadioListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			jumpType = e.getActionCommand();
-		}
-	}
 	
+	public static interface PlayerClassObserver
+	{
+		public void playerClassChanged(Class playerClass);
+	}
+
 }
