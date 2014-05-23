@@ -11,11 +11,22 @@ import us.vanderhyde.gamepad.GamepadButtonListener;
 public abstract class GamepadHandler extends InputHandler
 	implements GamepadButtonListener
 {
+	private boolean gamepadAttached = false;
+	
 	public void startGamepadThread()
 	{
-		final EventThread t=new EventThread();
-		t.addGamepadButtonListener(this);
-		t.start();
+		if (EventThread.numGamepadsAttached()>0)
+		{
+			gamepadAttached = true;
+			final EventThread t=new EventThread();
+			t.addGamepadButtonListener(this);
+			t.start();
+		}
+	}
+
+	public boolean isGamepadAttached()
+	{
+		return gamepadAttached;
 	}
 	
 	public abstract int getActionFromButton(int number);

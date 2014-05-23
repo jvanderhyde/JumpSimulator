@@ -89,7 +89,8 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		inputManager.addHandler(keyHandler);
 		GamepadHandler gamepadHandler = new CHProductsUSBGamepad();
 		gamepadHandler.startGamepadThread();
-		inputManager.addHandler(gamepadHandler);
+		if (gamepadHandler.isGamepadAttached())
+			inputManager.addHandler(gamepadHandler);
 		
 		//Add everything to the main panel
 		this.setLayout(new BorderLayout());
