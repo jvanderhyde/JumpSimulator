@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
@@ -26,16 +27,12 @@ public class Director
 {
 	private JPanel eastPanel;
 	private JPanel southPanel;
-	
-	private JSlider s, s2, s3, s4, s5;
-	private JRadioButton custom, mario, samus, zeetee;
-	private JRadioButton noCancel, doubleGravity, fullCancel;
-	private JLabel sl, sl2, sl3, sl4, sl5;
 	private final Font menlo;
+	
+	private JRadioButton custom, mario, samus, zeetee;
 
 	//simulator values
-	public double jumpCancel = 1.0;
-	public String jumpType = "custom", cancelType = "double";
+	public String jumpType = "custom";
 	
 	public Director()
 	{
@@ -45,8 +42,12 @@ public class Director
 	}
 	
 	public void addSlider(final String label, final double minValue, final double maxValue,
-			double startValue, final int numPositions, final SimValueObserver obs)
+			final int numPositions, final SimVariableFloat var)
 	{
+		double startValue = (minValue+maxValue)/2;
+		if (var != null)
+			startValue = var.getValue();
+		
 		final JLabel lab = new JLabel(label+startValue);
 		lab.setFont(menlo);
 		final int n = numPositions-1;
@@ -71,8 +72,8 @@ public class Director
 				else
 					value=s.getValue()/(double)(n)*(maxValue-minValue)+minValue;
 				lab.setText(label+value);
-				if (obs != null)
-					obs.valueChanged(value);
+				if (var != null)
+					var.setValue(value);
 			}
 		});
 		s.setOrientation(SwingConstants.HORIZONTAL);
@@ -85,7 +86,8 @@ public class Director
 		southPanel.add(pan);
 	}
 	
-	public void addRadioGroup(String label, String startValue, String... choices)
+	public void addRadioGroup(String label, 
+			final SimVariableChoice var, Map<String,String> choices)
 	{
 		JLabel lab = new JLabel(label);
 		lab.setFont(menlo);
@@ -95,17 +97,23 @@ public class Director
 		pan.add(lab);
 
 		ButtonGroup group = new ButtonGroup();
-		CancelRadioListener cListen = new CancelRadioListener();
-		
-		for (String ch:choices)
+		ActionListener listener = new ActionListener()
 		{
-			JRadioButton b = new JRadioButton(ch);
-			b.setActionCommand(ch);
+			public void actionPerformed(ActionEvent evt)
+			{
+				var.setValue(evt.getActionCommand());
+			}
+		};
+		
+		for (Map.Entry<String,String> ch:choices.entrySet())
+		{
+			JRadioButton b = new JRadioButton(ch.getValue());
+			b.setActionCommand(ch.getKey());
 			removeKeys(b);
 			group.add(b);
-			b.addActionListener(cListen);
+			b.addActionListener(listener);
 			pan.add(b);
-			if (ch.equals(startValue))
+			if (var.valueEquals(ch.getKey()))
 				b.setSelected(true);
 		}
 
@@ -177,11 +185,6 @@ public class Director
 		return this.southPanel;
 	}
 
-	public static interface SimValueObserver
-	{
-		public void valueChanged(double newValue);
-	}
-	
 	class RadioListener implements ActionListener
 	{
 		@Override
@@ -191,13 +194,4 @@ public class Director
 		}
 	}
 	
-	class CancelRadioListener implements ActionListener
-	{
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			cancelType = e.getActionCommand();
-		}
-	}
-
 }
