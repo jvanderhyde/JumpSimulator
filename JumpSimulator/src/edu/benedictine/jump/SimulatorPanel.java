@@ -50,6 +50,8 @@ public class SimulatorPanel extends GamePanelFixedFPS
 			{public void valueChanged(double newValue){ airDecel=newValue; }});
 		director.addSlider("Max Horizontal Speed: ", 30, 600, xSpeed, 20, new Director.SimValueObserver()
 			{public void valueChanged(double newValue){ xSpeed=newValue; }});
+		director.addRadioGroup(" Jump Cancel:", "Full Canceling", 
+				"No Canceling","Double Gravity","Full Canceling");
 		
 		keyHandler = new KeyHandler();
 		keyHandler.captureAllKeyEvents();

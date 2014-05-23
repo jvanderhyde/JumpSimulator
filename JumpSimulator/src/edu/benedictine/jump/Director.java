@@ -5,6 +5,7 @@
 
 package edu.benedictine.jump;
 
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -25,12 +26,12 @@ public class Director
 {
 	private JPanel eastPanel;
 	private JPanel southPanel;
-	private JPanel sliderPanel;
 	
 	private JSlider s, s2, s3, s4, s5;
 	private JRadioButton custom, mario, samus, zeetee;
 	private JRadioButton noCancel, doubleGravity, fullCancel;
 	private JLabel sl, sl2, sl3, sl4, sl5;
+	private final Font menlo;
 
 	//simulator values
 	public double jumpCancel = 1.0;
@@ -38,6 +39,7 @@ public class Director
 	
 	public Director()
 	{
+		menlo = new Font("Menlo", Font.PLAIN, 14);
 		setUpSouthPanel();
 		setUpEastPanel();
 	}
@@ -45,7 +47,6 @@ public class Director
 	public void addSlider(final String label, final double minValue, final double maxValue,
 			double startValue, final int numPositions, final SimValueObserver obs)
 	{
-		final Font menlo = new Font("Menlo", Font.PLAIN, 14);
 		final JLabel lab = new JLabel(label+startValue);
 		lab.setFont(menlo);
 		final int n = numPositions-1;
@@ -81,49 +82,40 @@ public class Director
 		pan.setLayout(new GridLayout(1,2));
 		pan.add(s);
 		pan.add(lab);
-		sliderPanel.add(pan);
+		southPanel.add(pan);
+	}
+	
+	public void addRadioGroup(String label, String startValue, String... choices)
+	{
+		JLabel lab = new JLabel(label);
+		lab.setFont(menlo);
+		
+		JPanel pan=new JPanel();
+		pan.setLayout(new FlowLayout(FlowLayout.LEADING));
+		pan.add(lab);
+
+		ButtonGroup group = new ButtonGroup();
+		CancelRadioListener cListen = new CancelRadioListener();
+		
+		for (String ch:choices)
+		{
+			JRadioButton b = new JRadioButton(ch);
+			b.setActionCommand(ch);
+			removeKeys(b);
+			group.add(b);
+			b.addActionListener(cListen);
+			pan.add(b);
+			if (ch.equals(startValue))
+				b.setSelected(true);
+		}
+
+		southPanel.add(pan);
 	}
 
 	private void setUpSouthPanel()
 	{
 		southPanel = new JPanel();
-		sliderPanel = new JPanel();
-		sliderPanel.setLayout(new BoxLayout(sliderPanel,BoxLayout.Y_AXIS));
-		
-		JPanel p13 = new JPanel();
 		southPanel.setLayout(new BoxLayout(southPanel,BoxLayout.Y_AXIS));
-		p13.setLayout(new GridLayout(1,4));
-		
-		//jump cancel
-		sl5 = new JLabel(" Jump Cancel:");
-		sl5.setFont(new Font("Menlo", Font.PLAIN, 14));
-		noCancel = new JRadioButton("No Canceling");
-		noCancel.setActionCommand("no");
-		doubleGravity = new JRadioButton("Double Gravity");
-		doubleGravity.setActionCommand("double");
-		doubleGravity.setSelected(true);
-		fullCancel = new JRadioButton("Full Canceling");
-		fullCancel.setActionCommand("full");
-		removeKeys(noCancel);
-		removeKeys(doubleGravity);
-		removeKeys(fullCancel);
-		
-		ButtonGroup group = new ButtonGroup();
-		group.add(noCancel);
-		group.add(doubleGravity);
-		group.add(fullCancel);
-		
-		CancelRadioListener cListen = new CancelRadioListener();
-		noCancel.addActionListener(cListen);
-		doubleGravity.addActionListener(cListen);
-		fullCancel.addActionListener(cListen);
-		
-		p13.add(sl5);
-		p13.add(noCancel);
-		p13.add(doubleGravity);
-		p13.add(fullCancel);
-		southPanel.add(sliderPanel);
-		southPanel.add(p13);
 	}
 	
 	private void setUpEastPanel()
@@ -188,17 +180,6 @@ public class Director
 	public static interface SimValueObserver
 	{
 		public void valueChanged(double newValue);
-	}
-	
-	class JumpCancelListener implements ChangeListener
-	{
-		@Override
-		public void stateChanged(ChangeEvent evt) 
-		{
-			JSlider sTemp = ((JSlider)evt.getSource());
-			jumpCancel = (double)sTemp.getValue()/(double)sTemp.getMaximum();
-			//sl5.setText("Jump Cancel: "+(int)(jumpCancel*100)+"%");
-		}
 	}
 	
 	class RadioListener implements ActionListener
