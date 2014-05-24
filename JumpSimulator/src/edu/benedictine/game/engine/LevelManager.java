@@ -18,7 +18,7 @@ public class LevelManager extends SceneObject
 	
 	public void initiate()
 	{
-		if (level.equals("pictest")
+		if (level.equals("pictest"))
 		{
 			//set up the clouds. Two scrolling images per bank of clouds
 			
