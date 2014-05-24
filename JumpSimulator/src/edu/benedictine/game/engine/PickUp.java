@@ -1,4 +1,9 @@
 //Created by Joseph Rioux, 30 March 2013
+//Modified by Joseph Rioux, 23 May 2014
+//added comments
+
+//a PickUp is an object that performs some action when it touches the player.
+//subclasses would be coins, heart, etc.
 
 package edu.benedictine.game.engine;
 
@@ -19,13 +24,14 @@ public class PickUp extends GameObject
 	
 	public void handleHit(Hit h)
 	{
+		//if the other member of the object collision is the player, call hitPlayer()
 		if (h.b.owner instanceof Player)
 			hitPlayer(((Player)h.b.owner));
 	}
 	
 	public void hitPlayer(Player o)
 	{
-		//implmented by subclasses (e.g. Life Cell)
-		die(); //gets rid of item
+		//implmented by subclasses (e.g. Gem)
+		die(); //the default is to get rid of the pickup
 	}
 }
