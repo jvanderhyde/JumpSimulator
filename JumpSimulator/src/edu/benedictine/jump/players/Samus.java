@@ -7,35 +7,39 @@
 package edu.benedictine.jump.players;
 
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.jump.SimVariableChoice;
+import edu.benedictine.jump.SimVariableFloat;
+import edu.benedictine.jump.SimulatorPanel;
 
 /**
  *
  * @author jvanderhyde
  */
-public class Samus extends edu.benedictine.game.engine.Player
+public class Samus extends edu.benedictine.jump.SimPlayer
 {
 	int wrapper;
-	long start;
 	boolean samusFlipping = false;
 	
-	public Samus(Scene scn, double xLoc, double yLoc, double xCng, double yCng)
+	public Samus(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
 	{
-		super(scn,xLoc,yLoc,xCng,yCng);
+		super(sim,scn,xLoc,yLoc,xCng,yCng);
 	}
 	
 	@Override
-	public void setJumpType()
+	public void setJumpType(SimVariableFloat gravity, 
+							SimVariableFloat jumpPower, 
+							SimVariableFloat xSpeed, 
+							SimVariableFloat airDecel, 
+							SimVariableChoice jumpCancelType)
 	{
-		//scn.mn.s.setValue((int)((120.0*(24.0/256.0))/5.0)); 11.25
-		scn.mn.s.setValue(11);
-		scn.mn.s2.setValue(4);
-		scn.mn.s3.setValue(6);
+		gravity.setValue(120);
+		jumpPower.setValue(480);
+		xSpeed.setValue(180);
 		if (samusFlipping)
-			scn.mn.s4.setValue(10);
+			airDecel.setValue(120);
 		else
-			scn.mn.s4.setValue(0);
-		scn.mn.fullCancel.setSelected(true);
-		scn.mn.cancelType = "full";
+			airDecel.setValue(0);
+		jumpCancelType.setValue("full");
 	}
 
 	@Override
@@ -46,22 +50,26 @@ public class Samus extends edu.benedictine.game.engine.Player
 		xForce.upper = 180.0;
 		xForce.lower = -180.0;
 		xForce.accel = 120.0;
+		final double airDecel = 0;
+		final double xSpeed = 180.0;
+		final boolean leftPressed = sim.getInputManager().isRightPressed();
+		final boolean rightPressed = sim.getInputManager().isLeftPressed();
 		
-		if (scn.l)
+		if (leftPressed)
 		{
 			xForce.accel = -xForce.accel;
 			setFlipX(false);
 		}
-		if (scn.r)
+		if (rightPressed)
 		{
 			setFlipX(true);
 		}
 		
-		if ((!scn.l) && (!scn.r))
+		if ((!leftPressed) && (!rightPressed))
 		{
 			//metroid
-			xForce.upper = scn.mn.xSpeed*scn.mn.airDecel;
-			xForce.lower = -scn.mn.xSpeed*scn.mn.airDecel;
+			xForce.upper = xSpeed*airDecel;
+			xForce.lower = -xSpeed*airDecel;
 			xForce.accel = 0.0;
 			xForce.decel = 30.0;
 			/*if (!samusFlipping)
@@ -90,14 +98,15 @@ public class Samus extends edu.benedictine.game.engine.Player
 	@Override
 	public void jump()
 	{
-		gravity = 120.0;//?31.2?
-		initialJump = 480.0;
-		terminalVelocity = 600.0;
+		final double gravity = 120.0;//?31.2?
+		final double initialJump = 480.0;
+		final double terminalVelocity = 600.0;
+		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
 
 		if (onGround)
 			samusFlipping = false;
 
-		if ((scn.a) && (scn.aPressed <= 0) && (onGround))
+		if ((jumpPressed) && (onGround))
 		{
 			yForce.value = -initialJump;
 			wrapper = 0;
@@ -108,7 +117,7 @@ public class Samus extends edu.benedictine.game.engine.Player
 		if (!onGround)
 			wrapper += 24;
 
-		if (!scn.a && yForce.value < 0.0)
+		if (!jumpPressed && yForce.value < 0.0)
 		{
 			if (wrapper >= 256)
 				yForce.value = 0.0;

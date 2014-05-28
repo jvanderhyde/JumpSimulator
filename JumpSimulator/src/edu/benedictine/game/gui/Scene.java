@@ -275,7 +275,7 @@ public class Scene
 		backgroundColor = new Color(0, 153, 255);
 		//backgroundColor = new Color(255, 153, 0);
 		//TriggerReel ree = new TriggerReel(this, 0.0, 512.0, 4096.0, 64.0, "test2");
-		player = new Custom(this, pX, pY, 0.0, 0.0);
+		player = new Player(this, pX, pY, 0.0, 0.0);
 		camera = new Camera(this, 0.0, 0.0, true);
 		screenBoundL = -3200;
 		screenBoundR = 3200;

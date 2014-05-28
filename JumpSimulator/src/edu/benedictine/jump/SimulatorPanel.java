@@ -18,7 +18,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 {
 	private Director director;
 	private InputManager inputManager;
-	
+
 	//simulator values
 	private SimVariableFloat gravity = new SimVariableFloat();
 	private SimVariableFloat jumpPower = new SimVariableFloat();
@@ -37,6 +37,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	
 	//game state variables
 	private Point ballLoc,ballVel;
+	private SimPlayer player;
 	
 	public SimulatorPanel()
 	{
@@ -115,6 +116,10 @@ public class SimulatorPanel extends GamePanelFixedFPS
 
 			g.fillOval(ballLoc.x-10,ballLoc.y-10,20,20);
 		}
+		if (player != null)
+		{
+			player.paint(g);
+		}
 	}
 
 	@Override
@@ -122,6 +127,8 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	{
 		ballLoc = new Point(100,100);
 		ballVel = new Point(8,5);
+		
+		player = new Custom(this,null,0,0,0,0);
 	}
 
 	@Override
@@ -152,6 +159,13 @@ public class SimulatorPanel extends GamePanelFixedFPS
 				ballVel.y = (3*ballVel.y)/2;
 			}
 		}
+		
+		if (player != null)
+		{
+			System.out.print("Frame:");
+			player.update();
+			System.out.println();
+		}
 	}
 
 	@Override
@@ -163,6 +177,49 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	public void paintGame(Graphics g)
 	{
 		//do nothing, because it's handled by the canvas
+	}
+	
+	public InputManager getInputManager()
+	{
+		return inputManager;
+	}
+	
+	//Accessor methods for sim variables
+	// This may need to be refactored again, so we have a Map of
+	// sim variables instead of having them hard-coded.
+	public double getGravity()
+	{
+		return gravity.getValue();
+	}
+	
+	public double getJumpPower()
+	{
+		return jumpPower.getValue();
+	}
+	
+	public double getXSpeed()
+	{
+		return xSpeed.getValue();
+	}
+	
+	public double getAirDecel()
+	{
+		return airDecel.getValue();
+	}
+	
+	public boolean jumpCancelTypeIsNone()
+	{
+		return jumpCancelType.valueEquals("none");
+	}
+	
+	public boolean jumpCancelTypeIsDoubleGravity()
+	{
+		return jumpCancelType.valueEquals("double");
+	}
+	
+	public boolean jumpCancelTypeIsFull()
+	{
+		return jumpCancelType.valueEquals("full");
 	}
 	
 }

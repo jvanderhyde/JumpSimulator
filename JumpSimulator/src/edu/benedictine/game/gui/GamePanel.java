@@ -91,5 +91,10 @@ public abstract class GamePanel extends javax.swing.JPanel
 	{
 		paintGame(g);
 	}
+	
+	public Rectangle getViewport()
+	{
+		return new Rectangle(vLeft,vTop,vRight-vLeft,vBottom-vTop);
+	}
 
 }

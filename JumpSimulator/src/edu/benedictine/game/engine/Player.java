@@ -11,7 +11,7 @@ import edu.benedictine.game.engine.collision.BoundingBox;
 import edu.benedictine.game.util.AdvancedForce;
 import edu.benedictine.game.gui.Scene;
 
-public abstract class Player extends GameObject
+public class Player extends GameObject
 {
 	int life;
 	int maxLife;
@@ -47,13 +47,8 @@ public abstract class Player extends GameObject
 	
 	int dasher, dashDirection;
 		
-	protected double gravity = 26.0;//?31.2?
-	protected double initialJump = 600.0;
-	protected double terminalVelocity = 600.0;
-
 	//jump project vars
 	boolean big = true;
-	protected double cancelingAcc = -1.0;
 	int gems = 0;
 		
 	//hard code a lot of the player's attributes (e.g img, head, left, etc.)
@@ -78,9 +73,6 @@ public abstract class Player extends GameObject
 		//large or small
 		if (scn.d && scn.downPressed <= 0 && onGround)
 			switchSize();
-		
-		setJumpType();
-		//System.out.println(scn.mn.xSpeed+" "+scn.mn.gravity+" "+scn.mn.jumpPower+" "+scn.mn.airDecel+" "+scn.mn.cancelType);
 		
 		onEdge = false;
 		atEdge = false;
@@ -138,11 +130,64 @@ public abstract class Player extends GameObject
 		}
 	}
 	
-	public abstract void setJumpType();
+	//This is still accessing the JumpSimulator interface,
+	// but for the game engine there should be some default implementation.
+	public void walk() 
+	{
+		xForce.upper = scn.mn.xSpeed;
+		xForce.lower = -scn.mn.xSpeed;
+		xForce.accel = 30.0;
 
-	public abstract void walk();
-	
-	public abstract void jump();
+		if (scn.l)
+		{
+			if (xForce.value > scn.mn.xSpeed*scn.mn.airDecel)
+				xForce.value = scn.mn.xSpeed*scn.mn.airDecel;
+			xForce.accel = -xForce.accel;
+			setFlipX(false);
+		}
+		if (scn.r)
+		{
+			if (xForce.value < -scn.mn.xSpeed*scn.mn.airDecel)
+				xForce.value = -scn.mn.xSpeed*scn.mn.airDecel;
+			setFlipX(true);
+		}
+
+		if ((!scn.l) && (!scn.r))
+		{
+			xForce.upper = scn.mn.xSpeed*scn.mn.airDecel;
+			xForce.lower = -scn.mn.xSpeed*scn.mn.airDecel;
+			xForce.accel = 0.0;
+			xForce.decel = 30.0;
+			//basic
+			if (onGround)
+			{
+				xForce.upper = 0.0;
+				xForce.lower = 0.0;
+				xForce.decel = 30.0;
+			}
+		}
+	}
+
+	public void jump()
+	{
+		if ((scn.a) && (scn.aPressed <= 0) && (onGround))
+		{
+			yForce.value = -scn.mn.jumpPower;
+		}
+
+		if (!scn.a && yForce.value < 0.0)
+		{
+			if (scn.mn.cancelType.equals("full"))
+				yForce.value = 0.0;
+			if (scn.mn.cancelType.equals("double"))
+				yForce.value += scn.mn.gravity;
+		}
+
+		if (!onGround)
+		{
+			yForce.value += scn.mn.gravity;
+		}
+	}
 	
 	private void setAnimations()
 	{	

@@ -7,33 +7,40 @@
 package edu.benedictine.jump.players;
 
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.jump.SimVariableChoice;
+import edu.benedictine.jump.SimVariableFloat;
+import edu.benedictine.jump.SimulatorPanel;
 
 /**
  *
  * @author jvanderhyde
  */
-public class Eversion extends edu.benedictine.game.engine.Player
+public class Eversion extends edu.benedictine.jump.SimPlayer
 {
 	
-	public Eversion(Scene scn, double xLoc, double yLoc, double xCng, double yCng)
+	public Eversion(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
 	{
-		super(scn,xLoc,yLoc,xCng,yCng);
+		super(sim,scn,xLoc,yLoc,xCng,yCng);
 		//super(scn, 5, 8, xLoc, yLoc, xCng, yCng, scn.store.heroStatic, -16.0, 16.0, -14.0, 14.0);
 		//xForce = new AdvancedForce(0.0, 0.0, 45.0, -240.0, 240.0, 1);
 	}
 
 	@Override
-	public void setJumpType()
+	public void setJumpType(SimVariableFloat gravity, 
+							SimVariableFloat jumpPower, 
+							SimVariableFloat xSpeed, 
+							SimVariableFloat airDecel, 
+							SimVariableChoice jumpCancelType)
 	{
-		if (!scn.a && yForce.value < 0.0)
-			scn.mn.s.setValue(52);
+		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
+		if (!jumpPressed && yForce.value < 0.0)
+			gravity.setValue(52);
 		else
-			scn.mn.s.setValue(26);
-		scn.mn.s2.setValue(5);
-		scn.mn.s3.setValue(9);
-		scn.mn.s4.setValue(0);
-		scn.mn.doubleGravity.setSelected(true);
-		scn.mn.cancelType = "double";
+			gravity.setValue(26);
+		jumpPower.setValue(600);
+		xSpeed.setValue(270);
+		airDecel.setValue(0);
+		jumpCancelType.setValue("double");
 	}
 
 	@Override
@@ -42,18 +49,20 @@ public class Eversion extends edu.benedictine.game.engine.Player
 		xForce.upper = 270.0;
 		xForce.lower = -270.0;
 		xForce.accel = 30.0;
+		final boolean leftPressed = sim.getInputManager().isLeftPressed();
+		final boolean rightPressed = sim.getInputManager().isRightPressed();
 		
-		if (scn.l)
+		if (leftPressed)
 		{
 			xForce.accel = -xForce.accel;
 			setFlipX(false);
 		}
-		if (scn.r)
+		if (rightPressed)
 		{
 			setFlipX(true);
 		}
 		
-		if ((!scn.l) && (!scn.r))
+		if ((!leftPressed) && (!rightPressed))
 		{
 			//eversion
 			//xForce.upper = 0.0;
@@ -79,21 +88,22 @@ public class Eversion extends edu.benedictine.game.engine.Player
 	public void jump()
 	{
 		//Eversion jump:
-		gravity = 26.0;//?31.2?
-		initialJump = 600.0;
-		terminalVelocity = 600.0;
+		final double gravity = 26.0;//?31.2?
+		final double initialJump = 600.0;
+		final double terminalVelocity = 600.0;
+		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
 
 		if (yForce.value < terminalVelocity)
 			yForce.value += gravity;
 
 		//initial jump
-		if ((scn.a) && (scn.aPressed <= 0) && (onGround))
+		if ((jumpPressed) && (onGround))
 		{
 			yForce.value = -initialJump;
 		}
 
 		//apply gravity again if a is not down
-		if ((!scn.a) && (yForce.value < 0.0))
+		if ((!jumpPressed) && (yForce.value < 0.0))
 		{
 			yForce.value += gravity;
 		}

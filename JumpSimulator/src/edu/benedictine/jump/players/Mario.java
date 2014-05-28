@@ -7,39 +7,38 @@
 package edu.benedictine.jump.players;
 
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.jump.SimVariableChoice;
+import edu.benedictine.jump.SimVariableFloat;
+import edu.benedictine.jump.SimulatorPanel;
 
 /**
  *
  * @author jvanderhyde
  */
-public class Mario extends edu.benedictine.game.engine.Player
+public class Mario extends edu.benedictine.jump.SimPlayer
 {
-	int gravLow = 32;
 	
-	public Mario(Scene scn, double xLoc, double yLoc, double xCng, double yCng)
+	public Mario(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
 	{
-		super(scn,xLoc,yLoc,xCng,yCng);
+		super(sim,scn,xLoc,yLoc,xCng,yCng);
 	}
 
 	@Override
-	public void setJumpType()
+	public void setJumpType(SimVariableFloat gravity, 
+							SimVariableFloat jumpPower, 
+							SimVariableFloat xSpeed, 
+							SimVariableFloat airDecel, 
+							SimVariableChoice jumpCancelType)
 	{
-		if (onGround)
-		{
-			scn.mn.s.setValue(15);
-		}
+		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
+		if (!jumpPressed && yForce.value < 0.0)
+			gravity.setValue(120.0*112/256);
 		else
-		{
-			if ((!scn.a) || (yForce.value >= 0))
-				scn.mn.s.setValue(53);
-			else if (scn.a)
-				scn.mn.s.setValue(15);
-		}
-		scn.mn.s2.setValue(4);
-		scn.mn.s3.setValue(6);
-		scn.mn.s4.setValue(10);
-		scn.mn.fullCancel.setSelected(true);
-		scn.mn.cancelType = "full";
+			gravity.setValue(120.0*32/256);
+		jumpPower.setValue(485);
+		xSpeed.setValue(180);
+		airDecel.setValue(5);
+		jumpCancelType.setValue("double");
 	}
 
 	@Override
@@ -57,18 +56,20 @@ public class Mario extends edu.benedictine.game.engine.Player
 		xForce.upper = 180.0;
 		xForce.lower = -180.0;
 		xForce.accel = 5.0;
+		final boolean leftPressed = sim.getInputManager().isLeftPressed();
+		final boolean rightPressed = sim.getInputManager().isRightPressed();
 		
-		if (scn.l)
+		if (leftPressed)
 		{
 			xForce.accel = -xForce.accel;
 			setFlipX(false);
 		}
-		if (scn.r)
+		if (rightPressed)
 		{
 			setFlipX(true);
 		}
 		
-		if ((!scn.l) && (!scn.r))
+		if ((!leftPressed) && (!rightPressed))
 		{
 			//mario
 			if (onGround)
@@ -83,20 +84,21 @@ public class Mario extends edu.benedictine.game.engine.Player
 	@Override
 	public void jump()
 	{
-		gravity = 120.0;//?31.2?
-		gravLow = 32;
+		final double gravity = 120.0;//?31.2?
+		int gravLow = 32;
 		//if run
-		initialJump = 485.0;
+		final double initialJump = 485.0;
 		//else
 		//initialJump = 480.0;
-		terminalVelocity = 480.0;
+		final double terminalVelocity = 480.0;
+		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
 
-		if ((scn.a) && (scn.aPressed <= 0) && (onGround))
+		if ((jumpPressed) && (onGround))
 		{
 			yForce.value = -initialJump;
 		}
 
-		if (!scn.a || yForce.value >= 0)
+		if (!jumpPressed || yForce.value >= 0)
 		{
 			gravLow = 112;
 		}
