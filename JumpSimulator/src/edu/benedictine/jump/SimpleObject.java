@@ -17,6 +17,8 @@ public class SimpleObject
 	protected final int floor;
 	
 	protected boolean onGround;
+
+	private boolean flipX;
 	
 	public SimpleObject(int floor)
 	{
@@ -40,11 +42,15 @@ public class SimpleObject
 	public void update()
 	{
 		//movement
+		double fps=1000.0/16;
 		xForce.updateValue();
 		yForce.updateValue();
 		xSpeed = xForce.value;
 		ySpeed = yForce.value;
-		move();
+		double actualSpeedX = (xSpeed/fps);
+		double actualSpeedY = (ySpeed/fps);
+		x+=actualSpeedX;
+		y+=actualSpeedY;
 		
 		//collision detection and reaction
 		onGround = false;
@@ -62,26 +68,15 @@ public class SimpleObject
 		g.setColor(Color.LIGHT_GRAY);
 		Rectangle box=this.getBoundingBox();
 		g.drawRect(box.x, box.y, box.width, box.height);
-		g.drawOval((int)x-5, (int)y-5, 10, 10);
-	}
-	
-	private void move()
-	{
-		double xChange;
-		double yChange;
-		xChange = xSpeed;
-		yChange = ySpeed;
-		double fps=1000.0/16;
-		
-		double actualSpeedX = (xChange/fps);
-		double actualSpeedY = (yChange/fps);
-		x+=actualSpeedX;
-		y+=actualSpeedY;
+		int offset=7;
+		if (flipX)
+			offset=3;
+		g.drawOval((int)x-offset, (int)y-5, 10, 10);
 	}
 	
 	protected void setFlipX(boolean b)
 	{
-		
+		flipX=b;
 	}
 		
 }
