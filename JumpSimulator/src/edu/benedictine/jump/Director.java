@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -157,11 +158,22 @@ public class Director
 	
 	private void removeKeys(JComponent j)
 	{
-		j.getInputMap().put(KeyStroke.getKeyStroke("UP"), "none");
-		j.getInputMap().put(KeyStroke.getKeyStroke("DOWN"), "none");
-		j.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "none");
-		j.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"), "none");
-		j.getInputMap().put(KeyStroke.getKeyStroke("Z"), "none");
+		javax.swing.Action doNothing = new javax.swing.AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				//do nothing
+			}
+		};
+		j.getActionMap().put("doNothing",doNothing);
+		int[] keyCodes = {KeyEvent.VK_UP,KeyEvent.VK_I,KeyEvent.VK_W,
+						  KeyEvent.VK_DOWN, KeyEvent.VK_K,KeyEvent.VK_S,
+						  KeyEvent.VK_LEFT,KeyEvent.VK_J,KeyEvent.VK_A,
+						  KeyEvent.VK_RIGHT,KeyEvent.VK_L,KeyEvent.VK_D,
+						  KeyEvent.VK_Z,KeyEvent.VK_X,KeyEvent.VK_SPACE};
+		for (int code:keyCodes)
+		{
+			j.getInputMap().put(KeyStroke.getKeyStroke(code,0,true), "doNothing");
+			j.getInputMap().put(KeyStroke.getKeyStroke(code,0,false), "doNothing");
+		}
 	}
 	
 	public JPanel getEastPanel()

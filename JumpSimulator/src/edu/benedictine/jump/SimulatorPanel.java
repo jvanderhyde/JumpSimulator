@@ -162,9 +162,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		
 		if (player != null)
 		{
-			System.out.print("Frame:");
 			player.update();
-			System.out.println();
 		}
 	}
 

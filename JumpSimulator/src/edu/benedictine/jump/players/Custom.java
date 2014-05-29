@@ -68,14 +68,9 @@ public class Custom extends edu.benedictine.jump.SimPlayer
 		final double initialJump = sim.getJumpPower();
 		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
 		
-		if (onGround)
-			System.out.print(" on ground");
-		else
-			System.out.print(" not on ground");
 		if ((jumpPressed) && (onGround))
 		{
 			yForce.value = -initialJump;
-			System.out.print(" jump!");
 		}
 
 		if (!jumpPressed && yForce.value < 0.0)

@@ -50,7 +50,6 @@ public class SimpleObject
 		onGround = false;
 		Rectangle box=this.getBoundingBox();
 		int pastFloor = box.y+box.height - floor;
-		System.out.print(" "+pastFloor);
 		if (pastFloor>=0)
 		{
 			y -= pastFloor;
