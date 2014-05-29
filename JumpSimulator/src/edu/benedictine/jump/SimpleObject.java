@@ -19,13 +19,13 @@ public class SimpleObject
 	protected LinearForce xForce, yForce;
 	protected boolean onGround;
 	
-	public SimpleObject(int floor)
+	public SimpleObject(int floor, double xLoc, double yLoc, double xCng, double yCng)
 	{
 		this.floor = floor;
-		x = 100;
-		y = 300;
-		xSpeed = 0;
-		ySpeed = 0;
+		x = xLoc;
+		y = yLoc;
+		xSpeed = xCng;
+		ySpeed = yCng;
 		yForce = new AdvancedForce(0.0, 0.0, 0.0, -600.0, 600.0, 1);
 		xForce = new AdvancedForce(0.0, 0.0, 60.0, -120.0, 120.0, 1);
 		onGround = false;

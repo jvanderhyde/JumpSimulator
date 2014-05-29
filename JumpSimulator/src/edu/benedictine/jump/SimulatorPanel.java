@@ -36,7 +36,6 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	}
 	
 	//game state variables
-	private Point ballLoc,ballVel;
 	private SimPlayer player;
 	
 	public SimulatorPanel()
@@ -71,12 +70,12 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		jumpCancelLabelMap.put("full", "Full Canceling");
 		director.addRadioGroup(" Jump Cancel:", jumpCancelType, jumpCancelLabelMap);
 		
-		player = new SimPlayer(this,null,0,0,0,0);
 		Director.PlayerClassObserver obs = new Director.PlayerClassObserver()
 		{
 			public void playerClassChanged(PlayerControl playerClass)
 			{
-				player.setPlayerControl(playerClass);
+				if (player != null)
+					player.setPlayerControl(playerClass);
 				playerClass.getJumpType(gravity, jumpPower, xSpeed, airDecel, jumpCancelType);
 			}
 		};
@@ -106,18 +105,6 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	{
 		g.setColor(Color.black);
 		g.fillRect(vLeft, vTop, vRight-vLeft, vBottom-vTop);
-		if (ballLoc != null)
-		{
-			//change color (test a choice variable)
-			if (jumpCancelType.valueEquals("no"))
-				g.setColor(Color.green);
-			else if (jumpCancelType.valueEquals("full"))
-				g.setColor(Color.blue);
-			else
-				g.setColor(Color.pink);
-
-			g.fillOval(ballLoc.x-10,ballLoc.y-10,20,20);
-		}
 		if (player != null)
 		{
 			player.paint(g);
@@ -127,40 +114,12 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	@Override
 	public void startGame()
 	{
-		ballLoc = new Point(100,100);
-		ballVel = new Point(8,5);
-		
+		player = new SimPlayer(this,null,100,300,0,0);
 	}
 
 	@Override
 	public void updateGame()
 	{
-		if (ballLoc != null)
-		{
-			//apply gravity (test a slider variable)
-			ballVel.y += (int)(gravity.getValue()/99);
-			
-			//move ball
-			ballLoc.x += ballVel.x;
-			ballLoc.y += ballVel.y;
-			if (ballLoc.x+10>vRight || ballLoc.x-10<0)
-				ballVel.x=-ballVel.x;
-			if (ballLoc.y+10>vBottom || ballLoc.y-10<0)
-				ballVel.y=-ballVel.y;
-			
-			//let the keys control the speed
-			if (inputManager.isDownPressed() && (Math.abs(ballVel.y)>2))
-			{
-				ballVel.x = (2*ballVel.x)/3;
-				ballVel.y = (2*ballVel.y)/3;
-			}
-			if (inputManager.isUpPressed() && (Math.abs(ballVel.x)<50))
-			{
-				ballVel.x = (3*ballVel.x)/2;
-				ballVel.y = (3*ballVel.y)/2;
-			}
-		}
-		
 		if (player != null)
 		{
 			player.update();

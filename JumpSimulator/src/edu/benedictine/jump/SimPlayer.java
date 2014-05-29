@@ -19,7 +19,7 @@ public class SimPlayer extends SimpleObject
 
 	public SimPlayer(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
 	{
-		super(sim.getViewport().height+sim.getViewport().y);
+		super(sim.getViewport().height+sim.getViewport().y,xLoc,yLoc,xCng,yCng);
 		this.sim = sim;
 		this.playerInfo = new PlayerInfo();
 		this.inputInfo = new InputInfo();
