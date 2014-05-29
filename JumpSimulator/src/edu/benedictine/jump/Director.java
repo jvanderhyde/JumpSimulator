@@ -147,9 +147,9 @@ public class Director
 		southPanel.setLayout(new BoxLayout(southPanel,BoxLayout.Y_AXIS));
 	}
 	
-	public void addPlayerClass(String label, final PlayerControl playerClass, final PlayerClassObserver obs)
+	public void addPlayerClass(final PlayerControl playerClass, final PlayerClassObserver obs)
 	{
-		JRadioButton button = new JRadioButton(label);
+		JRadioButton button = new JRadioButton(playerClass.getName());
 		button.setFont(menlo);
 		button.setActionCommand(playerClass.getName());
 		removeKeys(button);

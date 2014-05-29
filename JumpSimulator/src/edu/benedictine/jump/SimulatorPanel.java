@@ -79,10 +79,10 @@ public class SimulatorPanel extends GamePanelFixedFPS
 				playerClass.getJumpType(gravity, jumpPower, xSpeed, airDecel, jumpCancelType);
 			}
 		};
-		director.addPlayerClass("Custom",new Custom(this),obs);
-		director.addPlayerClass("Mario",new Mario(),obs);
-		director.addPlayerClass("Samus",new Samus(),obs);
-		director.addPlayerClass("Zee Tee",new Eversion(),obs);
+		director.addPlayerClass(new Custom(this),obs);
+		director.addPlayerClass(new Mario(),obs);
+		director.addPlayerClass(new Samus(),obs);
+		director.addPlayerClass(new Eversion(),obs);
 		
 		//Set up game input
 		inputManager = new InputManager();

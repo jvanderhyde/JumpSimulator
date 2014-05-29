@@ -95,7 +95,7 @@ public class Custom extends PlayerControl
 	@Override
 	public String getName()
 	{
-		return "custom";
+		return "Custom";
 	}
 	
 }

@@ -86,7 +86,7 @@ public class Eversion extends PlayerControl
 	@Override
 	public String getName()
 	{
-		return "Zee-tee";
+		return "Zee Tee";
 	}
 	
 }
