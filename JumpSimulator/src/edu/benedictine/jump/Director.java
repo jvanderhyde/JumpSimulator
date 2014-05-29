@@ -188,7 +188,7 @@ public class Director
 	
 	public static interface PlayerClassObserver
 	{
-		public void playerClassChanged(Class playerClass);
+		public void playerClassChanged(Class<SimPlayer> playerClass);
 	}
 
 }

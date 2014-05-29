@@ -52,8 +52,8 @@ public class Samus extends edu.benedictine.jump.SimPlayer
 		xForce.accel = 120.0;
 		final double airDecel = 0;
 		final double xSpeed = 180.0;
-		final boolean leftPressed = sim.getInputManager().isRightPressed();
-		final boolean rightPressed = sim.getInputManager().isLeftPressed();
+		final boolean leftPressed = sim.getInputManager().isLeftPressed();
+		final boolean rightPressed = sim.getInputManager().isRightPressed();
 		
 		if (leftPressed)
 		{
@@ -125,7 +125,6 @@ public class Samus extends edu.benedictine.jump.SimPlayer
 
 		if (wrapper >= 256)
 			wrapper -= 255;
-		System.out.println(wrapper);
 
 		if (!onGround)
 		{

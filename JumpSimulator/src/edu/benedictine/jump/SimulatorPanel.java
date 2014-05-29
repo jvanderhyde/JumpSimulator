@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
@@ -71,11 +72,28 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		jumpCancelLabelMap.put("full", "Full Canceling");
 		director.addRadioGroup(" Jump Cancel:", jumpCancelType, jumpCancelLabelMap);
 		
+		player = new Custom(this,null,0,0,0,0);
 		Director.PlayerClassObserver obs = new Director.PlayerClassObserver()
 		{
-			public void playerClassChanged(Class playerClass)
+			public void playerClassChanged(Class<SimPlayer> playerClass)
 			{
-				System.out.println(playerClass.getName());
+				Constructor<SimPlayer> cons=(Constructor<SimPlayer>)playerClass.getConstructors()[0];
+				try
+				{
+					player = cons.newInstance(SimulatorPanel.this,null,0,0,0,0);
+				}
+				catch (InstantiationException ex)
+				{
+				}
+				catch (IllegalAccessException ex)
+				{
+				}
+				catch (IllegalArgumentException ex)
+				{
+				}
+				catch (java.lang.reflect.InvocationTargetException ex)
+				{
+				}
 			}
 		};
 		director.addPlayerClass("Custom",Custom.class,obs);
@@ -128,7 +146,6 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		ballLoc = new Point(100,100);
 		ballVel = new Point(8,5);
 		
-		player = new Custom(this,null,0,0,0,0);
 	}
 
 	@Override
