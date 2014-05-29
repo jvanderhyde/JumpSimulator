@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
@@ -72,35 +71,19 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		jumpCancelLabelMap.put("full", "Full Canceling");
 		director.addRadioGroup(" Jump Cancel:", jumpCancelType, jumpCancelLabelMap);
 		
-		player = new Custom(this,null,0,0,0,0);
+		player = new SimPlayer(this,null,0,0,0,0);
 		Director.PlayerClassObserver obs = new Director.PlayerClassObserver()
 		{
-			public void playerClassChanged(Class<SimPlayer> playerClass)
+			public void playerClassChanged(PlayerControl playerClass)
 			{
-				Constructor<SimPlayer> cons=(Constructor<SimPlayer>)playerClass.getConstructors()[0];
-				try
-				{
-					player = cons.newInstance(SimulatorPanel.this,null,0,0,0,0);
-				}
-				catch (InstantiationException ex)
-				{
-				}
-				catch (IllegalAccessException ex)
-				{
-				}
-				catch (IllegalArgumentException ex)
-				{
-				}
-				catch (java.lang.reflect.InvocationTargetException ex)
-				{
-				}
-				player.getJumpType(gravity, jumpPower, xSpeed, airDecel, jumpCancelType);
+				player.setPlayerControl(playerClass);
+				playerClass.getJumpType(gravity, jumpPower, xSpeed, airDecel, jumpCancelType);
 			}
 		};
-		director.addPlayerClass("Custom",Custom.class,obs);
-		director.addPlayerClass("Mario",Mario.class,obs);
-		director.addPlayerClass("Samus",Samus.class,obs);
-		director.addPlayerClass("Zee Tee",Eversion.class,obs);
+		director.addPlayerClass("Custom",new Custom(this),obs);
+		director.addPlayerClass("Mario",new Mario(),obs);
+		director.addPlayerClass("Samus",new Samus(),obs);
+		director.addPlayerClass("Zee Tee",new Eversion(),obs);
 		
 		//Set up game input
 		inputManager = new InputManager();

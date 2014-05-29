@@ -1,30 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Eversion-style player control
 
 package edu.benedictine.jump.players;
 
-import edu.benedictine.game.gui.Scene;
 import edu.benedictine.jump.SimVariableChoice;
 import edu.benedictine.jump.SimVariableFloat;
-import edu.benedictine.jump.SimulatorPanel;
 
-/**
- *
- * @author jvanderhyde
- */
-public class Eversion extends edu.benedictine.jump.SimPlayer
+public class Eversion extends PlayerControl
 {
 	
-	public Eversion(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
-	{
-		super(sim,scn,xLoc,yLoc,xCng,yCng);
-		//super(scn, 5, 8, xLoc, yLoc, xCng, yCng, scn.store.heroStatic, -16.0, 16.0, -14.0, 14.0);
-		//xForce = new AdvancedForce(0.0, 0.0, 45.0, -240.0, 240.0, 1);
-	}
-
 	@Override
 	public void getJumpType(SimVariableFloat gravity, 
 							SimVariableFloat jumpPower, 
@@ -32,11 +15,7 @@ public class Eversion extends edu.benedictine.jump.SimPlayer
 							SimVariableFloat airDecel, 
 							SimVariableChoice jumpCancelType)
 	{
-		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
-		if (!jumpPressed && yForce.value < 0.0)
-			gravity.setValue(52);
-		else
-			gravity.setValue(26);
+		gravity.setValue(26);
 		jumpPower.setValue(600);
 		xSpeed.setValue(270);
 		airDecel.setValue(0);
@@ -44,68 +23,70 @@ public class Eversion extends edu.benedictine.jump.SimPlayer
 	}
 
 	@Override
-	public void walk() 
+	public void walk(PlayerInfo pInfo, InputInfo iInfo) 
 	{
-		xForce.upper = 270.0;
-		xForce.lower = -270.0;
-		xForce.accel = 30.0;
-		final boolean leftPressed = sim.getInputManager().isLeftPressed();
-		final boolean rightPressed = sim.getInputManager().isRightPressed();
+		pInfo.xForce.upper = 270.0;
+		pInfo.xForce.lower = -270.0;
+		pInfo.xForce.accel = 30.0;
 		
-		if (leftPressed)
+		if (iInfo.leftPressed)
 		{
-			xForce.accel = -xForce.accel;
-			setFlipX(false);
+			pInfo.xForce.accel = -pInfo.xForce.accel;
 		}
-		if (rightPressed)
+		if (iInfo.rightPressed)
 		{
-			setFlipX(true);
 		}
 		
-		if ((!leftPressed) && (!rightPressed))
+		if ((!iInfo.leftPressed) && (!iInfo.rightPressed))
 		{
 			//eversion
 			//xForce.upper = 0.0;
 			//xForce.lower = 0.0;
 			//xForce.decel = 30.0;
 			
-			xForce.upper = 0.0;
-			xForce.lower = 0.0;
-			xForce.accel = 0.0;
-			xForce.decel = 30.0;
+			pInfo.xForce.upper = 0.0;
+			pInfo.xForce.lower = 0.0;
+			pInfo.xForce.accel = 0.0;
+			pInfo.xForce.decel = 30.0;
 			
 			//basic
-			if (onGround)
+			if (pInfo.onGround)
 			{
-				xForce.upper = 0.0;
-				xForce.lower = 0.0;
-				xForce.decel = 30.0;
+				pInfo.xForce.upper = 0.0;
+				pInfo.xForce.lower = 0.0;
+				pInfo.xForce.decel = 30.0;
 			}
 		}
 	}
 
 	@Override
-	public void jump()
+	public void jump(PlayerInfo pInfo, InputInfo iInfo)
 	{
 		//Eversion jump:
 		final double gravity = 26.0;//?31.2?
 		final double initialJump = 600.0;
 		final double terminalVelocity = 600.0;
-		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
 
-		if (yForce.value < terminalVelocity)
-			yForce.value += gravity;
+		if (pInfo.yForce.value < terminalVelocity)
+			pInfo.yForce.value += gravity;
 
 		//initial jump
-		if ((jumpPressed) && (onGround))
+		if ((iInfo.jumpPressed) && (pInfo.onGround))
 		{
-			yForce.value = -initialJump;
+			pInfo.yForce.value = -initialJump;
 		}
 
 		//apply gravity again if a is not down
-		if ((!jumpPressed) && (yForce.value < 0.0))
+		if ((!iInfo.jumpPressed) && (pInfo.yForce.value < 0.0))
 		{
-			yForce.value += gravity;
+			pInfo.yForce.value += gravity;
 		}
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Zee-tee";
+	}
+	
 }

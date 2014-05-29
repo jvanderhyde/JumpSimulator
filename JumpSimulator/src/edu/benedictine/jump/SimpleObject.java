@@ -11,14 +11,13 @@ import java.awt.Rectangle;
 
 public class SimpleObject
 {
-	protected double x, y;
-	protected double xSpeed, ySpeed;
-	protected LinearForce xForce, yForce;
-	protected final int floor;
-	
-	protected boolean onGround;
-
+	private double x, y;
+	private double xSpeed, ySpeed;
+	private final int floor;
 	private boolean flipX;
+	
+	protected LinearForce xForce, yForce;
+	protected boolean onGround;
 	
 	public SimpleObject(int floor)
 	{

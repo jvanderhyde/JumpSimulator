@@ -5,6 +5,7 @@
 
 package edu.benedictine.jump;
 
+import edu.benedictine.jump.players.PlayerControl;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -146,7 +147,7 @@ public class Director
 		southPanel.setLayout(new BoxLayout(southPanel,BoxLayout.Y_AXIS));
 	}
 	
-	public void addPlayerClass(String label, final Class playerClass, final PlayerClassObserver obs)
+	public void addPlayerClass(String label, final PlayerControl playerClass, final PlayerClassObserver obs)
 	{
 		JRadioButton button = new JRadioButton(label);
 		button.setFont(menlo);
@@ -208,7 +209,7 @@ public class Director
 	
 	public static interface PlayerClassObserver
 	{
-		public void playerClassChanged(Class<SimPlayer> playerClass);
+		public void playerClassChanged(PlayerControl playerClass);
 	}
 
 }

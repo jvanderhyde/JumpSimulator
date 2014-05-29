@@ -1,84 +1,73 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Basic player control that can be modified by slider controls
 
 package edu.benedictine.jump.players;
 
-import edu.benedictine.game.gui.Scene;
 import edu.benedictine.jump.SimulatorPanel;
 
-/**
- *
- * @author jvanderhyde
- */
-public class Custom extends edu.benedictine.jump.SimPlayer
+public class Custom extends PlayerControl
 {
-	public Custom(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
+	SimulatorPanel sim;
+	
+	public Custom(SimulatorPanel sim)
 	{
-		super(sim,scn,xLoc,yLoc,xCng,yCng);
+		this.sim=sim;
 	}
 	
 	@Override
-	public void walk() 
+	public void walk(PlayerInfo pInfo, InputInfo iInfo) 
 	{
 		final double xSpeed = sim.getXSpeed();
 		final double airDecel = sim.getAirDecel();
-		final boolean leftPressed = sim.getInputManager().isLeftPressed();
-		final boolean rightPressed = sim.getInputManager().isRightPressed();
-		xForce.upper = xSpeed;
-		xForce.lower = -xSpeed;
-		xForce.accel = 30.0;
 		
-		if (leftPressed)
+		pInfo.xForce.upper = xSpeed;
+		pInfo.xForce.lower = -xSpeed;
+		pInfo.xForce.accel = 30.0;
+		
+		if (iInfo.leftPressed)
 		{
-			if (xForce.value > xSpeed*airDecel)
-				xForce.value = xSpeed*airDecel;
-			xForce.accel = -xForce.accel;
-			setFlipX(false);
+			if (pInfo.xForce.value > xSpeed*airDecel)
+				pInfo.xForce.value = xSpeed*airDecel;
+			pInfo.xForce.accel = -pInfo.xForce.accel;
 		}
-		if (rightPressed)
+		if (iInfo.rightPressed)
 		{
-			if (xForce.value < -xSpeed*airDecel)
-				xForce.value = -xSpeed*airDecel;
-			setFlipX(true);
+			if (pInfo.xForce.value < -xSpeed*airDecel)
+				pInfo.xForce.value = -xSpeed*airDecel;
 		}
 		
-		if ((!leftPressed) && (!rightPressed))
+		if ((!iInfo.leftPressed) && (!iInfo.rightPressed))
 		{
-			xForce.upper = xSpeed*airDecel;
-			xForce.lower = -xSpeed*airDecel;
-			xForce.accel = 0.0;
-			xForce.decel = 30.0;
+			pInfo.xForce.upper = xSpeed*airDecel;
+			pInfo.xForce.lower = -xSpeed*airDecel;
+			pInfo.xForce.accel = 0.0;
+			pInfo.xForce.decel = 30.0;
 			//basic
-			if (onGround)
+			if (pInfo.onGround)
 			{
-				xForce.upper = 0.0;
-				xForce.lower = 0.0;
-				xForce.decel = 30.0;
+				pInfo.xForce.upper = 0.0;
+				pInfo.xForce.lower = 0.0;
+				pInfo.xForce.decel = 30.0;
 			}
 		}
 	}
 
 	@Override
-	public void jump()
+	public void jump(PlayerInfo pInfo, InputInfo iInfo)
 	{
 		final double gravity = sim.getGravity();
 		final double initialJump = sim.getJumpPower();
-		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
 		
-		if ((jumpPressed) && (onGround))
+		if ((iInfo.jumpPressed) && (pInfo.onGround))
 		{
-			yForce.value = -initialJump;
+			pInfo.yForce.value = -initialJump;
 		}
 
-		if (!jumpPressed && yForce.value < 0.0)
+		if (!iInfo.jumpPressed && pInfo.yForce.value < 0.0)
 		{
 			if (sim.jumpCancelTypeIsFull())
-				yForce.value = 0.0;
+				pInfo.yForce.value = 0.0;
 			if (sim.jumpCancelTypeIsDoubleGravity())
-				yForce.value += gravity;
+				pInfo.yForce.value += gravity;
 
 			/*
 			if (cancelingAcc < 0.0)
@@ -97,9 +86,16 @@ public class Custom extends edu.benedictine.jump.SimPlayer
 			*/
 		}
 
-		if (!onGround)
+		if (!pInfo.onGround)
 		{
-			yForce.value += gravity;
+			pInfo.yForce.value += gravity;
 		}
 	}
+
+	@Override
+	public String getName()
+	{
+		return "custom";
+	}
+	
 }

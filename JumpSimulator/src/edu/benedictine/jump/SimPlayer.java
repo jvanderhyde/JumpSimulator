@@ -4,43 +4,80 @@
 
 package edu.benedictine.jump;
 
-import edu.benedictine.game.engine.Player;
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.jump.players.Custom;
+import edu.benedictine.jump.players.InputInfo;
+import edu.benedictine.jump.players.PlayerControl;
+import edu.benedictine.jump.players.PlayerInfo;
 
-public abstract class SimPlayer extends SimpleObject
+public class SimPlayer extends SimpleObject
 {
 	protected SimulatorPanel sim;
-
-	public SimPlayer(int floor)
-	{
-		super(floor);
-	}
+	private PlayerControl control;
+	private PlayerInfo playerInfo;
+	private InputInfo inputInfo;
 
 	public SimPlayer(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
 	{
 		super(sim.getViewport().height+sim.getViewport().y);
 		this.sim = sim;
+		this.playerInfo = new PlayerInfo();
+		this.inputInfo = new InputInfo();
+		this.control = new Custom(sim);
 	}
 	
-	public void getJumpType(SimVariableFloat gravity, 
-							SimVariableFloat jumpPower, 
-							SimVariableFloat xSpeed, 
-							SimVariableFloat airDecel, 
-							SimVariableChoice jumpCancelType)
+	public void setPlayerControl(PlayerControl control)
 	{
+		this.control = control;
 	}
 	
 	@Override
 	public void update()
 	{
+		copyToPlayerInfo();
+		
 		walk();
 		jump();
+		
+		copyFromPlayerInfo();
+		
 		super.update();
+	}
+
+	private void copyToPlayerInfo()
+	{
+		playerInfo.xForce = this.xForce;
+		playerInfo.yForce = this.yForce;
+		playerInfo.onGround = this.onGround;
+		inputInfo.jumpPressed = sim.getInputManager().isJumpPressed();
+		inputInfo.leftPressed = sim.getInputManager().isLeftPressed();
+		inputInfo.rightPressed = sim.getInputManager().isRightPressed();
+	}
+	
+	private void copyFromPlayerInfo()
+	{
+		this.xForce = playerInfo.xForce;
+		this.yForce = playerInfo.yForce;
+		this.onGround = playerInfo.onGround;
+	}
+
+	//@Override
+	public void walk()
+	{
+		control.walk(playerInfo, inputInfo);
+
+		final boolean leftPressed = sim.getInputManager().isLeftPressed();
+		final boolean rightPressed = sim.getInputManager().isRightPressed();
+		
+		if (leftPressed)
+			setFlipX(false);
+		if (rightPressed)
+			setFlipX(true);
 	}
 	
 	//@Override
-	public abstract void walk();
-	
-	//@Override
-	public abstract void jump();
+	public void jump()
+	{
+		control.jump(playerInfo, inputInfo);
+	}
 }

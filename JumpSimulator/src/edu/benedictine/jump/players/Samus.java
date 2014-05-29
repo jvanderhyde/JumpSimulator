@@ -1,29 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Metroid-style player control
 
 package edu.benedictine.jump.players;
 
-import edu.benedictine.game.gui.Scene;
 import edu.benedictine.jump.SimVariableChoice;
 import edu.benedictine.jump.SimVariableFloat;
-import edu.benedictine.jump.SimulatorPanel;
 
-/**
- *
- * @author jvanderhyde
- */
-public class Samus extends edu.benedictine.jump.SimPlayer
+public class Samus extends PlayerControl
 {
 	int wrapper;
 	boolean samusFlipping = false;
-	
-	public Samus(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
-	{
-		super(sim,scn,xLoc,yLoc,xCng,yCng);
-	}
 	
 	@Override
 	public void getJumpType(SimVariableFloat gravity, 
@@ -43,35 +28,31 @@ public class Samus extends edu.benedictine.jump.SimPlayer
 	}
 
 	@Override
-	public void walk() 
+	public void walk(PlayerInfo pInfo, InputInfo iInfo) 
 	{
 		//xForce.upper = 240.0;
 		//down = -240.0;
-		xForce.upper = 180.0;
-		xForce.lower = -180.0;
-		xForce.accel = 120.0;
+		pInfo.xForce.upper = 180.0;
+		pInfo.xForce.lower = -180.0;
+		pInfo.xForce.accel = 120.0;
 		final double airDecel = 0;
 		final double xSpeed = 180.0;
-		final boolean leftPressed = sim.getInputManager().isLeftPressed();
-		final boolean rightPressed = sim.getInputManager().isRightPressed();
 		
-		if (leftPressed)
+		if (iInfo.leftPressed)
 		{
-			xForce.accel = -xForce.accel;
-			setFlipX(false);
+			pInfo.xForce.accel = -pInfo.xForce.accel;
 		}
-		if (rightPressed)
+		if (iInfo.rightPressed)
 		{
-			setFlipX(true);
 		}
 		
-		if ((!leftPressed) && (!rightPressed))
+		if ((!iInfo.leftPressed) && (!iInfo.rightPressed))
 		{
 			//metroid
-			xForce.upper = xSpeed*airDecel;
-			xForce.lower = -xSpeed*airDecel;
-			xForce.accel = 0.0;
-			xForce.decel = 30.0;
+			pInfo.xForce.upper = xSpeed*airDecel;
+			pInfo.xForce.lower = -xSpeed*airDecel;
+			pInfo.xForce.accel = 0.0;
+			pInfo.xForce.decel = 30.0;
 			/*if (!samusFlipping)
 			{
 				xForce.upper = 0.0;
@@ -86,51 +67,56 @@ public class Samus extends edu.benedictine.jump.SimPlayer
 			}*/
 
 			//basic
-			if (onGround)
+			if (pInfo.onGround)
 			{
-				xForce.upper = 0.0;
-				xForce.lower = 0.0;
-				xForce.decel = 30.0;
+				pInfo.xForce.upper = 0.0;
+				pInfo.xForce.lower = 0.0;
+				pInfo.xForce.decel = 30.0;
 			}
 		}
 	}
 
 	@Override
-	public void jump()
+	public void jump(PlayerInfo pInfo, InputInfo iInfo)
 	{
 		final double gravity = 120.0;//?31.2?
 		final double initialJump = 480.0;
 		final double terminalVelocity = 600.0;
-		final boolean jumpPressed = sim.getInputManager().isJumpPressed();
 
-		if (onGround)
+		if (pInfo.onGround)
 			samusFlipping = false;
 
-		if ((jumpPressed) && (onGround))
+		if ((iInfo.jumpPressed) && (pInfo.onGround))
 		{
-			yForce.value = -initialJump;
+			pInfo.yForce.value = -initialJump;
 			wrapper = 0;
-			if (Math.abs(xForce.value) == 180.0)
+			if (Math.abs(pInfo.xForce.value) == 180.0)
 				samusFlipping = true;
 		}
 
-		if (!onGround)
+		if (!pInfo.onGround)
 			wrapper += 24;
 
-		if (!jumpPressed && yForce.value < 0.0)
+		if (!iInfo.jumpPressed && pInfo.yForce.value < 0.0)
 		{
 			if (wrapper >= 256)
-				yForce.value = 0.0;
+				pInfo.yForce.value = 0.0;
 		}
 
 		if (wrapper >= 256)
 			wrapper -= 255;
 
-		if (!onGround)
+		if (!pInfo.onGround)
 		{
-			if (yForce.value < terminalVelocity)
-				yForce.value += gravity*(24.0/256.0);
+			if (pInfo.yForce.value < terminalVelocity)
+				pInfo.yForce.value += gravity*(24.0/256.0);
 		}
 	}
 
+	@Override
+	public String getName()
+	{
+		return "Samus";
+	}
+	
 }
