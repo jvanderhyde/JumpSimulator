@@ -78,6 +78,18 @@ public class Director
 		s.setOrientation(SwingConstants.HORIZONTAL);
 		removeKeys(s);
 		
+		if (var != null)
+		{
+			var.addStateListener(new SimVariable.StateListener()
+			{
+				public void stateChanged()
+				{
+					int position = (int)Math.floor((var.getValue()-minValue)/(maxValue-minValue)*n+0.5);
+					s.setValue(position);
+				}
+			});
+		}
+		
 		JPanel pan=new JPanel();
 		pan.setLayout(new GridLayout(1,2));
 		pan.add(s);
@@ -104,9 +116,9 @@ public class Director
 			}
 		};
 		
-		for (Map.Entry<String,String> ch:choices.entrySet())
+		for (final Map.Entry<String,String> ch:choices.entrySet())
 		{
-			JRadioButton b = new JRadioButton(ch.getValue());
+			final JRadioButton b = new JRadioButton(ch.getValue());
 			b.setFont(menlo);
 			b.setActionCommand(ch.getKey());
 			removeKeys(b);
@@ -115,6 +127,14 @@ public class Director
 			pan.add(b);
 			if (var.valueEquals(ch.getKey()))
 				b.setSelected(true);
+			var.addStateListener(new SimVariable.StateListener()
+			{
+				public void stateChanged()
+				{
+					if (var.valueEquals(ch.getKey()))
+						b.setSelected(true);
+				}
+			});
 		}
 
 		southPanel.add(pan);

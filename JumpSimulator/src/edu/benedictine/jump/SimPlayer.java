@@ -22,7 +22,7 @@ public abstract class SimPlayer extends SimpleObject
 		this.sim = sim;
 	}
 	
-	public void setJumpType(SimVariableFloat gravity, 
+	public void getJumpType(SimVariableFloat gravity, 
 							SimVariableFloat jumpPower, 
 							SimVariableFloat xSpeed, 
 							SimVariableFloat airDecel, 

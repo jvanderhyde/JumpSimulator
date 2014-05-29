@@ -3,7 +3,7 @@
 
 package edu.benedictine.jump;
 
-public class SimVariableFloat
+public class SimVariableFloat extends SimVariable
 {
 	private double value;
 	
@@ -25,6 +25,7 @@ public class SimVariableFloat
 	public void setValue(double newValue)
 	{
 		value = newValue;
+		this.notifyListeners();
 	}
 	
 }

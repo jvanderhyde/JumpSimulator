@@ -94,6 +94,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 				catch (java.lang.reflect.InvocationTargetException ex)
 				{
 				}
+				player.getJumpType(gravity, jumpPower, xSpeed, airDecel, jumpCancelType);
 			}
 		};
 		director.addPlayerClass("Custom",Custom.class,obs);

@@ -26,7 +26,7 @@ public class Samus extends edu.benedictine.jump.SimPlayer
 	}
 	
 	@Override
-	public void setJumpType(SimVariableFloat gravity, 
+	public void getJumpType(SimVariableFloat gravity, 
 							SimVariableFloat jumpPower, 
 							SimVariableFloat xSpeed, 
 							SimVariableFloat airDecel, 

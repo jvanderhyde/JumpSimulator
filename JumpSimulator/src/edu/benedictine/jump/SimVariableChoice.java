@@ -6,7 +6,7 @@ package edu.benedictine.jump;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class SimVariableChoice
+public class SimVariableChoice extends SimVariable
 {
 	private String value;
 	private HashSet<String> choices;
@@ -31,5 +31,6 @@ public class SimVariableChoice
 			value=newValue;
 		else
 			throw new IllegalArgumentException("Not a valid choice: "+newValue);
+		this.notifyListeners();
 	}
 }
