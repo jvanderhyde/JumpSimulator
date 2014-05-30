@@ -7,6 +7,8 @@ import edu.benedictine.game.engine.*;
 import edu.benedictine.game.engine.collision.*;
 import edu.benedictine.game.media.*;
 import edu.benedictine.game.util.*;
+import edu.benedictine.jump.GraphicsResourceJump;
+import edu.benedictine.jump.LevelManagerJump;
 import edu.benedictine.jump.players.Custom;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -46,7 +48,7 @@ public class Scene
     public double fps;
 	private int t = 0;
 	int sum = 0, sum2 = 0;
-	public GraphicsResource store;
+	public GraphicsResourceJump store;
 	public Player player;
 	Camera camera;
 	public EffectGenerator spEffects;
@@ -63,7 +65,7 @@ public class Scene
 	
 	//collision
 	public CollisionManager collisionManager;
-	LevelManager levelManager;
+	LevelManagerJump levelManager;
 	
 	//camera
 	double cameraX = -512.0;
@@ -223,7 +225,7 @@ public class Scene
 		public void keyTyped(KeyEvent e) {}
 	}
     
-	public Scene(Director mn, String source, String prev, PixelCanvas can, GraphicsResource animations, double pX, double pY)
+	public Scene(Director mn, String source, String prev, PixelCanvas can, GraphicsResourceJump animations, double pX, double pY)
 	{
 		this.mn = mn;
 		swapper = new SceneSwitcher(mn);
@@ -233,7 +235,7 @@ public class Scene
 		boxes = new ArrayList<BoundingBox>();
 		guis = new SortedList(32);
 		hits = new SortedList(25);
-		store = animations;
+		this.store = animations;
 		canvas = can;
 		this.g2 = this.canvas.getGraphics();
 		screenDraw = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -245,7 +247,7 @@ public class Scene
 		fps = 1000.0/rate;
 		
 		collisionManager = new CollisionManager(this);
-		levelManager = new LevelManager(this, currentLevel, prevLevel);
+		levelManager = new LevelManagerJump(this, currentLevel, prevLevel);
 		spEffects = new EffectGenerator(this);
 		
 		
@@ -271,7 +273,7 @@ public class Scene
 		
 		//rain back color
 		//backgroundColor = new Color(153, 102, 102);
-
+		ImageSource k = store.heroAir;
 		backgroundColor = new Color(0, 153, 255);
 		//backgroundColor = new Color(255, 153, 0);
 		//TriggerReel ree = new TriggerReel(this, 0.0, 512.0, 4096.0, 64.0, "test2");

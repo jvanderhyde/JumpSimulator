@@ -9,59 +9,14 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class AnimationStorage 
+public class GraphicsMethods 
 {
-	public Image heroStatic;
-	public Image heroStaticEdge;
-	public Image heroAir;
-	public Image heroSlide;
-	public Image heroHit;
-	public Image heroDown;
-	public Animation heroWalk;
-	public Animation heroRun;
-	public Animation lifeCell;
-	public Animation swordSlash;
-	public Animation slashEffect;
-	
-	public Animation blueRatch;
-	public Animation blueRatchUp;
-	public Animation blueRatchDown;
-	
-	public Image[] silverPistol;
-	public BufferedImage shot;
-	
-	public Image[] mussImages;
-	public Animation mussAttack;
-	public Animation mussGloat;
-	
-	public Animation killnFloat;
-	
-	public Animation zoomFloat;
-	public Animation wink;
-	
-	//Sprite-sheets
-	BufferedImage[] castleSheet;
-	BufferedImage[] terrainSheet;
-	BufferedImage[] metalSheet;
-	BufferedImage[] effectSheet;
-	BufferedImage[] mussSheet;
-	BufferedImage[] killnSheet;
-	private PixelCanvas gameCanvas;
-	
-	BufferedImage[] tiles;
-	
-	BufferedImage blank;
-	BufferedImage terrainMap;
-	BufferedImage limbImg;
-	BufferedImage slideDispenser;
-	BufferedImage mountain;
-	BufferedImage sky;
-	
-	public AnimationStorage(PixelCanvas gameCanvas)
+	PixelCanvas gameCanvas;
+			
+	public GraphicsMethods(PixelCanvas gameCanvas)
 	{
 		this.gameCanvas = gameCanvas;
 	}
-
 	
 	//loads and returns a BufferedImage from a file.
 	public static BufferedImage loadImage(String fileName)
@@ -79,12 +34,11 @@ public class AnimationStorage
 	}
 	
 	//loads and resizes a Buffered image to match the current resolution
-	public BufferedImage toScale(String filePath)
+	public static BufferedImage toScale(String filePath, int canvasWidth)
 	{			
 		BufferedImage bigPic = loadImage(filePath);
 		
 		//Scale image depending upon resolution.  1024/640 is point of reference...
-		int canvasWidth = gameCanvas.getWidth();
 		
 		double factor = (double)canvasWidth/(double)1024;
 		
@@ -155,19 +109,19 @@ public class AnimationStorage
 	}
 	
 	//creates an animation given an array of Images
-	public Animation createAnimation(Image[] source, boolean cyclical, double frameRate, int replay)
+	public static Animation createAnimation(Image[] source, boolean cyclical, double frameRate, int replay)
 	{			
 		return new Animation(source, cyclical, frameRate, replay);
 	}
 	
 	//creates an animation given an array of BufferedImages
-	public Animation createAnimation(BufferedImage[] source, boolean cyclical, double frameRate, int replay)
+	public static Animation createAnimation(BufferedImage[] source, boolean cyclical, double frameRate, int replay)
 	{			
 		return new Animation(source, cyclical, frameRate, replay);
 	}
 	
 	//creates an animation given an array of BufferedImages
-	public Animation createAnimation(ImageSource[] source, boolean cyclical, double frameRate, int replay)
+	public static Animation createAnimation(ImageSource[] source, boolean cyclical, double frameRate, int replay)
 	{
 		BufferedImage[] buffs = new BufferedImage[source.length];
 		Image[] images = new Image[source.length];
@@ -188,7 +142,7 @@ public class AnimationStorage
 	}
 	
 	//creates a tile map given an array of BufferedImages
-	public BufferedImage createTileMap(BufferedImage[] source, int width, int height, int rows, int cols)
+	public static BufferedImage createTileMap(BufferedImage[] source, int width, int height, int rows, int cols)
 	{	
 		BufferedImage tile = new BufferedImage(width*cols, height*rows, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = tile.createGraphics();
@@ -202,7 +156,7 @@ public class AnimationStorage
 		return tile;
 	}
 	
-	public ImageSource[] makeSourceArray(BufferedImage[] images)
+	public static ImageSource[] makeSourceArray(BufferedImage[] images)
 	{
 		ImageSource[] sources = new ImageSource[images.length];
 		for (int i=0; i<images.length; i++)
@@ -212,7 +166,7 @@ public class AnimationStorage
 		return sources;
 	}
 	
-	public ImageSource[] makeSourceArray(Image[] images)
+	public static ImageSource[] makeSourceArray(Image[] images)
 	{
 		ImageSource[] sources = new ImageSource[images.length];
 		for (int i=0; i<images.length; i++)

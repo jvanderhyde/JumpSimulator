@@ -2,7 +2,7 @@
 
 package edu.benedictine.game.gui;
 
-import edu.benedictine.game.media.GraphicsResource;
+import edu.benedictine.jump.GraphicsResourceJump;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Frame;
@@ -26,7 +26,7 @@ public class Director
 {	
 	public Scene currentScene;
 	PixelCanvas gameCanvas;
-	GraphicsResource aniStore;
+	GraphicsResourceJump aniStore;
 	Frame f;
 	JPanel p;
 	public JSlider s, s2, s3, s4, s5;
@@ -108,7 +108,7 @@ public class Director
 		}
 	}
 
-	public Director(final Frame f, PixelCanvas canvas, GraphicsResource animations)
+	public Director(final Frame f, PixelCanvas canvas, GraphicsResourceJump animations)
 	{
 		aniStore = animations;
 		gameCanvas = canvas;

@@ -3,12 +3,12 @@
 
 package edu.benedictine.game.gui;
 
-import edu.benedictine.game.media.GraphicsResource;
+import edu.benedictine.jump.GraphicsResourceJump;
 import java.awt.Frame;
 
 public class Main 
 {	
-	public static GraphicsResource aniStore;
+	public static GraphicsResourceJump aniStore;
 	public static PixelCanvas gameCanvas;
 	public static Director sceneMaster;
 	
@@ -18,7 +18,7 @@ public class Main
 	{	
 		
 		gameCanvas = new PixelCanvas(CAN_WIDTH, CAN_HEIGHT);
-		aniStore = new GraphicsResource(gameCanvas);
+		aniStore = new GraphicsResourceJump(gameCanvas);
 		
 		Frame f = new Frame("Jump Simulator");
         
