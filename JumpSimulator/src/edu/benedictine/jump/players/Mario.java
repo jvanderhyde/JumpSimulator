@@ -49,6 +49,7 @@ public class Mario extends PlayerControl
 		
 		if ((!iInfo.leftPressed) && (!iInfo.rightPressed))
 		{
+			pInfo.xForce.accel = 0.0;
 			//mario
 			if (pInfo.onGround)
 			{
