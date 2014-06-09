@@ -31,7 +31,7 @@ public class Terrain extends SceneObject
 		this.ySpeed = ySpeed;
 		this.scn = scn;
 		this.orientation = orientation;
-		scn.collisionManager.add(this, orientation);
+		scn.physics.add(this, orientation);
 		width = Math.abs(x1-x0);
 		height = Math.abs(y1-y0);
 	}
@@ -91,6 +91,6 @@ public class Terrain extends SceneObject
 	
 	public void die()
 	{
-		scn.collisionManager.remove(this, orientation);
+		scn.physics.remove(this, orientation);
 	}
 }

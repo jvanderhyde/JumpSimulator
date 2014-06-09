@@ -531,8 +531,12 @@ public class CollisionManager
 					//ignore if already checked
 					boolean alreadyHit = false;
 					for (BoundingBox o : ignores)
+					{
 						if (target == o)
+						{
 							alreadyHit = true; //already checked, ignore
+						}
+					}
 					
 					if (!alreadyHit)
 					{
@@ -540,8 +544,8 @@ public class CollisionManager
 						Hit h = checkBox(box, target);
 						if (h != null)
 						{
-							scn.hits.add(h.a.priority, new Hit(h.a, h.b, h.x0, h.y0, h.x1, h.y1));
-							scn.hits.add(h.b.priority, new Hit(h.b, h.a, h.x1, h.y1, h.x0, h.y0));
+							scn.addHit(new Hit(h.a, h.b, h.x0, h.y0, h.x1, h.y1, h.a.priority));
+							scn.addHit(new Hit(h.b, h.a, h.x1, h.y1, h.x0, h.y0, h.b.priority));
 						}
 						/*Hit h = checkBox(box, target);
 						if (h != null)
@@ -580,7 +584,7 @@ public class CollisionManager
 			&& ((y0+a.halfHeight > y1-b.halfHeight) && (y0-a.halfHeight < y1+b.halfHeight)))
 			{
 				//System.out.print("--got hit\n");
-				return new Hit(a, b, x0, y0, x1, y1);
+				return new Hit(a, b, x0, y0, x1, y1, 0);
 			}
 		}
 		return null;

@@ -25,10 +25,10 @@ public class PressObject extends GameObject
 	
 	public void hitPlayer(Player o)
 	{
-		if (scn.d && scn.downPressed <= 0 && o.onGround && o.locked <= 0)
-		{
-			press();
-		}
+		//if (scn.d && scn.downPressed <= 0 && o.onGround && o.locked <= 0)
+		//{
+		//	press();
+		//}
 	}
 	
 	public void press()

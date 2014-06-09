@@ -1,6 +1,9 @@
 //created by Joseph Rioux, 4 March 2013
+//Modified by Joseph Rioux, 6 June 2014
+//  Commented to eliminate errors due to altering Scene
 
 package edu.benedictine.game.gui;
+
 
 import edu.benedictine.jump.GraphicsResourceJump;
 import java.awt.BorderLayout;
@@ -177,15 +180,15 @@ public class Director
 		s4.setOrientation(SwingConstants.HORIZONTAL);
 		removeKeys(s4);
 		
-		/*
-		s5 = new JSlider();
-		s5.setMinimum(0);
-		s5.setMaximum(10);
-		s5.addChangeListener(new JumpCancelListener());
-		s5.setValue(5);
-		s5.setOrientation(SwingConstants.HORIZONTAL);
-		removeKeys(s5);
-		*/
+		
+		//s5 = new JSlider();
+		//s5.setMinimum(0);
+		//s5.setMaximum(10);
+		//s5.addChangeListener(new JumpCancelListener());
+		//s5.setValue(5);
+		//s5.setOrientation(SwingConstants.HORIZONTAL);
+		//removeKeys(s5);
+		
 		
 		//radio buttons
 	    custom = new JRadioButton("Custom");
@@ -269,8 +272,8 @@ public class Director
 			@Override
 			public void windowClosing(WindowEvent evt)
 			{
-				if (currentScene != null)
-					currentScene.stop();
+				//if (currentScene != null)
+					//currentScene.stop();
 				f.setVisible(false);
 				f.dispose();
 			}
@@ -281,8 +284,8 @@ public class Director
 		//currentScene = new Scene(this, "Metroid", "", gameCanvas, aniStore, 432.0, 192.0);
 		//currentScene = new Scene(this, "Playground", "", gameCanvas, aniStore, 0.0, 0.0);
 		//currentScene = new Scene(this, "Mario", "", gameCanvas, aniStore, -512.0, 0.0);
-        currentScene = new Scene(this, "pictest", "", gameCanvas, aniStore, 0.0, 0.0);
-		currentScene.start();
+        ////currentScene = new Scene(this, "pictest", "", gameCanvas, aniStore, 0.0, 0.0);
+		////currentScene.start();
 	}
 	
 	public void removeKeys(JComponent j)
@@ -296,7 +299,7 @@ public class Director
 	
 	public void changeScene(String scn, String prev, double nX, double nY)
 	{
-		currentScene = new Scene(this, scn, prev, gameCanvas, aniStore, nX, nY);
-		currentScene.start();
+		//currentScene = new Scene(this, scn, prev, gameCanvas, aniStore, nX, nY);
+		//currentScene.start();
 	}
 }

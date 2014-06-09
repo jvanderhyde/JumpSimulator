@@ -44,7 +44,7 @@ public class GameObject extends WorldObject
 	public GameObject(Scene scn, int exec, int draw, double xLoc, double yLoc, double xCng, double yCng, ImageSource img, double head, double feet, double left, double right) 
 	{
 		super(scn, exec, draw, xLoc, yLoc, xCng, yCng, img);
-		scn.games.add(exec, this);
+		scn.addGame(this);
 		this.feet = feet;
 		this.head = head;
 		this.left = left;
@@ -114,16 +114,16 @@ public class GameObject extends WorldObject
 		atCeil = false;
 		atLeft = false;
 		
-		atLeftWall = scn.collisionManager.collideLeftWall(this, head, feet, left, right);
+		atLeftWall = scn.physics.collideLeftWall(this, head, feet, left, right);
 		if (atLeftWall != null)
 			reactLeftWall();
-		atRightWall = scn.collisionManager.collideRightWall(this, head, feet, left, right);
+		atRightWall = scn.physics.collideRightWall(this, head, feet, left, right);
 		if (atRightWall != null)
 			reactRightWall();
-		onTerrain = scn.collisionManager.collideFloor(this, head, feet, left, right);
+		onTerrain = scn.physics.collideFloor(this, head, feet, left, right);
 		if (onTerrain != null)
 			reactFloor();
-		atCeiling = scn.collisionManager.collideCeiling(this, head, feet, left, right);
+		atCeiling = scn.physics.collideCeiling(this, head, feet, left, right);
 		if (atCeiling != null)
 			reactCeiling();
 		
@@ -133,13 +133,13 @@ public class GameObject extends WorldObject
 		{
 			if (atLeftWall == null)
 			{
-				atLeftWall = scn.collisionManager.collideLeftWall(this, head, feet, left, right);
+				atLeftWall = scn.physics.collideLeftWall(this, head, feet, left, right);
 				if (atLeftWall != null)
 					reactLeftWall();
 			}
 			if (atRightWall == null)
 			{
-				atRightWall = scn.collisionManager.collideRightWall(this, head, feet, left, right);
+				atRightWall = scn.physics.collideRightWall(this, head, feet, left, right);
 				if (atRightWall != null)
 					reactRightWall();
 			}
@@ -240,7 +240,7 @@ public class GameObject extends WorldObject
 
 	public void die()
 	{
-		scn.games.remove(this, execOrder);
+		scn.removeGame(this);
 		if (box != null)
 			box.die();
 		super.die();
@@ -266,4 +266,12 @@ public class GameObject extends WorldObject
 		return head;
 	}
 	
+	@Override
+	public int compareTo(Object o)
+	{
+		if (o instanceof GameObject)
+			return this.execOrder-((GameObject)o).execOrder;
+		else
+			return super.compareTo(o);
+	}
 }

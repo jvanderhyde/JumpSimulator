@@ -8,7 +8,7 @@ import edu.benedictine.game.gui.Scene;
 
 //any object updated by the scene
 
-public class SceneObject 
+public class SceneObject implements Comparable
 {
 	int execOrder, lifeTime = -1;
 	public boolean alive=true;
@@ -17,9 +17,9 @@ public class SceneObject
 	
 	public SceneObject(Scene scn, int exec)
 	{
-		scn.objs.add(exec, this);
-		this.scn = scn;
 		execOrder = exec;
+		scn.addObj(this);
+		this.scn = scn;
 	}
 	
 	public void setTimer(int time)
@@ -50,7 +50,7 @@ public class SceneObject
 		//another pointer can still tell that it has been removed from the current scene
 		alive = false;
 		//remove from the current scene
-		scn.objs.remove(this, execOrder);
+		scn.removeObj(this);
 	}
 	
 	public void cleanUp()
@@ -73,5 +73,13 @@ public class SceneObject
 		//this is used to for check whether an object that you are referencing through
 		//another pointer is still in the current scene.
 		return alive;
+	}
+
+	public int compareTo(Object o)
+	{
+		if (o instanceof SceneObject)
+			return this.execOrder-((SceneObject)o).execOrder;
+		else
+			throw new IllegalArgumentException("Cannot compare to an object that is not a SceneObject.");
 	}
 }

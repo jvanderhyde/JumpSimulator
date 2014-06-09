@@ -5,9 +5,9 @@ import edu.benedictine.game.gui.Main;
 
 //Created by Joseph Rioux, 11 September 2013
 
-public class Camera extends SceneObject
+public class Camera extends WorldObject
 {	
-	double x, y, targetX, targetY, offsetX, offsetY, targetOffsetX, priorTarget, offSpeed;
+	double targetX, targetY, offsetX, offsetY, targetOffsetX, priorTarget, offSpeed;
 	boolean onPlayer, targetLocked;
 	WorldObject target;
 	int change = 0;
@@ -16,10 +16,12 @@ public class Camera extends SceneObject
 	
 	public Camera(Scene scn, double x, double y, boolean on) 
 	{
-		super(scn, 15);
+		super(scn, 15, x, y, null);
 		this.x = x;
 		this.y = y;
 		onPlayer = on;
+		halfWidth = 8;
+		halfHeight = 8;
 	}
 	
 	public void setBounds(double l, double r, double t, double b)
@@ -117,8 +119,8 @@ public class Camera extends SceneObject
 	
 	public void move()
 	{
-		x = scn.player.x+offsetX;
-		y = scn.player.y+offsetY;
+		//x = scn.player.x+offsetX;
+		//y = scn.player.y+offsetY;
 		
 		//modify these values in the level definition
 	

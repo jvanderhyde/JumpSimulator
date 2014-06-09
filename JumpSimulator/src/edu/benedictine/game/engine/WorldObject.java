@@ -6,9 +6,11 @@ import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.util.AngleFunctions;
 import edu.benedictine.game.util.LinearForce;
 import edu.benedictine.game.gui.Scene;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public class WorldObject extends SceneObject
+public class WorldObject extends SceneObject implements Comparable
 {
 	int drawOrder;
 	double x, y;
@@ -19,8 +21,8 @@ public class WorldObject extends SceneObject
 	protected LinearForce xForce, yForce;
 	boolean forceOn = false;
 	double gravity = 0.0, maxFall = 0.0;
-	double halfWidth;
-	double halfHeight;
+	double halfWidth=16;
+	double halfHeight=16;
 	boolean guiObj;
 	public boolean screenObj;
 	
@@ -49,14 +51,14 @@ public class WorldObject extends SceneObject
 		this.img = img;
 		flipX = false;
 		flipY = false;
-		scn.draws.add(draw, this);
 		this.drawOrder = draw;
+		scn.addDraw(this);
 		guiObj = false;
 		imageTime = 0;
 		if (img != null)
 		{
-			halfWidth = scn.canvas.v2WX(this.img.getFrame(0, flipX, flipY).getWidth()/2);
-			halfHeight = scn.canvas.v2WY(this.img.getFrame(0, flipX, flipY).getHeight()/2);
+			halfWidth = scn.panel.v2WX(this.img.getFrame(0, flipX, flipY).getWidth()/2);
+			halfHeight = scn.panel.v2WY(this.img.getFrame(0, flipX, flipY).getHeight()/2);
 		}
 		xForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
 		yForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
@@ -73,14 +75,14 @@ public class WorldObject extends SceneObject
 		this.img = img;
 		flipX = false;
 		flipY = false;
-		scn.guis.add(draw, this);
+		scn.addDraw(this);
 		guiObj = true;
 		this.drawOrder = draw;
 		imageTime = 0;
 		if (img != null)
 		{
-			halfWidth = scn.canvas.v2WX(this.img.getFrame(0, flipX, flipY).getWidth()/2);
-			halfHeight = scn.canvas.v2WY(this.img.getFrame(0, flipX, flipY).getHeight()/2);
+			halfWidth = scn.panel.v2WX(this.img.getFrame(0, flipX, flipY).getWidth()/2);
+			halfHeight = scn.panel.v2WY(this.img.getFrame(0, flipX, flipY).getHeight()/2);
 		}
 		xForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
 		yForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
@@ -145,15 +147,15 @@ public class WorldObject extends SceneObject
 	{
 		if (guiObj)
 		{
-			scn.guis.remove(this, drawOrder);
+			scn.removeDraw(this);
 			drawOrder = l;
-			scn.guis.add(drawOrder, this);
+			scn.addDraw(this);
 		}
 		else
 		{
-			scn.draws.remove(this, drawOrder);
+			scn.removeDraw(this);
 			drawOrder = l;
-			scn.draws.add(drawOrder, this);
+			scn.addDraw(this);
 		}
 	}
 
@@ -179,8 +181,10 @@ public class WorldObject extends SceneObject
 		priorX = x;
 		priorY = y;
 		
-		double actualSpeedX = (xCng/(scn.fps));
-		double actualSpeedY = (yCng/(scn.fps));
+		//double actualSpeedX = (xCng/(scn.fps));
+		//double actualSpeedY = (yCng/(scn.fps));
+		double actualSpeedX = (xCng/60);
+		double actualSpeedY = (yCng/60);
 		
 		//if unmounted, move normally. If mounted, move relative to the mount
 		if (mount == null)
@@ -317,8 +321,8 @@ public class WorldObject extends SceneObject
 	{
 		img = im;
 		imageTime = 0;
-		halfWidth = scn.canvas.v2WX(this.img.getFrame(imageTime, flipX, flipY).getWidth()/2);
-		halfHeight = scn.canvas.v2WY(this.img.getFrame(imageTime, flipX, flipY).getHeight()/2);
+		halfWidth = scn.panel.v2WX(this.img.getFrame(imageTime, flipX, flipY).getWidth()/2);
+		halfHeight = scn.panel.v2WY(this.img.getFrame(imageTime, flipX, flipY).getHeight()/2);
 	}
 	
 	//sets a new image only if that image is not the current one
@@ -389,9 +393,9 @@ public class WorldObject extends SceneObject
 	public void die()
 	{
 		if (guiObj)
-			scn.guis.remove(this, drawOrder);
+			scn.removeDraw(this);
 		else
-			scn.draws.remove(this, drawOrder);
+			scn.removeDraw(this);
 		super.die();
 	}
 
@@ -415,5 +419,35 @@ public class WorldObject extends SceneObject
 		return yForce;
 	}
 	
+	public void draw(Graphics g, int x, int y)
+	{
+		g.setColor(Color.YELLOW);
+		int size = 32;
+		if (this instanceof Camera)
+		{
+			g.setColor(Color.GREEN);
+			size = 16;
+			g.drawRect(x, y, size, size);
+		}
+		else if (this instanceof TestPlayer)
+		{
+			g.setColor(Color.RED);
+			size = 24;
+			g.drawOval(x, y, size, size);
+		}
+		else
+		{
+			g.drawRect(x, y, size, size);
+		}
+		g.setColor(Color.BLACK);
+	}
 	
+	@Override
+	public int compareTo(Object o)
+	{
+		if (o instanceof WorldObject)
+			return this.drawOrder-((WorldObject)o).drawOrder;
+		else
+			return super.compareTo(o);
+	}
 }

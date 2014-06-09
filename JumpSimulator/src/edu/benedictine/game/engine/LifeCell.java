@@ -47,7 +47,7 @@ public class LifeCell extends PickUp
 	
 	public void die()
 	{
-		scn.spEffects.radialParticles(20, scn.store.jetStream, x, y, 60.0, 180.0, 16, 24, 10, 15, 1.0, 30.0, 480.0);
+		//scn.spEffects.radialParticles(20, scn.store.jetStream, x, y, 60.0, 180.0, 16, 24, 10, 15, 1.0, 30.0, 480.0);
 		super.die();
 	}
 }

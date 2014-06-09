@@ -3,18 +3,17 @@
 
 package edu.benedictine.game.engine;
 
-import edu.benedictine.game.gui.Director;
+import edu.benedictine.game.gui.Scene;
 
-public class SceneSwitcher
+public class SceneSwitcher extends SceneObject
 {
 	int timeToGo;
 	String nextScene;
 	double nextX, nextY;
-	Director mn;
 	
-	public SceneSwitcher(Director main) 
+	public SceneSwitcher(Scene scn) 
 	{
-		this.mn = main;
+		super(scn, 0);
 		timeToGo = -1;
 		nextScene = "0";
 	}
@@ -34,7 +33,7 @@ public class SceneSwitcher
 	{
 		//when the timer runs out, change the scene
 		if (timeToGo == 0)
-			mn.changeScene(nextScene, mn.currentScene.currentLevel, nextX, nextY);
+			scn.panel.changeScene(nextScene, scn.currentLevel, nextX, nextY);
 		timeToGo--;
 	}
 

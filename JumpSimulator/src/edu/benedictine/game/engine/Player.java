@@ -3,8 +3,14 @@
 //  Specific powers and abilities will build off of this.
 //Modified by James Vanderhyde, 21 May 2014
 //  Refactored specialty movement code into subclasses
+//Modified by Joseph Rioux, 6 June 2014
+//  Commented to eliminate errors due to altering Scene
 
 package edu.benedictine.game.engine;
+
+
+
+
 
 import edu.benedictine.game.media.ImageSource;
 import edu.benedictine.game.engine.collision.BoundingBox;
@@ -65,13 +71,13 @@ public class Player extends GameObject
 		maxLife = 10;
 		life = 10;
 		
-		switchSize();
+		//switchSize();
 	}
 	
 	public void update()
 	{
 		//large or small
-		if (scn.d && scn.downPressed <= 0 && onGround)
+		/*if (scn.d && scn.downPressed <= 0 && onGround)
 			switchSize();
 		
 		onEdge = false;
@@ -101,12 +107,12 @@ public class Player extends GameObject
 			yForce.value = 0.0;
 		}
 		
-		super.update();
+		super.update();*/
 	}
 	
 	public void switchSize()
 	{
-		if (big)
+		/*if (big)
 		{
 			big = false;
 			this.setTerrainLimits(-8, 8, -12, 16);
@@ -127,14 +133,14 @@ public class Player extends GameObject
 				this.setTerrainLimits(-8, 8, -40, 16);
 				y -= 4;
 			}
-		}
+		}*/
 	}
 	
 	//This is still accessing the JumpSimulator interface,
 	// but for the game engine there should be some default implementation.
 	public void walk() 
 	{
-		xForce.upper = scn.mn.xSpeed;
+		/*xForce.upper = scn.mn.xSpeed;
 		xForce.lower = -scn.mn.xSpeed;
 		xForce.accel = 30.0;
 
@@ -165,11 +171,12 @@ public class Player extends GameObject
 				xForce.lower = 0.0;
 				xForce.decel = 30.0;
 			}
-		}
+		}*/
 	}
 
 	public void jump()
 	{
+		/*
 		if ((scn.a) && (scn.aPressed <= 0) && (onGround))
 		{
 			yForce.value = -scn.mn.jumpPower;
@@ -187,10 +194,12 @@ public class Player extends GameObject
 		{
 			yForce.value += scn.mn.gravity;
 		}
+		*/
 	}
 	
 	private void setAnimations()
 	{	
+		/*
 		ImageSource walk, stat, air;
 		if (big)
 		{
@@ -225,6 +234,7 @@ public class Player extends GameObject
 			}
 		}
 		//setImage(scn.store.heroHit);
+		*/
 	}
 	
 	public void checkCollision()
@@ -256,6 +266,9 @@ public class Player extends GameObject
 
 		//initial check
 		
+		/*
+		
+		
 		checkLeft();
 		checkRight();
 		checkCeiling();
@@ -282,10 +295,12 @@ public class Player extends GameObject
 			hitTerrain(atCeiling);
 		if (atLeftWall != null)
 			hitTerrain(atLeftWall);
+		*/
 	}
 	
 	public void checkFloor()
 	{
+		/*
 		double xL = -1.0;
 		double xR = 1.0;
 		if (Math.abs(xSpeed) <= 8.0)
@@ -342,10 +357,12 @@ public class Player extends GameObject
 		//(it looks weird to walk off a platform and be right against the wall)
 		if (!onGround && xSpeed == 0.0 && skid != 0 && ySpeed >= 0.0)
 			xSpeed = skid;
+			*/
 	}
 	
 	public void checkRight()
 	{
+	/*
 		double priorSpeed = xSpeed;
 		atRightWall = scn.collisionManager.collideRightWall(this, head, feet, left, right);
 		if (atRightWall != null)
@@ -362,10 +379,12 @@ public class Player extends GameObject
 				xForce.value = 0.0;
 			}
 		}
+		*/
 	}
 	
 	public void checkCeiling()
 	{
+		/*
 		atCeiling = scn.collisionManager.collideCeiling(this, head, feet, left, right);
 		if (atCeiling != null)
 		{
@@ -375,10 +394,12 @@ public class Player extends GameObject
 				yForce.value = -4.0;
 			}
 		}
+		*/ 
 	}
 	
 	public void checkLeft()
 	{
+		/*
 		atLeftWall = scn.collisionManager.collideLeftWall(this, head, feet, left, right);
 		if (atLeftWall != null)
 		{
@@ -394,10 +415,12 @@ public class Player extends GameObject
 				xForce.value = 0.0;
 			}
 		}
+		* */
 	}
 	
 	public void wallAdjust()
 	{
+		/*
 		Terrain wall = scn.collisionManager.basicCollideLeftWall(this, head, feet, left, right);
 		if (wall != null)
 		{
@@ -415,10 +438,12 @@ public class Player extends GameObject
 				speed = wall.x0 - (x+left);
 			x += speed;
 		}
+		* */
 	}
 
 	public void cleanUp()
 	{
+		/*
 		super.cleanUp();
 		
 		if (gotHit < 1)
@@ -492,11 +517,12 @@ public class Player extends GameObject
 			scn.mn.noCancel.setEnabled(true);
 			scn.mn.doubleGravity.setEnabled(true);
 			scn.mn.fullCancel.setEnabled(true);
-		}
+		}*/
 	}
 
 	public void takeDamage(GameObject foe, BoundingBox box, int damage) 
 	{
+		/*
 		if (invincible < 1)
 		{
 			life -= damage;
@@ -527,11 +553,12 @@ public class Player extends GameObject
 			//gotHit = 25; //timer for recovering from a hit
 			invincible = 80; //invincibility frames
 		}
+		* */
 	}
 	
 	public void die()
 	{
-		scn.spEffects.radialParticles(50, scn.store.jetStream, x, y, 240.0, 480.0, 20, 50, 16, 16, 1.0, 30.0, 480.0);
+		//scn.spEffects.radialParticles(50, scn.store.jetStream, x, y, 240.0, 480.0, 20, 50, 16, 16, 1.0, 30.0, 480.0);
 		//reload
 		//scn.mn.state.load();
 		//System.out.println("reloading game "+scn.mn.state.savedLevel);

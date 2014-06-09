@@ -31,8 +31,8 @@ public class BoundingBox
 		this.priority = priority;
 		x = owner.getX()+xOffset;
 		y = owner.getY()+yOffset;
-		scn.collisionManager.boxes[group].add(this);
-		scn.boxes.add(this);
+		scn.physics.boxes[group].add(this);
+		scn.addBox(this);
 		checks = new ArrayList<BoundingBox>();
 	}
 	
@@ -82,7 +82,7 @@ public class BoundingBox
 		//append any found in this check to it
 		if (on)
 		{
-			scn.collisionManager.checkBoxes(this, categories, checks);
+			scn.physics.checkBoxes(this, categories, checks);
 			//reinstantiate checks to be ready for next frame
 			checks = new ArrayList<BoundingBox>();
 		}
@@ -128,7 +128,7 @@ public class BoundingBox
 	
 	public void die()
 	{
-		scn.boxes.remove(this);
-		scn.collisionManager.boxes[group].remove(this);
+		scn.removeBox(this);
+		scn.physics.boxes[group].remove(this);
 	}
 }
