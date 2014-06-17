@@ -28,7 +28,7 @@ public class SimPlayer extends GameObject
 	public SimPlayer(SimulatorPanel sim, Scene scn, double xLoc, double yLoc)
 	{
 		//super(sim.getViewport().height+sim.getViewport().y,xLoc,yLoc,xCng,yCng);
-		super(scn, 5, 8, xLoc, yLoc, 0, 0, null, -boxWidth/2.0, boxWidth/2.0, -boxHeight/2.0, boxHeight/2.0);
+		super(scn, 5, 8, xLoc, yLoc, 0, 0, null, -boxHeight/2.0, boxHeight/2.0, -boxWidth/2.0, boxWidth/2.0);
 		this.input = sim.getInputManager();
 		forceOn = true;
 		halfWidth = boxWidth/2;
