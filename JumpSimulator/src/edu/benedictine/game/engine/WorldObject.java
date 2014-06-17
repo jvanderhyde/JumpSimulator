@@ -19,7 +19,7 @@ public class WorldObject extends SceneObject implements Comparable
 	//double xSpeed;
 	//double ySpeed;
 	protected LinearForce xForce, yForce;
-	boolean forceOn = false;
+	protected boolean forceOn = false;
 	double gravity = 0.0, maxFall = 0.0;
 	protected double halfWidth=16;
 	protected double halfHeight=16;
@@ -379,6 +379,16 @@ public class WorldObject extends SceneObject implements Comparable
 	public void setFlipY(boolean val)
 	{
 		flipY = val;
+	}
+	
+	public boolean getFlipX()
+	{
+		return flipX;
+	}
+	
+	public boolean getFlipY()
+	{
+		return flipY;
 	}
 	
 	//flips X

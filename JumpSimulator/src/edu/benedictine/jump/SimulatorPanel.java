@@ -3,14 +3,16 @@
 
 package edu.benedictine.jump;
 
+import edu.benedictine.game.engine.DefaultPlayer;
+import edu.benedictine.game.engine.GameObject;
 import edu.benedictine.game.gui.GamePanelFixedFPS;
+import edu.benedictine.game.gui.Scene;
+import edu.benedictine.game.gui.SceneGraphics;
 import edu.benedictine.game.input.*;
 import edu.benedictine.jump.players.*;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
@@ -18,6 +20,8 @@ public class SimulatorPanel extends GamePanelFixedFPS
 {
 	private Director director;
 	private InputManager inputManager;
+	private Scene currentScene;
+	private SceneGraphics scnGraphics;
 
 	//simulator values
 	private SimVariableFloat gravity = new SimVariableFloat();
@@ -36,7 +40,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	}
 	
 	//game state variables
-	private SimPlayer player;
+	private GameObject player;
 	
 	public SimulatorPanel()
 	{
@@ -74,8 +78,8 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		{
 			public void playerClassChanged(PlayerControl playerClass)
 			{
-				if (player != null)
-					player.setPlayerControl(playerClass);
+				if (player != null && player instanceof SimPlayer)
+					((SimPlayer)player).setPlayerControl(playerClass);
 				playerClass.getJumpType(gravity, jumpPower, xSpeed, airDecel, jumpCancelType);
 			}
 		};
@@ -99,31 +103,37 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		this.add(gameCanvas,BorderLayout.CENTER);
 		this.add(director.getSouthPanel(),BorderLayout.SOUTH);
 		this.add(director.getEastPanel(),BorderLayout.EAST);
+		
 	}
 	
 	private void paintGameCanvas(Graphics g)
 	{
-		g.setColor(Color.black);
+		if (currentScene != null)
+			scnGraphics.paintScene(currentScene, g);
+		/*g.setColor(Color.black);
 		g.fillRect(vLeft, vTop, vRight-vLeft, vBottom-vTop);
 		if (player != null)
 		{
 			player.paint(g);
-		}
+		}*/
 	}
 
 	@Override
 	public void startGame()
 	{
-		player = new SimPlayer(this,null,100,300,0,0);
+		//Set up scene
+		currentScene = new Scene(this.inputManager, "pictest.png", "nullLVL");
+		player = new SimPlayer(this,currentScene,96,128);
+		//player = new DefaultPlayer(this.getInputManager(),currentScene,96,128);
+		currentScene.replacePlayer(player);
+		scnGraphics = new SceneGraphics(vRight-vLeft, vBottom-vTop);
 	}
-
+	
 	@Override
 	public void updateGame()
 	{
-		if (player != null)
-		{
-			player.update();
-		}
+		if (currentScene != null)
+			currentScene.updateScene();
 	}
 
 	@Override

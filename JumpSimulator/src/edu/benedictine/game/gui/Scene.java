@@ -23,7 +23,7 @@ public class Scene
 	private WorldObject[] drawCurrents;
 	private BoundingBox[] boxCurrents;
 
-	public GameObject player;
+	private GameObject player;
 	public Camera camera;
 	public CollisionManager physics;
 	public PicLoader loader;
@@ -216,8 +216,11 @@ public class Scene
 		hits.remove(o);
 	}
 	
-	public void setPlayer(GameObject player)
+	public void replacePlayer(GameObject newPlayer)
 	{
-		this.player = player;
+		removeObj(player);
+		removeDraw(player);
+		removeGame(player);
+		player = newPlayer;
 	}
 }
