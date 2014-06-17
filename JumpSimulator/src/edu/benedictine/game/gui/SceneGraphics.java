@@ -1,28 +1,29 @@
 //Created by Joseph Rioux, Jun 6, 2014
+//Modified by James Vanderhyde, 17 June 2014
+//  Removed dependence on other classes
 
 package edu.benedictine.game.gui;
 
 import edu.benedictine.game.engine.WorldObject;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public class SceneGraphics 
 {
-	private ScenePanel panel;
-	private Scene scn;
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
+	private Color backgroundColor=Color.BLACK;
 	
-    public SceneGraphics(ScenePanel panel, int width, int height)
+    public SceneGraphics(int width, int height)
     {
-		this.panel = panel;
 		buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		this.bufferGraphics = buffer.createGraphics();
     }
 
 	public void paintScene(Scene scn, Graphics g)
 	{
-		bufferGraphics.setColor(panel.backgroundColor);
+		bufferGraphics.setColor(backgroundColor);
 		bufferGraphics.fillRect(0, 0, buffer.getWidth(), buffer.getHeight());
 		WorldObject[] toDraw = scn.getDraws();
 		double cameraX = scn.getCamera().getX();

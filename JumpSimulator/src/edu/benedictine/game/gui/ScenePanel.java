@@ -5,7 +5,6 @@ package edu.benedictine.game.gui;
 
 import edu.benedictine.game.input.*;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -15,7 +14,6 @@ public class ScenePanel extends GamePanelFixedFPS
 	private InputManager inputManager;
 	private Scene currentScene;
 	private SceneGraphics scnGraphics;
-	public Color backgroundColor=Color.BLACK;
 	
 	public ScenePanel()
 	{
@@ -36,7 +34,7 @@ public class ScenePanel extends GamePanelFixedFPS
 		this.setPreferredSize(null);
 		
 		//set up scene graphics
-		scnGraphics = new SceneGraphics(this, vRight, vBottom);
+		scnGraphics = new SceneGraphics(vRight-vLeft, vBottom-vTop);
 		
 		//Set up game input
 		inputManager = new InputManager();
