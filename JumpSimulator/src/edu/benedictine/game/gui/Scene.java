@@ -23,7 +23,7 @@ public class Scene
 	private WorldObject[] drawCurrents;
 	private BoundingBox[] boxCurrents;
 
-	public TestPlayer player;
+	public GameObject player;
 	public Camera camera;
 	public CollisionManager physics;
 	public PicLoader loader;
@@ -52,7 +52,7 @@ public class Scene
 		//o = new WorldObject(this, 10, 10, 0.0, 0.0, 0.0, 0.0, null);
 		loader = new PicLoader(this);
 		loader.load(currentLevel);
-		player = new TestPlayer(input, this, 96.0, 128.0);
+		player = new DefaultPlayer(input, this, 96.0, 128.0);
 	}
 	
 	public void updateScene()
@@ -214,5 +214,10 @@ public class Scene
 	public void removeHit(Hit o)
 	{
 		hits.remove(o);
+	}
+	
+	public void setPlayer(GameObject player)
+	{
+		this.player = player;
 	}
 }

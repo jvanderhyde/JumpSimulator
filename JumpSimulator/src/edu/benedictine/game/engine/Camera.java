@@ -152,4 +152,13 @@ public class Camera extends WorldObject
 		return y;
 	}
 	
+	@Override
+	public void draw(java.awt.Graphics g, int x, int y)
+	{
+		g.setColor(java.awt.Color.GREEN);
+		int size = 16;
+		g.drawRect(x, y, size, size);
+	}
+
+	
 }

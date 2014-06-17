@@ -423,23 +423,7 @@ public class WorldObject extends SceneObject implements Comparable
 	{
 		g.setColor(Color.YELLOW);
 		int size = 32;
-		if (this instanceof Camera)
-		{
-			g.setColor(Color.GREEN);
-			size = 16;
-			g.drawRect(x, y, size, size);
-		}
-		else if (this instanceof TestPlayer)
-		{
-			g.setColor(Color.RED);
-			size = 24;
-			g.drawOval(x, y, size, size);
-		}
-		else
-		{
-			g.drawRect(x, y, size, size);
-		}
-		g.setColor(Color.BLACK);
+		g.drawRect(x, y, size, size);
 	}
 	
 	@Override
