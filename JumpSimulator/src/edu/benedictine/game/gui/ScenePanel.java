@@ -3,15 +3,11 @@
 
 package edu.benedictine.game.gui;
 
-import edu.benedictine.game.gui.GamePanelFixedFPS;
 import edu.benedictine.game.input.*;
-import edu.benedictine.jump.players.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.util.HashMap;
 import javax.swing.JPanel;
 
 public class ScenePanel extends GamePanelFixedFPS
@@ -23,8 +19,6 @@ public class ScenePanel extends GamePanelFixedFPS
 	
 	public ScenePanel()
 	{
-		currentScene = new Scene(this, "pictest.png", "nullLVL");
-		
 		//Set up game display
 		vLeft = 0;
 		vTop = 0;
@@ -57,6 +51,9 @@ public class ScenePanel extends GamePanelFixedFPS
 		//Add everything to the main panel
 		this.setLayout(new BorderLayout());
 		this.add(gameCanvas,BorderLayout.CENTER);
+		
+		//Set up scene
+		currentScene = new Scene(this.inputManager, "pictest.png", "nullLVL");
 	}
 	
 	private void paintGameCanvas(Graphics g)
@@ -97,27 +94,7 @@ public class ScenePanel extends GamePanelFixedFPS
 	
 	public void changeScene(String scn, String prev, double nX, double nY)
 	{
-		currentScene = new Scene(this, scn, prev);
+		currentScene = new Scene(this.inputManager, scn, prev);
 	}
 	
-	//world x limit 0 to 1024
-	public int w2VX(double x)
-	{
-		return (int)Math.round(this.getWidth()*x/Main.CAN_WIDTH);
-	}
-	//world y limit 0 to 640
-	public int w2VY(double y)
-	{
-		return (int)Math.round(this.getHeight()*y/Main.CAN_HEIGHT);
-	}
-	//world x limit 0 to 1.6
-	public double v2WX(int x)
-	{
-		return ((double)x/(double)this.getWidth())*Main.CAN_WIDTH;
-	}
-	//world y limit 0 to 1
-	public double v2WY(int y)
-	{
-		return ((double)y/(double)this.getHeight())*Main.CAN_HEIGHT;
-	}
 }

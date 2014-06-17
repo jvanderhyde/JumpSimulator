@@ -5,6 +5,7 @@
 package edu.benedictine.jump;
 
 import edu.benedictine.game.gui.Scene;
+import edu.benedictine.game.input.InputManager;
 import edu.benedictine.jump.players.Custom;
 import edu.benedictine.jump.players.InputInfo;
 import edu.benedictine.jump.players.PlayerControl;
@@ -12,7 +13,7 @@ import edu.benedictine.jump.players.PlayerInfo;
 
 public class SimPlayer extends SimpleObject
 {
-	protected SimulatorPanel sim;
+	private InputManager input;
 	private PlayerControl control;
 	private PlayerInfo playerInfo;
 	private InputInfo inputInfo;
@@ -20,7 +21,7 @@ public class SimPlayer extends SimpleObject
 	public SimPlayer(SimulatorPanel sim, Scene scn, double xLoc, double yLoc, double xCng, double yCng)
 	{
 		super(sim.getViewport().height+sim.getViewport().y,xLoc,yLoc,xCng,yCng);
-		this.sim = sim;
+		this.input = sim.getInputManager();
 		this.playerInfo = new PlayerInfo();
 		this.inputInfo = new InputInfo();
 		this.control = new Custom(sim);
@@ -49,9 +50,9 @@ public class SimPlayer extends SimpleObject
 		playerInfo.xForce = this.xForce;
 		playerInfo.yForce = this.yForce;
 		playerInfo.onGround = this.onGround;
-		inputInfo.jumpPressed = sim.getInputManager().isJumpPressed();
-		inputInfo.leftPressed = sim.getInputManager().isLeftPressed();
-		inputInfo.rightPressed = sim.getInputManager().isRightPressed();
+		inputInfo.jumpPressed = input.isJumpPressed();
+		inputInfo.leftPressed = input.isLeftPressed();
+		inputInfo.rightPressed = input.isRightPressed();
 	}
 	
 	private void copyFromPlayerInfo()
@@ -66,8 +67,8 @@ public class SimPlayer extends SimpleObject
 	{
 		control.walk(playerInfo, inputInfo);
 
-		final boolean leftPressed = sim.getInputManager().isLeftPressed();
-		final boolean rightPressed = sim.getInputManager().isRightPressed();
+		final boolean leftPressed = input.isLeftPressed();
+		final boolean rightPressed = input.isRightPressed();
 		
 		if (leftPressed)
 			setFlipX(false);

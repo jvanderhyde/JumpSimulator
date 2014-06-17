@@ -9,17 +9,19 @@ public class TriggerDoor extends Trigger
 {
 	String goTo;
 	double nextX, nextY;
+	SceneSwitcher swapper;
 	
-	public TriggerDoor(Scene scn, double xLoc, double yLoc, double width, double height, String source, double nextX, double nextY) 
+	public TriggerDoor(Scene scn, SceneSwitcher swapper, double xLoc, double yLoc, double width, double height, String source, double nextX, double nextY) 
 	{
 		super(scn, xLoc, yLoc, width, height);
 		this.goTo = source;
 		this.nextX = nextX;
 		this.nextY = nextY;
+		this.swapper = swapper;
 	}
 	
 	public void fire()
 	{
-		scn.swapper.mark(goTo, 16, nextX, nextY);
+		swapper.mark(goTo, 16, nextX, nextY);
 	}
 }

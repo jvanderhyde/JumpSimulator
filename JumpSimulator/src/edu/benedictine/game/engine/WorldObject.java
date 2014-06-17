@@ -21,8 +21,8 @@ public class WorldObject extends SceneObject implements Comparable
 	protected LinearForce xForce, yForce;
 	boolean forceOn = false;
 	double gravity = 0.0, maxFall = 0.0;
-	double halfWidth=16;
-	double halfHeight=16;
+	protected double halfWidth=16;
+	protected double halfHeight=16;
 	boolean guiObj;
 	public boolean screenObj;
 	
@@ -57,8 +57,8 @@ public class WorldObject extends SceneObject implements Comparable
 		imageTime = 0;
 		if (img != null)
 		{
-			halfWidth = scn.panel.v2WX(this.img.getFrame(0, flipX, flipY).getWidth()/2);
-			halfHeight = scn.panel.v2WY(this.img.getFrame(0, flipX, flipY).getHeight()/2);
+			halfWidth = this.img.getFrame(0, flipX, flipY).getWidth()/2;
+			halfHeight = this.img.getFrame(0, flipX, flipY).getHeight()/2;
 		}
 		xForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
 		yForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
@@ -81,8 +81,8 @@ public class WorldObject extends SceneObject implements Comparable
 		imageTime = 0;
 		if (img != null)
 		{
-			halfWidth = scn.panel.v2WX(this.img.getFrame(0, flipX, flipY).getWidth()/2);
-			halfHeight = scn.panel.v2WY(this.img.getFrame(0, flipX, flipY).getHeight()/2);
+			halfWidth = this.img.getFrame(0, flipX, flipY).getWidth()/2.0;
+			halfHeight = this.img.getFrame(0, flipX, flipY).getHeight()/2.0;
 		}
 		xForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
 		yForce = new LinearForce(0.0, 0.0, 0.0, 0.0, 0.0);
@@ -321,8 +321,8 @@ public class WorldObject extends SceneObject implements Comparable
 	{
 		img = im;
 		imageTime = 0;
-		halfWidth = scn.panel.v2WX(this.img.getFrame(imageTime, flipX, flipY).getWidth()/2);
-		halfHeight = scn.panel.v2WY(this.img.getFrame(imageTime, flipX, flipY).getHeight()/2);
+		halfWidth = this.img.getFrame(imageTime, flipX, flipY).getWidth()/2.0;
+		halfHeight = this.img.getFrame(imageTime, flipX, flipY).getHeight()/2.0;
 	}
 	
 	//sets a new image only if that image is not the current one

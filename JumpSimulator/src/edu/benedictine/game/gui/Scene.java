@@ -5,16 +5,13 @@ package edu.benedictine.game.gui;
 
 import edu.benedictine.game.engine.*;
 import edu.benedictine.game.engine.collision.*;
-import edu.benedictine.game.media.GraphicsResource;
+import edu.benedictine.game.input.InputManager;
 import edu.benedictine.jump.GraphicsResourceJump;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class Scene
 {
-	public ScenePanel panel;
 	public String currentLevel, previousLevel;
 	private PriorityQueue<SceneObject> objs;
 	private PriorityQueue<GameObject> games;
@@ -28,14 +25,12 @@ public class Scene
 
 	public TestPlayer player;
 	public Camera camera;
-	public SceneSwitcher swapper;
 	public CollisionManager physics;
 	public PicLoader loader;
 	public GraphicsResourceJump store;
     
-	public Scene(ScenePanel panel, String source, String prev)
+	public Scene(InputManager input, String source, String prev)
 	{
-		this.panel = panel;
 		objs = new PriorityQueue<SceneObject>(16);
 		games = new PriorityQueue<GameObject>(16);
 		draws = new PriorityQueue<WorldObject>(32);
@@ -45,10 +40,10 @@ public class Scene
 		currentLevel = source;
 		previousLevel = prev;
 
-		constructScene();
+		constructScene(input);
 	}
 	
-	public void constructScene()
+	private void constructScene(InputManager input)
 	{
 		physics = new CollisionManager(this);
 		camera = new Camera(this, 0.0, 0.0, true);
@@ -57,7 +52,7 @@ public class Scene
 		//o = new WorldObject(this, 10, 10, 0.0, 0.0, 0.0, 0.0, null);
 		loader = new PicLoader(this);
 		loader.load(currentLevel);
-		player = new TestPlayer(this, 96.0, 128.0);
+		player = new TestPlayer(input, this, 96.0, 128.0);
 	}
 	
 	public void updateScene()
