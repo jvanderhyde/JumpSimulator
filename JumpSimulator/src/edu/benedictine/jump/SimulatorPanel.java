@@ -86,6 +86,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		director.addPlayerClass(new Mario(),obs);
 		director.addPlayerClass(new Samus(),obs);
 		director.addPlayerClass(new Eversion(),obs);
+		director.addPlayerClass(new Discrete(),obs);
 		
 		//Set up game input
 		inputManager = new InputManager();
