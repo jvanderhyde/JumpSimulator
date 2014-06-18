@@ -51,7 +51,7 @@ public abstract class GameApplet extends javax.swing.JApplet
 		{
 			gameLoop = new Thread(game);
 			gameLoop.start();
-			game.startGame();
+			game.createGame();
 		}
 	}
 

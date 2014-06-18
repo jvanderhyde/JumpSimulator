@@ -15,7 +15,7 @@ public abstract class GamePanelFixedFPS extends GamePanel
 
 		long oldTime, newTime;
 
-		System.out.println("Game created.");
+		System.out.println("Game loop started.");
 		while (!threadDone)
 		{
 			oldTime = System.currentTimeMillis();
@@ -37,7 +37,7 @@ public abstract class GamePanelFixedFPS extends GamePanel
 				}
 			}
 		}
-		System.out.println("Game destroyed.");
+		System.out.println("Game loop stopped.");
 	}
 	
 	@Override

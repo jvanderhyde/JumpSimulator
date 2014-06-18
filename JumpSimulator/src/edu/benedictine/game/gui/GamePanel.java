@@ -31,7 +31,7 @@ public abstract class GamePanel extends javax.swing.JPanel
 		gc = null;
 	}
 
-	public abstract void startGame();
+	public abstract void createGame();
 
 	public abstract void paintGame(Graphics g);
 
@@ -46,7 +46,7 @@ public abstract class GamePanel extends javax.swing.JPanel
 
 		long oldTime, newTime;
 
-		System.out.println("Game created.");
+		System.out.println("Game loop started.");
 		oldTime = System.currentTimeMillis();
 		while (!threadDone)
 		{
@@ -65,7 +65,7 @@ public abstract class GamePanel extends javax.swing.JPanel
 			}
 			oldTime = newTime;
 		}
-		System.out.println("Game destroyed.");
+		System.out.println("Game loop stopped.");
 	}
 
 	void activateGame()

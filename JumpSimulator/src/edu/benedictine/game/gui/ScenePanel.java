@@ -60,7 +60,7 @@ public class ScenePanel extends GamePanelFixedFPS
 	}
 
 	@Override
-	public void startGame()
+	public void createGame()
 	{
 
 	}

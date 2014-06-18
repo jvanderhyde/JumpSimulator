@@ -3,7 +3,6 @@
 
 package edu.benedictine.jump;
 
-import edu.benedictine.game.engine.DefaultPlayer;
 import edu.benedictine.game.engine.GameObject;
 import edu.benedictine.game.gui.GamePanelFixedFPS;
 import edu.benedictine.game.gui.Scene;
@@ -110,16 +109,10 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	{
 		if (currentScene != null)
 			scnGraphics.paintScene(currentScene, g);
-		/*g.setColor(Color.black);
-		g.fillRect(vLeft, vTop, vRight-vLeft, vBottom-vTop);
-		if (player != null)
-		{
-			player.paint(g);
-		}*/
 	}
 
 	@Override
-	public void startGame()
+	public void createGame()
 	{
 		//Set up scene
 		currentScene = new Scene(this.inputManager, "pictest.png", "nullLVL");
@@ -132,8 +125,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	@Override
 	public void updateGame()
 	{
-		if (currentScene != null)
-			currentScene.updateScene();
+		currentScene.updateScene();
 	}
 
 	@Override

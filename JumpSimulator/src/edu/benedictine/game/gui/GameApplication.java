@@ -25,7 +25,7 @@ public class GameApplication
 	{
 		(new GameApplication()).setup(new GamePanel()
 		{
-			public void startGame()
+			public void createGame()
 			{
 			}
 
@@ -72,6 +72,7 @@ public class GameApplication
 				f.setVisible(false);
 				f.dispose();
 				game.destroy();
+				System.out.println("Game destroyed.");
 			}
 
 			@Override
@@ -83,8 +84,8 @@ public class GameApplication
 			@Override
 			public void windowActivated(WindowEvent evt)
 			{
-				game.activateGame();
 				startGame();
+				game.activateGame();
 			}
 		});
 
@@ -97,8 +98,9 @@ public class GameApplication
 		if (gameLoop == null)
 		{
 			gameLoop = new Thread(game);
+			game.createGame();
+			System.out.println("Game created.");
 			gameLoop.start();
-			game.startGame();
 		}
 	}
 }
