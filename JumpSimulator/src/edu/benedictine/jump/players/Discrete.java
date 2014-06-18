@@ -6,10 +6,14 @@ package edu.benedictine.jump.players;
 
 public class Discrete extends PlayerControl
 {
-	private final int stepTime = 16;
-	private final int jumpTime = 32;
-	private final int gravity = 20;
 	private final int xSpeed = 120;
+	private final int tilesPerStep = 1;
+	private final int stepTime = 2*tilesPerStep*xSpeed/15;
+
+	private final int gravity = 20;
+	private final int yTerminalVel = 640;
+	private final int yInitialVel = 320;
+	private final int jumpTime = 2*yInitialVel/gravity;
 	
 	private int jumpT = 0;
 	private int stepT = 0;
@@ -57,6 +61,11 @@ public class Discrete extends PlayerControl
 	@Override
 	public void jump(PlayerInfo pInfo, InputInfo iInfo)
 	{
+		//set up gravity force
+		pInfo.yForce.upper = yTerminalVel;
+		pInfo.yForce.lower = -yInitialVel;
+		pInfo.yForce.accel = gravity;
+		
 		if (jumpT > 0)
 		{
 			jumpT--;
@@ -68,11 +77,7 @@ public class Discrete extends PlayerControl
 				//jump straight up
 				if (iInfo.jumpPressed && pInfo.onGround)
 				{
-					double yVel = gravity*jumpTime/2;
-					pInfo.yForce.upper = yVel;
-					pInfo.yForce.lower = -yVel;
-					pInfo.yForce.value = -yVel;
-					pInfo.yForce.accel = gravity;
+					pInfo.yForce.value = -yInitialVel;
 					jumpT = jumpTime;
 				}
 			}
@@ -81,11 +86,7 @@ public class Discrete extends PlayerControl
 				//jump over next tile
 				if (iInfo.jumpPressed && pInfo.onGround)
 				{
-					double yVel = gravity*jumpTime/2;
-					pInfo.yForce.upper = yVel;
-					pInfo.yForce.lower = -yVel;
-					pInfo.yForce.value = -yVel;
-					pInfo.yForce.accel = gravity;
+					pInfo.yForce.value = -yInitialVel;
 					jumpT = jumpTime;
 					stepT += (jumpTime-stepTime);
 				}
