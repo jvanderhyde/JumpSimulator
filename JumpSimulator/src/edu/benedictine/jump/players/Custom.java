@@ -57,7 +57,9 @@ public class Custom extends PlayerControl
 		final double gravity = sim.getGravity();
 		final double initialJump = sim.getJumpPower();
 		
-		if ((iInfo.jumpPressed) && (pInfo.onGround))
+		zeroYVelOnGround(pInfo);
+		
+		if ((iInfo.jumpPressed) && (pInfo.onGround) && (jumpReleasedSinceLastJump))
 		{
 			pInfo.yForce.value = -initialJump;
 		}
@@ -90,6 +92,7 @@ public class Custom extends PlayerControl
 		{
 			pInfo.yForce.value += gravity;
 		}
+		stopBouncing(pInfo, iInfo);
 	}
 
 	@Override

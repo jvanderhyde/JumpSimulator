@@ -4,6 +4,9 @@
 
 package edu.benedictine.jump.players;
 
+import edu.benedictine.jump.SimVariableChoice;
+import edu.benedictine.jump.SimVariableFloat;
+
 public class Discrete extends PlayerControl
 {
 	private final int xSpeed = 120;
@@ -17,6 +20,20 @@ public class Discrete extends PlayerControl
 	
 	private int jumpT = 0;
 	private int stepT = 0;
+
+	@Override
+	public void getJumpType(SimVariableFloat gravity, 
+							SimVariableFloat jumpPower, 
+							SimVariableFloat xSpeed, 
+							SimVariableFloat airDecel, 
+							SimVariableChoice jumpCancelType)
+	{
+		gravity.setValue(120.0*32/256);
+		jumpPower.setValue(yInitialVel);
+		xSpeed.setValue(this.xSpeed);
+		airDecel.setValue(0);
+		jumpCancelType.setValue("no");
+	}
 
 	@Override
 	public void walk(PlayerInfo pInfo, InputInfo iInfo)
@@ -66,6 +83,8 @@ public class Discrete extends PlayerControl
 		pInfo.yForce.lower = -yInitialVel;
 		pInfo.yForce.accel = gravity;
 		
+		zeroYVelOnGround(pInfo);
+		
 		if (jumpT > 0)
 		{
 			jumpT--;
@@ -75,21 +94,23 @@ public class Discrete extends PlayerControl
 			if (stepT == 0)
 			{
 				//jump straight up
-				if (iInfo.jumpPressed && pInfo.onGround)
+				if (iInfo.jumpPressed && pInfo.onGround && jumpReleasedSinceLastJump)
 				{
 					pInfo.yForce.value = -yInitialVel;
 					jumpT = jumpTime;
 				}
+				stopBouncing(pInfo, iInfo);
 			}
 			else if (stepT >= stepTime-2)
 			{
 				//jump over next tile
-				if (iInfo.jumpPressed && pInfo.onGround)
+				if (iInfo.jumpPressed && pInfo.onGround && jumpReleasedSinceLastJump)
 				{
 					pInfo.yForce.value = -yInitialVel;
 					jumpT = jumpTime;
 					stepT += (jumpTime-stepTime);
 				}
+				stopBouncing(pInfo, iInfo);
 			}
 		}
 	}
