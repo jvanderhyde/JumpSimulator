@@ -116,7 +116,8 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	public void createGame()
 	{
 		//Set up scene
-		currentScene = new Scene(this.inputManager, "pictest.png", "nullLVL");
+		currentScene = new Scene();
+		currentScene.setUpScene(this.inputManager, "pictest.png", "nullLVL");
 		player = new SimPlayer(this,currentScene,96,128);
 		//player = new DefaultPlayer(this.getInputManager(),currentScene,96,128);
 		currentScene.replacePlayer(player);

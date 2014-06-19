@@ -51,7 +51,8 @@ public class ScenePanel extends GamePanelFixedFPS
 		this.add(gameCanvas,BorderLayout.CENTER);
 		
 		//Set up scene
-		currentScene = new Scene(this.inputManager, "pictest.png", "nullLVL");
+		currentScene = new Scene();
+		currentScene.setUpScene(this.inputManager, "pictest.png", "nullLVL");
 	}
 	
 	private void paintGameCanvas(Graphics g)
@@ -92,7 +93,8 @@ public class ScenePanel extends GamePanelFixedFPS
 	
 	public void changeScene(String scn, String prev, double nX, double nY)
 	{
-		currentScene = new Scene(this.inputManager, scn, prev);
+		//currentScene = new Scene(this.inputManager, scn, prev);
+		currentScene.setUpScene(this.inputManager, scn, prev);
 	}
 	
 }

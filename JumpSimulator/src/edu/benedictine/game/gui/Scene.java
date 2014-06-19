@@ -29,7 +29,12 @@ public class Scene
 	public PicLoader loader;
 	public GraphicsResourceJump store;
     
-	public Scene(InputManager input, String source, String prev)
+	public Scene()
+	{
+		
+	}
+	
+	public void setUpScene(InputManager input, String source, String prev)
 	{
 		objs = new PriorityQueue<SceneObject>(16);
 		games = new PriorityQueue<GameObject>(16);
