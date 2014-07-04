@@ -122,3 +122,21 @@ public class Discrete extends PlayerControl
 	}
 	
 }
+
+//Prince of Persia notes
+
+//Prince of Persia has gravity 3 and terminal velocity 33,
+// but I'm not sure what the frame rate is.
+// Death velocity: 33
+// Oof velocity:   22
+//Most of the control code in Prince of Persia is handling jumping
+// so that the animation looks good. All characters, including the
+// player, are controlled by scripts, so the initial velocity
+// for jumping and running speeds are in the script, I think.
+
+//Relevant code (https://github.com/adamgreen/Prince-of-Persia-Apple-II)
+//  SEQTABLE.S:440
+//  CTRL.S:1586
+//  FRAMEDEF.S
+//  CTRLSUBS.S:700
+//  COLL.S:1075
