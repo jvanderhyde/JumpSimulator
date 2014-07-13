@@ -10,6 +10,7 @@ import edu.benedictine.game.gui.SceneGraphics;
 import edu.benedictine.game.input.*;
 import edu.benedictine.jump.players.*;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.HashMap;
@@ -87,6 +88,7 @@ public class SimulatorPanel extends GamePanelFixedFPS
 		director.addPlayerClass(new Samus(),obs);
 		director.addPlayerClass(new Eversion(),obs);
 		director.addPlayerClass(new Discrete(),obs);
+		director.addPlayerClass(new MegaMan(),obs);
 		
 		//Set up game input
 		inputManager = new InputManager();
@@ -110,14 +112,24 @@ public class SimulatorPanel extends GamePanelFixedFPS
 	{
 		if (currentScene != null)
 			scnGraphics.paintScene(currentScene, g);
+		//player position and speed info
+		if (player != null)
+		{
+			Color c = g.getColor();
+			g.setColor(Color.YELLOW);
+			g.drawString("Player X: "+(int)player.getX(), vLeft+8, vTop+16);
+			g.drawString("Player Y: "+(int)player.getY(), vLeft+8, vTop+32);
+			g.drawString("Player X Speed: "+player.getXForce().value, vLeft+8, vTop+48);
+			g.drawString("Player Y Speed: "+player.getYForce().value, vLeft+8, vTop+64);
+			g.setColor(c);
+		}
 	}
 
 	@Override
 	public void createGame()
 	{
 		//Set up scene
-		currentScene = new Scene();
-		currentScene.setUpScene(this.inputManager, "pictest.png", "nullLVL");
+		currentScene = new Scene(this.inputManager, "pictest.png", "nullLVL");
 		player = new SimPlayer(this,currentScene,96,128);
 		//player = new DefaultPlayer(this.getInputManager(),currentScene,96,128);
 		currentScene.replacePlayer(player);
